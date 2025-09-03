@@ -31,14 +31,21 @@ Este é um projeto [Next.js](https://nextjs.org/) criado com [`create-next-app`]
 3. Configure as variáveis de ambiente:
    - Copie o arquivo `.env.example` para `.env.local`
    - Obtenha suas credenciais do Mercado Pago em [https://www.mercadopago.com.br/developers/pt/guides/resources/credentials](https://www.mercadopago.com.br/developers/pt/guides/resources/credentials)
-   - Preencha a variável `MERCADO_PAGO_ACCESS_TOKEN` com seu access token
+   - Preencha as variáveis `MERCADO_PAGO_PUBLIC_KEY` e `MERCADO_PAGO_ACCESS_TOKEN` com suas credenciais
 
 4. Execute o servidor de desenvolvimento:
    ```bash
    npm run dev
    ```
 
-5. Abra [http://localhost:3000](http://localhost:3000) no seu navegador para ver o resultado.
+5. Abra [http://localhost:3001](http://localhost:3001) no seu navegador para ver o resultado (a porta pode ser diferente se a 3000 estiver em uso).
+
+## Testando a funcionalidade de PIX
+
+1. Na página inicial, clique no botão "Gerar PIX"
+2. Preencha o valor e uma descrição para o pagamento
+3. Clique no botão "Gerar PIX"
+4. Se tudo estiver configurado corretamente, será exibido um QR Code e o código copia e cola
 
 ## Estrutura do projeto
 
