@@ -5,6 +5,12 @@ import { MercadoPagoConfig, Payment } from 'mercadopago';
 const accessToken = process.env.MERCADO_PAGO_ACCESS_TOKEN || '';
 
 // Verificar se o token de acesso foi configurado
+console.log('=== DEBUG MERCADO PAGO ===');
+console.log('Token configurado:', !!accessToken);
+console.log('Token length:', accessToken?.length || 0);
+console.log('Token prefix:', accessToken?.substring(0, 20) + '...');
+console.log('========================');
+
 if (!accessToken) {
   console.error('MERCADO_PAGO_ACCESS_TOKEN não está configurado');
 }
@@ -119,11 +125,15 @@ export async function POST(request: NextRequest) {
     );
   } catch (error: any) {
     console.error('Erro ao gerar pagamento PIX:', error);
+    console.error('Detalhes do erro:', {
+      message: error.message,
+      status: error.status,
+      cause: error.cause
+    });
     
     // Tratar erros específicos do Mercado Pago
     if (error.status === 401) {
-      console.error('Token de acesso:', accessToken);
-      console.error('Tamanho do token:', accessToken?.length);
+      console.error('Token de acesso atual:', accessToken?.substring(0, 30) + '...');
       return new Response(
         JSON.stringify({ 
           error: 'Erro de autenticação',
