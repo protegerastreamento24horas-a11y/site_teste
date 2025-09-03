@@ -4,7 +4,6 @@ import { MercadoPagoConfig, Payment } from 'mercadopago';
 // Configuração do Mercado Pago
 const client = new MercadoPagoConfig({ 
   accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN || '',
-  publicKey: process.env.MERCADO_PAGO_PUBLIC_KEY || '',
   options: { timeout: 5000 }
 });
 
