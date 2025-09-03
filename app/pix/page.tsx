@@ -23,11 +23,14 @@ export default function PixPayment() {
       });
       
       const data = await response.json();
-      if (data.qr_code) {
+      
+      if (response.ok && data.qr_code_base64) {
         setQrCode(data.qr_code);
         setPixCode(data.qr_code_base64);
       } else {
-        alert('Erro ao gerar o código PIX');
+        const errorMessage = data.error || 'Erro ao gerar o código PIX';
+        alert(errorMessage);
+        console.error('Erro na resposta:', data);
       }
     } catch (error) {
       console.error('Erro:', error);
