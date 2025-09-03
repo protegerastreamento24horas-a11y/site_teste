@@ -79,6 +79,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Log para depuração
+    console.log('Usando token de acesso:', accessToken ? 'Token configurado' : 'Token não configurado');
+    console.log('Tamanho do token:', accessToken?.length || 0);
+
     const result = await payment.create({ body });
     
     // Verificar se a resposta contém os dados necessários
@@ -118,6 +122,8 @@ export async function POST(request: NextRequest) {
     
     // Tratar erros específicos do Mercado Pago
     if (error.status === 401) {
+      console.error('Token de acesso:', accessToken);
+      console.error('Tamanho do token:', accessToken?.length);
       return new Response(
         JSON.stringify({ 
           error: 'Erro de autenticação',
