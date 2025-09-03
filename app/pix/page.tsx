@@ -8,9 +8,11 @@ export default function PixPayment() {
   const [pixCode, setPixCode] = useState('');
   const [qrCode, setQrCode] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const generatePix = async () => {
     setLoading(true);
+    setError('');
     try {
       // Esta é uma implementação de exemplo
       // Na prática, você precisaria chamar sua API backend que se conecta ao Mercado Pago
@@ -28,13 +30,13 @@ export default function PixPayment() {
         setQrCode(data.qr_code);
         setPixCode(data.qr_code_base64);
       } else {
-        const errorMessage = data.error || 'Erro ao gerar o código PIX';
-        alert(errorMessage);
+        const errorMessage = data.message || data.error || 'Erro ao gerar o código PIX';
+        setError(errorMessage);
         console.error('Erro na resposta:', data);
       }
     } catch (error) {
       console.error('Erro:', error);
-      alert('Erro ao gerar o código PIX');
+      setError('Erro de conexão. Por favor, tente novamente.');
     } finally {
       setLoading(false);
     }
@@ -84,6 +86,12 @@ export default function PixPayment() {
                     Descrição
                   </label>
                 </div>
+                
+                {error && (
+                  <div className="text-red-500 text-sm py-2">
+                    {error}
+                  </div>
+                )}
                 
                 <div className="flex justify-center mt-10">
                   <button
