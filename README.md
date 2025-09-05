@@ -42,18 +42,21 @@ O projeto está configurado para deploy no Vercel. Siga estas etapas:
 1. Acesse [https://vercel.com](https://vercel.com)
 2. Faça login com sua conta do GitHub
 3. Importe o repositório
-4. Configure a variável de ambiente `MERCADO_PAGO_ACCESS_TOKEN`
+4. Configure as variáveis de ambiente:
+   - `HORSEPAY_CLIENT_KEY`
+   - `HORSEPAY_CLIENT_SECRET`
 5. Faça o deploy
 
 ### Variáveis de Ambiente Necessárias
 
-- `MERCADO_PAGO_ACCESS_TOKEN`: Token de acesso do Mercado Pago
+- `HORSEPAY_CLIENT_KEY`: Chave de cliente da HorsePay
+- `HORSEPAY_CLIENT_SECRET`: Segredo de cliente da HorsePay
 
 ## Estrutura do Projeto
 
 - `app/page.tsx`: Página inicial
 - `app/pix/page.tsx`: Interface de geração de PIX
-- `app/api/pix/route.ts`: API de integração com o Mercado Pago
+- `app/api/pix/route.ts`: API de integração com a HorsePay
 
 ## Como Contribuir
 
