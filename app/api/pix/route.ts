@@ -184,7 +184,13 @@ export async function POST(request: NextRequest) {
       
       if (error.cause && Array.isArray(error.cause)) {
         // Extrair mensagens de erro detalhadas do Mercado Pago
-        const messages = error.cause.map((cause: any) => cause.message || cause.description || 'Erro desconhecido').join(', ');
+        const messages = error.cause.map((cause: any) => {
+          // Tratar mensagem específica de identidade financeira
+          if (cause.message && cause.message.includes('identidade financeira')) {
+            return 'Erro na verificação da identidade financeira. Verifique se sua conta do Mercado Pago está totalmente verificada e habilitada para receber pagamentos PIX.';
+          }
+          return cause.message || cause.description || 'Erro desconhecido';
+        }).join(', ');
         errorMessage = messages || errorMessage;
         errorDetails = error.cause;
       }
@@ -195,6 +201,23 @@ export async function POST(request: NextRequest) {
           message: errorMessage,
           details: errorDetails,
           status: error.status
+        }),
+        { 
+          status: 400,
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
+      );
+    }
+    
+    // Tratamento específico para erro de identidade financeira
+    if (error.message && error.message.includes('identidade financeira')) {
+      return new Response(
+        JSON.stringify({ 
+          error: 'Erro de identidade financeira',
+          message: 'Erro na verificação da identidade financeira. Verifique se sua conta do Mercado Pago está totalmente verificada e habilitada para receber pagamentos PIX.',
+          status: 400
         }),
         { 
           status: 400,
