@@ -5,6 +5,7 @@ import { useState } from 'react';
 export default function PixPayment() {
   const [amount, setAmount] = useState('');
   const [description, setDescription] = useState('');
+  const [payerEmail, setPayerEmail] = useState('');
   const [pixCode, setPixCode] = useState('');
   const [qrCode, setQrCode] = useState('');
   const [loading, setLoading] = useState(false);
@@ -21,14 +22,18 @@ export default function PixPayment() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ amount: parseFloat(amount), description }),
+        body: JSON.stringify({ 
+          amount: parseFloat(amount), 
+          description,
+          payerEmail
+        }),
       });
       
       const data = await response.json();
       
       if (response.ok && data.qr_code_base64) {
-        setQrCode(data.qr_code);
-        setPixCode(data.qr_code_base64);
+        setQrCode(data.qr_code_base64);
+        setPixCode(data.qr_code);
       } else {
         const errorMessage = data.message || data.error || 'Erro ao gerar o código PIX';
         setError(errorMessage);
@@ -84,6 +89,19 @@ export default function PixPayment() {
                   />
                   <label className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">
                     Descrição
+                  </label>
+                </div>
+                
+                <div className="relative">
+                  <input
+                    onChange={(e) => setPayerEmail(e.target.value)}
+                    value={payerEmail}
+                    type="email"
+                    placeholder="Email do pagador (opcional)"
+                    className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-green-600"
+                  />
+                  <label className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">
+                    Email do pagador (opcional)
                   </label>
                 </div>
                 

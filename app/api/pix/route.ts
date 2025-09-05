@@ -24,7 +24,7 @@ const payment = new Payment(client);
 
 export async function POST(request: NextRequest) {
   try {
-    const { amount, description } = await request.json();
+    const { amount, description, payerEmail } = await request.json();
 
     // Validar campos obrigatórios
     if (!amount || !description) {
@@ -59,14 +59,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Validar email do pagador, se fornecido
+    const payer = {
+      email: 'user@example.com', // email padrão
+    };
+    
+    if (payerEmail && typeof payerEmail === 'string') {
+      payer.email = payerEmail;
+    }
+
     // Criar um pagamento PIX usando o Mercado Pago
     const body = {
       transaction_amount: transactionAmount,
       description: description,
       payment_method_id: 'pix',
-      payer: {
-        email: 'user@example.com',
-      }
+      payer: payer
     };
 
     // Verificar se o token de acesso está configurado antes de fazer a chamada
@@ -111,8 +118,8 @@ export async function POST(request: NextRequest) {
     // Retornar o QR Code e o código PIX
     return new Response(
       JSON.stringify({
-        qr_code: result.point_of_interaction?.transaction_data?.qr_code,
-        qr_code_base64: result.point_of_interaction?.transaction_data?.qr_code_base64,
+        qr_code: result.point_of_interaction.transaction_data.qr_code,
+        qr_code_base64: `data:image/png;base64,${result.point_of_interaction.transaction_data.qr_code_base64}`,
         id: result.id,
         status: result.status,
       }),
