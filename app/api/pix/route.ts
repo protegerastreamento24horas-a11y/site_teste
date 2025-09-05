@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
 
     // Validar email do pagador, se fornecido
     const payer = {
-      email: 'pagador@exemplo.com', // email padrão
+      email: 'pagador@exemplo.com',
     };
     
     if (payerEmail && typeof payerEmail === 'string' && payerEmail.includes('@')) {
@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
     // Log para depuração
     console.log('Usando token de acesso:', accessToken ? 'Token configurado' : 'Token não configurado');
     console.log('Tamanho do token:', accessToken?.length || 0);
-    console.log('Corpo da requisição:', JSON.stringify(body));
+    console.log('Corpo da requisição:', JSON.stringify(body, null, 2));
 
     const result = await payment.create({ body });
     
@@ -160,11 +160,21 @@ export async function POST(request: NextRequest) {
     }
     
     if (error.status === 400) {
+      let errorMessage = 'Dados enviados estão incorretos';
+      let errorDetails = {};
+      
+      if (error.cause && Array.isArray(error.cause)) {
+        // Extrair mensagens de erro detalhadas do Mercado Pago
+        const messages = error.cause.map((cause: any) => cause.message || cause.description || 'Erro desconhecido').join(', ');
+        errorMessage = messages || errorMessage;
+        errorDetails = error.cause;
+      }
+      
       return new Response(
         JSON.stringify({ 
           error: 'Dados inválidos',
-          message: 'Dados enviados estão incorretos',
-          details: error.message,
+          message: errorMessage,
+          details: errorDetails,
           status: error.status
         }),
         { 
