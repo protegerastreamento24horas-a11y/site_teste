@@ -1,30 +1,9 @@
 'use client';
 
-import { Children } from 'react';
-
-interface ClientComponentProps {
-  children: React.ReactNode;
-}
-
-export default function ClientComponent({ children }: ClientComponentProps) {
-  return (
-    <>
-      {children}
-    </>
-  );
-}
-'use client';
-
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { ClientComponent } from '@/components/ClientComponent';
 
 export default function PagamentoPage() {
-  return (
-    <ClientComponent>
-export default function PagamentoPage() {
-  return (
-    <ClientComponent>
   const searchParams = useSearchParams();
   const qrCode = searchParams.get('qr_code');
   const paymentId = searchParams.get('id');
