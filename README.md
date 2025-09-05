@@ -1,12 +1,12 @@
 # Next.js PIX Payment Integration
 
-Este projeto é uma aplicação Next.js que permite gerar códigos QR PIX para pagamentos utilizando o Mercado Pago.
+Este projeto é uma aplicação Next.js que permite gerar códigos QR PIX para pagamentos utilizando a HorsePay.
 
 ## Funcionalidades
 
 - Geração de códigos QR PIX em tempo real
 - Interface amigável para criação de pagamentos
-- Integração completa com a API do Mercado Pago
+- Integração completa com a API da HorsePay
 
 ## Tecnologias Utilizadas
 
@@ -14,7 +14,6 @@ Este projeto é uma aplicação Next.js que permite gerar códigos QR PIX para p
 - React 19
 - TypeScript
 - Tailwind CSS
-- Mercado Pago SDK
 
 ## Como rodar o projeto localmente
 
@@ -23,9 +22,12 @@ Este projeto é uma aplicação Next.js que permite gerar códigos QR PIX para p
    ```bash
    npm install
    ```
-3. Configure as variáveis de ambiente no arquivo `.env.local`:
+3. Configure as variáveis de ambiente:
+   - Copie o arquivo `.env.local.example` para `.env.local`
+   - Substitua os valores de exemplo pelas suas credenciais reais da HorsePay:
    ```env
-   MERCADO_PAGO_ACCESS_TOKEN=seu_token_aqui
+   HORSEPAY_CLIENT_KEY=suakey
+   HORSEPAY_CLIENT_SECRET=suasecret
    ```
 4. Inicie o servidor de desenvolvimento:
    ```bash
@@ -51,6 +53,10 @@ O projeto está configurado para deploy no Vercel. Siga estas etapas:
 
 - `HORSEPAY_CLIENT_KEY`: Chave de cliente da HorsePay
 - `HORSEPAY_CLIENT_SECRET`: Segredo de cliente da HorsePay
+
+## Segurança
+
+⚠️ **Importante**: Nunca commite credenciais reais no repositório. O arquivo `.env.local` está no `.gitignore` para evitar que credenciais sensíveis sejam expostas publicamente.
 
 ## Estrutura do Projeto
 
