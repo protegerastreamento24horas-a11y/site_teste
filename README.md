@@ -28,16 +28,24 @@ Este projeto é uma aplicação Next.js para venda de rifas automatizadas com pa
    ```
 3. Configure as variáveis de ambiente:
    - Copie o arquivo `.env.local.example` para `.env.local`
-   - Substitua os valores de exemplo pelas suas credenciais reais da HorsePay:
+   - **Substitua os valores de exemplo pelas suas credenciais reais da HorsePay:**
    ```env
-   HORSEPAY_CLIENT_KEY=suakey
-   HORSEPAY_CLIENT_SECRET=suasecret
+   HORSEPAY_CLIENT_KEY=suakey_real_aqui
+   HORSEPAY_CLIENT_SECRET=suasecret_real_aqui
    ```
 4. Inicie o servidor de desenvolvimento:
    ```bash
    npm run dev
    ```
 5. Acesse [http://localhost:3000](http://localhost:3000)
+
+## Como obter credenciais da HorsePay
+
+1. Acesse [https://horsepay.io](https://horsepay.io)
+2. Crie uma conta ou faça login
+3. Vá até a seção de desenvolvedores ou API
+4. Gere um par de credenciais (Client Key e Client Secret)
+5. Substitua as credenciais de exemplo no arquivo `.env.local` pelas suas credenciais reais
 
 ## Deploy
 
@@ -49,8 +57,8 @@ O projeto está configurado para deploy no Vercel. Siga estas etapas:
 2. Faça login com sua conta do GitHub
 3. Importe o repositório
 4. Configure as variáveis de ambiente:
-   - `HORSEPAY_CLIENT_KEY`
-   - `HORSEPAY_CLIENT_SECRET`
+   - `HORSEPAY_CLIENT_KEY` (sua chave real)
+   - `HORSEPAY_CLIENT_SECRET` (seu segredo real)
    - `VERCEL_URL` (definida automaticamente pelo Vercel)
 5. Faça o deploy
 
