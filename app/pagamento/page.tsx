@@ -31,22 +31,16 @@ export default function PagamentoPage() {
 
     const checkPaymentStatus = async () => {
       try {
-        // Em uma implementação real, você chamaria a API para verificar o status
-        // Por enquanto, vamos simular uma verificação
-        const response = await fetch(`/api/webhook`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            external_id: paymentId,
-            status: 1, // 1 = pago, 0 = pendente
-            amount: 50.00
-          }),
-        });
-
+        // Chamar a API para verificar o status do pagamento
+        const response = await fetch(`/api/payment-status?paymentId=${paymentId}`);
+        
         if (response.ok) {
-          setPaymentStatus('paid');
+          const data = await response.json();
+          if (data.status === 'paid') {
+            setPaymentStatus('paid');
+          } else if (data.status === 'failed') {
+            setPaymentStatus('failed');
+          }
         }
       } catch (error) {
         console.error('Erro ao verificar status do pagamento:', error);
@@ -225,6 +219,7 @@ export default function PagamentoPage() {
                   <li>Escolha a opção de pagamento via PIX</li>
                   <li>Escaneie o QR Code ou cole o código copiado</li>
                   <li>Confirme as informações e finalize o pagamento</li>
+                  <li>Após o pagamento, aguarde alguns segundos para confirmação</li>
                 </ol>
               </div>
             </>

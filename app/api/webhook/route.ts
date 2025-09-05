@@ -1,3 +1,7 @@
+// Armazenamento em memória para status dos pagamentos (apenas para demonstração)
+// Em produção, você usaria um banco de dados
+const paymentStatuses: Record<string, number> = {};
+
 import { NextRequest } from 'next/server';
 
 // Função para verificar se o webhook é válido (opcional, se a HorsePay fornecer um método de verificação)
@@ -5,6 +9,11 @@ function verifyWebhookSignature(request: NextRequest, body: any): boolean {
   // Se a HorsePay fornecer um método de verificação, implemente aqui
   // Por enquanto, vamos assumir que o webhook é válido
   return true;
+}
+
+// Função para obter o status de um pagamento
+export function getPaymentStatus(externalId: string): number | null {
+  return paymentStatuses[externalId] || null;
 }
 
 export async function POST(request: NextRequest) {
@@ -15,7 +24,7 @@ export async function POST(request: NextRequest) {
     // Verificar se o webhook é válido (se aplicável)
     if (!verifyWebhookSignature(request, body)) {
       return new Response(
-        JSON.stringify({ error: 'Webhook inválido' }),
+        JSON.stringify({ error: 'Webhook inválido' });
         { 
           status: 400,
           headers: {
@@ -30,9 +39,8 @@ export async function POST(request: NextRequest) {
       // Este é um callback de depósito
       console.log('Webhook de depósito recebido:', body);
       
-      // Aqui você pode atualizar o status do pagamento no seu banco de dados
-      // Por exemplo:
-      // await updatePaymentStatus(body.external_id, body.status);
+      // Atualizar o status do pagamento no armazenamento em memória
+      paymentStatuses[body.external_id] = body.status;
       
       // Retornar sucesso
       return new Response(
@@ -88,17 +96,4 @@ export async function POST(request: NextRequest) {
       }
     );
   }
-}
-
-// A HorsePay provavelmente não usa GET para webhooks, mas vamos implementar para testes
-export async function GET() {
-  return new Response(
-    JSON.stringify({ message: 'Endpoint de webhook da HorsePay' }),
-    { 
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    }
-  );
 }
