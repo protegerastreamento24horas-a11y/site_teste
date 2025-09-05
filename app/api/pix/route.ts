@@ -9,6 +9,8 @@ console.log('=== DEBUG MERCADO PAGO ===');
 console.log('Token configurado:', !!accessToken);
 console.log('Token length:', accessToken?.length || 0);
 console.log('Token prefix:', accessToken?.substring(0, 20) + '...');
+// Verificar se o token parece válido (deve começar com APP_USR-)
+console.log('Token parece válido:', accessToken?.startsWith('APP_USR-') ?? false);
 console.log('========================');
 
 if (!accessToken) {
@@ -82,6 +84,23 @@ export async function POST(request: NextRequest) {
         JSON.stringify({ 
           error: 'Configuração incompleta',
           message: 'Token de acesso do Mercado Pago não configurado'
+        }),
+        { 
+          status: 500,
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
+      );
+    }
+
+    // Verificar se o token parece válido
+    if (!accessToken.startsWith('APP_USR-')) {
+      console.error('Token de acesso parece inválido:', accessToken?.substring(0, 50) + '...');
+      return new Response(
+        JSON.stringify({ 
+          error: 'Configuração inválida',
+          message: 'Token de acesso do Mercado Pago parece inválido'
         }),
         { 
           status: 500,
