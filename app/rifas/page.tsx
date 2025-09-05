@@ -83,8 +83,9 @@ export default function RifasPage() {
       console.log('Dados recebidos da API PIX:', data);
 
       if (response.ok) {
-        // Redirecionar para página de pagamento
-        window.location.href = `/pagamento?qr_code=${encodeURIComponent(data.qr_code)}&id=${data.id}`;
+        // Redirecionar para página de pagamento com todos os parâmetros necessários
+        const paymentUrl = `/pagamento?qr_code=${encodeURIComponent(data.qr_code)}&qr_code_base64=${encodeURIComponent(data.qr_code_base64 || '')}&id=${data.id}`;
+        window.location.href = paymentUrl;
       } else {
         setError(`Erro ao processar pagamento: ${data.message}`);
       }

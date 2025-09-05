@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation';
 export default function PagamentoPage() {
   const searchParams = useSearchParams();
   const qrCode = searchParams.get('qr_code');
+  const qrCodeBase64 = searchParams.get('qr_code_base64');
   const paymentId = searchParams.get('id');
   const [timeLeft, setTimeLeft] = useState(300); // 5 minutos em segundos
   const [paymentStatus, setPaymentStatus] = useState('pending');
@@ -153,15 +154,40 @@ export default function PagamentoPage() {
               <div className="p-8">
                 <div className="flex flex-col items-center">
                   <div className="border-4 border-gray-300 rounded-xl p-4 mb-6">
-                    {qrCode.startsWith('data:image') ? (
+                    {/* Verificar se temos uma imagem QR Code em base64 */}
+                    {qrCodeBase64 ? (
+                      <img 
+                        src={qrCodeBase64} 
+                        alt="QR Code PIX" 
+                        className="w-64 h-64"
+                      />
+                    ) : qrCode.startsWith('data:image') ? (
+                      <img 
+                        src={qrCode} 
+                        alt="QR Code PIX" 
+                        className="w-64 h-64"
+                      />
+                    ) : qrCode.startsWith('http') ? (
+                      // Se for uma URL, exibir como imagem
                       <img 
                         src={qrCode} 
                         alt="QR Code PIX" 
                         className="w-64 h-64"
                       />
                     ) : (
+                      // Se for texto (código PIX copia e cola), exibir como código QR gerado
                       <div className="bg-gray-200 border-2 border-dashed rounded-xl w-64 h-64 flex items-center justify-center">
-                        <span className="text-gray-500">QR Code</span>
+                        <div className="text-center">
+                          <div className="bg-white p-2 rounded mb-2 inline-block">
+                            <svg className="w-16 h-16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M3 3H9V9H3V3Z" fill="black"/>
+                              <path d="M3 15H9V21H3V15Z" fill="black"/>
+                              <path d="M15 3H21V9H15V3Z" fill="black"/>
+                              <path d="M15 15H21V21H15V15Z" fill="black"/>
+                            </svg>
+                          </div>
+                          <p className="text-xs text-gray-500">QR Code</p>
+                        </div>
                       </div>
                     )}
                   </div>
