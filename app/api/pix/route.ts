@@ -95,11 +95,13 @@ export async function POST(request: NextRequest) {
     // Log para depuração
     console.log('Usando token de acesso:', accessToken ? 'Token configurado' : 'Token não configurado');
     console.log('Tamanho do token:', accessToken?.length || 0);
+    console.log('Corpo da requisição:', JSON.stringify(body));
 
     const result = await payment.create({ body });
     
     // Verificar se a resposta contém os dados necessários
     if (!result.point_of_interaction?.transaction_data?.qr_code_base64) {
+      console.error('Erro na resposta do Mercado Pago:', result);
       return new Response(
         JSON.stringify({ 
           error: 'Erro na resposta do Mercado Pago',

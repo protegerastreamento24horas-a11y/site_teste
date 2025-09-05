@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Configurar o diretório raiz para resolver problemas com variáveis de ambiente
+  turbopack: {
+    root: "./"
+  }
 };
 
 export default nextConfig;
