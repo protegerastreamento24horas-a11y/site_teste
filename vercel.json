@@ -1,13 +1,3 @@
 {
-  "version": 2,
-  "env": {
-    "HORSEPAY_CLIENT_KEY": "@horsepay-client-key",
-    "HORSEPAY_CLIENT_SECRET": "@horsepay-client-secret"
-  },
-  "build": {
-    "env": {
-      "HORSEPAY_CLIENT_KEY": "@horsepay-client-key",
-      "HORSEPAY_CLIENT_SECRET": "@horsepay-client-secret"
-    }
-  }
+  "version": 2
 }
