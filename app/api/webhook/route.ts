@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
     // Verificar se o webhook é válido (se aplicável)
     if (!verifyWebhookSignature(request, body)) {
       return new Response(
-        JSON.stringify({ error: 'Webhook inválido' });
+        JSON.stringify({ error: 'Webhook inválido' }),
         { 
           status: 400,
           headers: {
