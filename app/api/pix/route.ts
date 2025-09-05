@@ -21,7 +21,8 @@ async function getHorsePayAccessToken() {
   });
 
   if (!response.ok) {
-    throw new Error(`Erro ao obter token: ${response.status}`);
+    const errorText = await response.text();
+    throw new Error(`Erro ao obter token: ${response.status} - ${errorText}`);
   }
 
   const data = await response.json();
@@ -149,7 +150,7 @@ export async function POST(request: NextRequest) {
       stack: error.stack
     });
     
-    // Tratar erros específicos do Mercado Pago
+    // Tratar erros específicos da HorsePay
     if (error.status === 401) {
       return new Response(
         JSON.stringify({ 
