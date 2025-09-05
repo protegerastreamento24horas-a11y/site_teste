@@ -48,17 +48,17 @@ export default function ContatoPage() {
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-indigo-100 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl sm:tracking-tight lg:text-6xl">
+          <h1 className="text-4xl font-extrabold text-black sm:text-5xl sm:tracking-tight lg:text-6xl">
             Fale <span className="text-blue-600">Conosco</span>
           </h1>
-          <p className="mt-5 max-w-xl mx-auto text-xl text-gray-500">
+          <p className="mt-5 max-w-xl mx-auto text-xl text-black">
             Tem dúvidas ou precisa de ajuda? Entre em contato conosco!
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <div className="bg-white rounded-2xl shadow-xl p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Envie uma Mensagem</h2>
+            <h2 className="text-2xl font-bold text-black mb-6">Envie uma Mensagem</h2>
             
             {submitSuccess ? (
               <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-6">
@@ -98,7 +98,7 @@ export default function ContatoPage() {
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700">Nome</label>
+                <label htmlFor="name" className="block text-sm font-medium text-black">Nome</label>
                 <input
                   type="text"
                   id="name"
@@ -106,13 +106,13 @@ export default function ContatoPage() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                  className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-black"
                   placeholder="Seu nome completo"
                 />
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+                <label htmlFor="email" className="block text-sm font-medium text-black">Email</label>
                 <input
                   type="email"
                   id="email"
@@ -120,13 +120,13 @@ export default function ContatoPage() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                  className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-black"
                   placeholder="seu.email@exemplo.com"
                 />
               </div>
 
               <div>
-                <label htmlFor="subject" className="block text-sm font-medium text-gray-700">Assunto</label>
+                <label htmlFor="subject" className="block text-sm font-medium text-black">Assunto</label>
                 <input
                   type="text"
                   id="subject"
@@ -134,13 +134,13 @@ export default function ContatoPage() {
                   value={formData.subject}
                   onChange={handleChange}
                   required
-                  className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                  className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-black"
                   placeholder="Assunto da mensagem"
                 />
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700">Mensagem</label>
+                <label htmlFor="message" className="block text-sm font-medium text-black">Mensagem</label>
                 <textarea
                   id="message"
                   name="message"
@@ -148,7 +148,7 @@ export default function ContatoPage() {
                   value={formData.message}
                   onChange={handleChange}
                   required
-                  className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                  className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-black"
                   placeholder="Digite sua mensagem aqui..."
                 ></textarea>
               </div>
@@ -157,7 +157,7 @@ export default function ContatoPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''}`}
+                  className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-black bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${isSubmitting ? 'opacity-75 cursor-not-allowed' : ''}`}
                 >
                   {isSubmitting ? 'Enviando...' : 'Enviar Mensagem'}
                 </button>
@@ -167,7 +167,7 @@ export default function ContatoPage() {
 
           <div>
             <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Informações de Contato</h2>
+              <h2 className="text-2xl font-bold text-black mb-6">Informações de Contato</h2>
               
               <div className="space-y-6">
                 <div className="flex items-start">
@@ -177,9 +177,9 @@ export default function ContatoPage() {
                     </svg>
                   </div>
                   <div className="ml-4">
-                    <h3 className="text-lg font-medium text-gray-900">Telefone</h3>
-                    <p className="mt-1 text-gray-600">(11) 99999-9999</p>
-                    <p className="text-gray-500 text-sm">Segunda a Sexta, 9h às 18h</p>
+                    <h3 className="text-lg font-medium text-black">Telefone</h3>
+                    <p className="mt-1 text-black">(11) 99999-9999</p>
+                    <p className="text-black text-sm">Segunda a Sexta, 9h às 18h</p>
                   </div>
                 </div>
 
@@ -190,9 +190,9 @@ export default function ContatoPage() {
                     </svg>
                   </div>
                   <div className="ml-4">
-                    <h3 className="text-lg font-medium text-gray-900">Email</h3>
-                    <p className="mt-1 text-gray-600">contato@rifafacil.com</p>
-                    <p className="text-gray-500 text-sm">Respondemos em até 24 horas</p>
+                    <h3 className="text-lg font-medium text-black">Email</h3>
+                    <p className="mt-1 text-black">contato@rifafacil.com</p>
+                    <p className="text-black text-sm">Respondemos em até 24 horas</p>
                   </div>
                 </div>
 
@@ -204,10 +204,10 @@ export default function ContatoPage() {
                     </svg>
                   </div>
                   <div className="ml-4">
-                    <h3 className="text-lg font-medium text-gray-900">Endereço</h3>
-                    <p className="mt-1 text-gray-600">Av. Paulista, 1000</p>
-                    <p className="text-gray-600">São Paulo, SP - Brasil</p>
-                    <p className="text-gray-500 text-sm">CEP: 01310-100</p>
+                    <h3 className="text-lg font-medium text-black">Endereço</h3>
+                    <p className="mt-1 text-black">Av. Paulista, 1000</p>
+                    <p className="text-black">São Paulo, SP - Brasil</p>
+                    <p className="text-black text-sm">CEP: 01310-100</p>
                   </div>
                 </div>
               </div>

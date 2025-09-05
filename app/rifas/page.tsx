@@ -49,84 +49,87 @@ export default function RifasPage() {
       totalNumbers: 2000,
       availableNumbers: 1842,
       image: "https://images.unsplash.com/photo-1580519543914-d0da051c49a6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
-      endDate: "05/06/2025"
+      endDate: "20/06/2025"
     }
   ];
 
-  const handlePurchase = async () => {
-    if (selectedRaffle === null) {
-      setError("Por favor, selecione uma rifa!");
-      return;
-    }
-
+  const handlePayment = async () => {
+    if (selectedRaffle === null) return;
+    
     setIsProcessing(true);
     setError(null);
     
     try {
-      console.log('Iniciando processo de pagamento para rifa:', raffles[selectedRaffle]);
+      // Calcular o valor total
+      const totalAmount = raffles[selectedRaffle].price * quantity;
       
+      // Chamar a API para gerar o PIX
       const response = await fetch('/api/pix', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          amount: raffles[selectedRaffle].price * quantity,
-          description: `Compra de ${quantity} rifa(s) para ${raffles[selectedRaffle].title}`,
-          payerEmail: 'comprador@exemplo.com'
+          amount: totalAmount,
+          description: `Rifa: ${raffles[selectedRaffle].title} - Quantidade: ${quantity}`,
+          externalId: `rifa_${raffles[selectedRaffle].id}_${Date.now()}`,
         }),
       });
-
-      console.log('Resposta da API PIX:', response.status);
-
+      
       const data = await response.json();
-      console.log('Dados recebidos da API PIX:', data);
-
-      if (response.ok) {
-        // Redirecionar para página de pagamento com todos os parâmetros necessários
-        const paymentUrl = `/pagamento?qr_code=${encodeURIComponent(data.qr_code)}&qr_code_base64=${encodeURIComponent(data.qr_code_base64 || '')}&id=${data.id}`;
-        window.location.href = paymentUrl;
-      } else {
-        setError(`Erro ao processar pagamento: ${data.message}`);
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'Erro ao gerar PIX');
       }
-    } catch (error: any) {
-      console.error("Erro ao processar pagamento:", error);
-      setError("Erro ao processar pagamento. Tente novamente.");
-    } finally {
+      
+      // Redirecionar para a página de pagamento
+      window.location.href = `/pagamento?qr_code=${encodeURIComponent(data.qr_code)}&qr_code_base64=${encodeURIComponent(data.qr_code_base64)}&external_id=${data.external_id}`;
+    } catch (err) {
+      console.error('Erro ao processar pagamento:', err);
+      setError(err instanceof Error ? err.message : 'Erro ao processar pagamento');
       setIsProcessing(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-indigo-100 py-8">
-      <div className="max-w-7xl mx-auto px-4">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-indigo-100 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-            Nossas Rifas Disponíveis
+          <h1 className="text-4xl font-extrabold text-black sm:text-5xl sm:tracking-tight lg:text-6xl">
+            Rifas <span className="text-blue-600">Disponíveis</span>
           </h1>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Escolha uma de nossas rifas premium e concorra aos prêmios incríveis. 
-            O sistema escolhe automaticamente os números para você!
+          <p className="mt-5 max-w-xl mx-auto text-xl text-black">
+            Escolha uma de nossas rifas e concorra a prêmios incríveis
           </p>
         </div>
 
         {error && (
-          <div className="max-w-2xl mx-auto mb-6">
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-              <strong className="font-bold">Erro! </strong>
-              <span className="block sm:inline">{error}</span>
+          <div className="max-w-2xl mx-auto mb-8">
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+              <div className="flex">
+                <div className="flex-shrink-0">
+                  <svg className="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <div className="ml-3">
+                  <h3 className="text-sm font-medium text-red-800">Erro</h3>
+                  <div className="mt-2 text-sm text-red-700">
+                    <p>{error}</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {raffles.map((raffle, index) => (
             <div 
-              key={raffle.id}
-              className={`bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl ${
-                selectedRaffle === index ? 'ring-4 ring-blue-500' : ''
+              key={raffle.id} 
+              className={`bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 ${
+                selectedRaffle === index ? 'ring-4 ring-blue-500' : 'hover:shadow-xl'
               }`}
-              onClick={() => setSelectedRaffle(index)}
             >
               <div className="relative">
                 <img 
@@ -134,23 +137,19 @@ export default function RifasPage() {
                   alt={raffle.title}
                   className="w-full h-48 object-cover"
                 />
-                <div className="absolute top-4 right-4 bg-yellow-500 text-black font-bold py-1 px-3 rounded-full">
+                <div className="absolute top-4 right-4 bg-yellow-500 text-black font-bold py-1 px-3 rounded-full text-sm">
                   R$ {raffle.price}
                 </div>
               </div>
               
               <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-800 mb-2">
-                  {raffle.title}
-                </h3>
-                <p className="text-gray-600 text-sm mb-4">
-                  {raffle.description}
-                </p>
+                <h3 className="text-xl font-bold text-black mb-2">{raffle.title}</h3>
+                <p className="text-black mb-4">{raffle.description}</p>
                 
                 <div className="space-y-2 mb-4">
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-500">Números disponíveis:</span>
-                    <span className="font-medium">
+                    <span className="text-black">Números disponíveis:</span>
+                    <span className="font-medium text-black">
                       {raffle.availableNumbers} de {raffle.totalNumbers}
                     </span>
                   </div>
@@ -161,8 +160,8 @@ export default function RifasPage() {
                     ></div>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-500">Sorteio:</span>
-                    <span className="font-medium">{raffle.endDate}</span>
+                    <span className="text-black">Sorteio:</span>
+                    <span className="font-medium text-black">{raffle.endDate}</span>
                   </div>
                 </div>
                 
@@ -170,7 +169,7 @@ export default function RifasPage() {
                   className={`w-full py-2 rounded-lg font-medium transition-colors ${
                     selectedRaffle === index 
                       ? 'bg-blue-600 text-white' 
-                      : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+                      : 'bg-gray-100 text-black hover:bg-gray-200'
                   }`}
                 >
                   {selectedRaffle === index ? 'Selecionada' : 'Selecionar Rifa'}
@@ -182,14 +181,14 @@ export default function RifasPage() {
 
         {selectedRaffle !== null && (
           <div className="bg-white rounded-2xl shadow-lg p-6 max-w-2xl mx-auto mb-12">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+            <h2 className="text-2xl font-bold text-black mb-6 text-center">
               Finalizar Compra
             </h2>
             
             <div className="flex flex-col md:flex-row gap-8">
               <div className="md:w-1/2">
                 <div className="mb-6">
-                  <h3 className="text-lg font-bold text-gray-800 mb-2">
+                  <h3 className="text-lg font-bold text-black mb-2">
                     {raffles[selectedRaffle].title}
                   </h3>
                   <div className="flex items-center gap-4">
@@ -199,10 +198,10 @@ export default function RifasPage() {
                       className="w-20 h-20 object-cover rounded-lg"
                     />
                     <div>
-                      <p className="text-gray-600">
+                      <p className="text-black">
                         Preço por rifa: <span className="font-bold">R$ {raffles[selectedRaffle].price}</span>
                       </p>
-                      <p className="text-gray-600">
+                      <p className="text-black">
                         Disponíveis: {raffles[selectedRaffle].availableNumbers}
                       </p>
                     </div>
@@ -210,13 +209,13 @@ export default function RifasPage() {
                 </div>
                 
                 <div className="mb-6">
-                  <label className="block text-gray-700 font-medium mb-2">
+                  <label className="block text-black font-medium mb-2">
                     Quantidade de Rifas
                   </label>
                   <div className="flex items-center">
                     <button 
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      className="bg-gray-200 text-gray-700 px-4 py-2 rounded-l-lg hover:bg-gray-300"
+                      className="bg-gray-200 text-black px-4 py-2 rounded-l-lg hover:bg-gray-300"
                     >
                       -
                     </button>
@@ -226,16 +225,16 @@ export default function RifasPage() {
                       max={raffles[selectedRaffle].availableNumbers}
                       value={quantity}
                       onChange={(e) => setQuantity(Math.max(1, Math.min(parseInt(e.target.value) || 1, raffles[selectedRaffle].availableNumbers)))}
-                      className="w-20 text-center border-y border-gray-300 py-2"
+                      className="w-20 text-center border-y border-gray-300 py-2 text-black"
                     />
                     <button 
                       onClick={() => setQuantity(Math.min(quantity + 1, raffles[selectedRaffle].availableNumbers))}
-                      className="bg-gray-200 text-gray-700 px-4 py-2 rounded-r-lg hover:bg-gray-300"
+                      className="bg-gray-200 text-black px-4 py-2 rounded-r-lg hover:bg-gray-300"
                     >
                       +
                     </button>
                   </div>
-                  <p className="text-sm text-gray-500 mt-1">
+                  <p className="text-sm text-black mt-1">
                     Máximo: {raffles[selectedRaffle].availableNumbers} rifas
                   </p>
                 </div>
@@ -243,38 +242,40 @@ export default function RifasPage() {
               
               <div className="md:w-1/2">
                 <div className="bg-blue-50 rounded-xl p-6">
-                  <h3 className="text-lg font-bold text-gray-800 mb-4">
+                  <h3 className="text-lg font-bold text-black mb-4">
                     Resumo do Pedido
                   </h3>
                   
                   <div className="space-y-3 mb-6">
                     <div className="flex justify-between">
-                      <span>Subtotal:</span>
-                      <span className="font-medium">R$ {(raffles[selectedRaffle].price * quantity).toFixed(2)}</span>
+                      <span className="text-black">Subtotal:</span>
+                      <span className="font-medium text-black">R$ {(raffles[selectedRaffle].price * quantity).toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Taxa de serviço:</span>
-                      <span className="font-medium">R$ 0,00</span>
+                      <span className="text-black">Taxa de processamento:</span>
+                      <span className="font-medium text-black">R$ 0,00</span>
                     </div>
-                    <div className="border-t border-gray-300 pt-3 flex justify-between font-bold text-lg">
-                      <span>Total:</span>
-                      <span>R$ {(raffles[selectedRaffle].price * quantity).toFixed(2)}</span>
+                    <div className="border-t border-gray-300 pt-3">
+                      <div className="flex justify-between">
+                        <span className="text-black font-bold">Total:</span>
+                        <span className="font-bold text-black">R$ {(raffles[selectedRaffle].price * quantity).toFixed(2)}</span>
+                      </div>
                     </div>
                   </div>
                   
                   <button
-                    onClick={handlePurchase}
+                    onClick={handlePayment}
                     disabled={isProcessing}
-                    className={`w-full py-3 rounded-lg font-bold text-white transition-colors ${
+                    className={`w-full py-3 rounded-lg font-bold transition-colors ${
                       isProcessing 
                         ? 'bg-gray-400 cursor-not-allowed' 
-                        : 'bg-gradient-to-r from-blue-600 to-purple-700 hover:from-blue-700 hover:to-purple-800'
+                        : 'bg-gradient-to-r from-blue-600 to-purple-700 hover:from-blue-700 hover:to-purple-800 text-white'
                     }`}
                   >
                     {isProcessing ? 'Processando...' : 'Pagar com PIX'}
                   </button>
                   
-                  <p className="text-xs text-gray-500 mt-3 text-center">
+                  <p className="text-xs text-black mt-3 text-center">
                     Ao finalizar a compra, você concorda com os <Link href="/termos" className="text-blue-600 hover:underline">termos de uso</Link>.
                   </p>
                 </div>
@@ -284,11 +285,11 @@ export default function RifasPage() {
         )}
 
         <div className="text-center py-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">
+          <h2 className="text-2xl font-bold text-black mb-4">
             Como funciona o sistema automático?
           </h2>
           <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-md p-6">
-            <ul className="space-y-3 text-gray-600">
+            <ul className="space-y-3 text-black">
               <li className="flex items-start">
                 <span className="text-green-500 font-bold mr-2">✓</span>
                 <span>Escolha a rifa que deseja participar</span>
@@ -303,11 +304,11 @@ export default function RifasPage() {
               </li>
               <li className="flex items-start">
                 <span className="text-green-500 font-bold mr-2">✓</span>
-                <span>Realize o pagamento via PIX de forma segura</span>
+                <span>Pague com PIX e receba os números em seu email</span>
               </li>
               <li className="flex items-start">
                 <span className="text-green-500 font-bold mr-2">✓</span>
-                <span>Aguarde o sorteio e boa sorte!</span>
+                <span>Aguarde o sorteio na data prevista</span>
               </li>
             </ul>
           </div>

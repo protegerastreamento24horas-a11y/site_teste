@@ -60,94 +60,90 @@ export default function PagamentoPage() {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  if (!qrCode) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-indigo-100 flex items-center justify-center">
-        <div className="bg-white rounded-2xl shadow-lg p-8 max-w-md w-full text-center">
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">Erro</h1>
-          <p className="text-gray-600 mb-6">
-            Não foi possível carregar as informações de pagamento. Por favor, tente novamente.
-          </p>
-          <button 
-            onClick={() => window.location.href = '/rifas'}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300"
-          >
-            Voltar para Rifas
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-indigo-100 py-12">
-      <div className="max-w-2xl mx-auto px-4">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
-            Finalize seu Pagamento
+          <h1 className="text-3xl font-extrabold text-black sm:text-4xl">
+            Pagamento via <span className="text-blue-600">PIX</span>
           </h1>
-          <p className="text-gray-600">
-            Escaneie o QR Code abaixo com seu aplicativo bancário para pagar com PIX
+          <p className="mt-3 text-xl text-black">
+            Complete seu pagamento para confirmar sua participação na rifa
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden max-w-2xl mx-auto">
           {paymentStatus === 'paid' ? (
             <div className="p-8 text-center">
               <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <svg className="w-12 h-12 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg className="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                 </svg>
               </div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                Pagamento Confirmado!
-              </h2>
-              <p className="text-gray-600 mb-6">
-                Seu pagamento foi processado com sucesso. Os números da sua rifa serão enviados para o seu e-mail.
+              <h2 className="text-2xl font-bold text-black mb-2">Pagamento Confirmado!</h2>
+              <p className="text-black mb-6">
+                Seu pagamento foi processado com sucesso. Você receberá um email com os detalhes da sua rifa.
               </p>
               <button 
                 onClick={() => window.location.href = '/minhas-rifas'}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300"
+                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition duration-300"
               >
                 Ver Minhas Rifas
               </button>
             </div>
-          ) : paymentStatus === 'expired' ? (
+          ) : paymentStatus === 'failed' ? (
             <div className="p-8 text-center">
               <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <svg className="w-12 h-12 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg className="w-10 h-10 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
               </div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                Tempo Esgotado!
-              </h2>
-              <p className="text-gray-600 mb-6">
+              <h2 className="text-2xl font-bold text-black mb-2">Pagamento Falhou</h2>
+              <p className="text-black mb-6">
+                Ocorreu um erro ao processar seu pagamento. Por favor, tente novamente.
+              </p>
+              <button 
+                onClick={() => window.location.reload()}
+                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition duration-300"
+              >
+                Tentar Novamente
+              </button>
+            </div>
+          ) : paymentStatus === 'expired' ? (
+            <div className="p-8 text-center">
+              <div className="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg className="w-10 h-10 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+              </div>
+              <h2 className="text-2xl font-bold text-black mb-2">Tempo Esgotado</h2>
+              <p className="text-black mb-6">
                 O tempo para pagamento expirou. Por favor, faça uma nova tentativa.
               </p>
               <button 
                 onClick={() => window.location.href = '/rifas'}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300"
+                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition duration-300"
               >
-                Tentar Novamente
+                Voltar para Rifas
               </button>
             </div>
           ) : (
             <>
               <div className="p-6 border-b border-gray-200">
-                <div className="flex justify-between items-center">
-                  <h2 className="text-xl font-bold text-gray-800">
-                    Pagamento via PIX
-                  </h2>
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-xl font-bold text-black">Pague com PIX</h2>
                   <div className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium">
                     {formatTime(timeLeft)} restantes
                   </div>
                 </div>
+                <p className="text-black">
+                  Escaneie o QR Code ou copie o código PIX abaixo para finalizar seu pagamento
+                </p>
               </div>
               
               <div className="p-8">
-                <div className="flex flex-col items-center">
-                  <div className="border-4 border-gray-300 rounded-xl p-4 mb-6">
+                <div className="text-center">
+                  <div className="flex justify-center mb-6">
                     {/* Verificar se temos uma imagem QR Code em base64 */}
                     {qrCodeBase64 ? (
                       <img 
@@ -155,13 +151,13 @@ export default function PagamentoPage() {
                         alt="QR Code PIX" 
                         className="w-64 h-64"
                       />
-                    ) : qrCode.startsWith('data:image') ? (
+                    ) : qrCode && qrCode.startsWith('data:image') ? (
                       <img 
                         src={qrCode} 
                         alt="QR Code PIX" 
                         className="w-64 h-64"
                       />
-                    ) : qrCode.startsWith('http') ? (
+                    ) : qrCode && qrCode.startsWith('http') ? (
                       // Se for uma URL, exibir como imagem
                       <img 
                         src={qrCode} 
@@ -180,16 +176,16 @@ export default function PagamentoPage() {
                               <path d="M15 15H21V21H15V15Z" fill="black"/>
                             </svg>
                           </div>
-                          <p className="text-xs text-gray-500">QR Code</p>
+                          <p className="text-xs text-black">QR Code</p>
                         </div>
                       </div>
                     )}
                   </div>
                   
-                  <p className="text-gray-600 mb-2 text-center">
+                  <p className="text-black mb-2 text-center">
                     Abra seu aplicativo bancário e escaneie o QR Code acima
                   </p>
-                  <p className="text-gray-500 text-sm mb-6 text-center">
+                  <p className="text-black text-sm mb-6 text-center">
                     Ou copie o código PIX abaixo e cole no seu app bancário
                   </p>
                   
@@ -197,12 +193,12 @@ export default function PagamentoPage() {
                     <div className="flex">
                       <input
                         type="text"
-                        value={qrCode}
+                        value={qrCode || ''}
                         readOnly
-                        className="flex-1 border border-gray-300 rounded-l-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="flex-1 border border-gray-300 rounded-l-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
                       />
                       <button 
-                        onClick={() => navigator.clipboard.writeText(qrCode)}
+                        onClick={() => navigator.clipboard.writeText(qrCode || '')}
                         className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-r-lg transition duration-300"
                       >
                         Copiar
@@ -213,8 +209,8 @@ export default function PagamentoPage() {
               </div>
               
               <div className="bg-blue-50 p-6 border-t border-gray-200">
-                <h3 className="font-bold text-gray-800 mb-2">Instruções para pagamento:</h3>
-                <ol className="list-decimal list-inside text-gray-600 space-y-1 text-sm">
+                <h3 className="font-bold text-black mb-2">Instruções para pagamento:</h3>
+                <ol className="list-decimal list-inside text-black space-y-1 text-sm">
                   <li>Abra o app do seu banco ou carteira digital</li>
                   <li>Escolha a opção de pagamento via PIX</li>
                   <li>Escaneie o QR Code ou cole o código copiado</li>

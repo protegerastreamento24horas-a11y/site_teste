@@ -39,7 +39,7 @@ export default function Home() {
     }
   ];
 
-  // Efeito para mudar o ganhador em destaque a cada 5 segundos
+  // Efeito para mudar o ganhador em destaque a cada 5 segundos (movendo para a direita)
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentWinner((prev) => (prev + 1) % winners.length);
@@ -71,7 +71,7 @@ export default function Home() {
                 </Link>
                 <Link 
                   href="/como-funciona" 
-                  className="px-8 py-4 bg-white hover:bg-gray-100 text-blue-600 font-bold rounded-full text-center transition duration-300"
+                  className="px-8 py-4 bg-white hover:bg-gray-100 text-black font-bold rounded-full text-center transition duration-300"
                 >
                   Como Funciona
                 </Link>
@@ -79,10 +79,10 @@ export default function Home() {
             </div>
             <div className="flex justify-center">
               <div className="relative">
-                <div className="bg-gray-200 border-2 border-dashed rounded-xl w-full h-96 flex items-center justify-center text-gray-500">
+                <div className="bg-gray-200 border-2 border-dashed rounded-xl w-full h-96 flex items-center justify-center text-gray-900">
                   Imagem de destaque das rifas
                 </div>
-                <div className="absolute -bottom-4 -left-4 bg-white text-blue-600 font-bold py-2 px-6 rounded-full shadow-lg">
+                <div className="absolute -bottom-4 -left-4 bg-white text-black font-bold py-2 px-6 rounded-full shadow-lg">
                   100% Seguro
                 </div>
                 <div className="absolute -top-4 -right-4 bg-yellow-500 text-black font-bold py-2 px-6 rounded-full shadow-lg">
@@ -98,10 +98,10 @@ export default function Home() {
       <div className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-extrabold text-gray-900 mb-4">
+            <h2 className="text-3xl font-extrabold text-black mb-4">
               Últimos Ganhadores
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="text-lg text-black max-w-3xl mx-auto">
               Confira os últimos sortudos que ganharam prêmios incríveis em nossas rifas
             </p>
           </div>
@@ -124,12 +124,12 @@ export default function Home() {
                       className="rounded-full"
                     />
                     <div className="ml-4">
-                      <h3 className="font-bold text-gray-900">{winner.name}</h3>
-                      <p className="text-sm text-gray-500">{winner.date}</p>
+                      <h3 className="font-bold text-black">{winner.name}</h3>
+                      <p className="text-sm text-black">{winner.date}</p>
                     </div>
                   </div>
                   <div className="text-center">
-                    <p className="text-gray-600 mb-2">Ganhou</p>
+                    <p className="text-black mb-2">Ganhou</p>
                     <p className="text-xl font-bold text-blue-600">{winner.prize}</p>
                   </div>
                 </div>
@@ -143,10 +143,10 @@ export default function Home() {
       <div className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-extrabold text-gray-900 mb-4">
+            <h2 className="text-3xl font-extrabold text-black mb-4">
               Por que escolher a RifaFácil?
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="text-lg text-black max-w-3xl mx-auto">
               Oferecemos a melhor experiência em rifas online com total segurança e transparência
             </p>
           </div>
@@ -154,24 +154,24 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center p-6 bg-white bg-opacity-10 rounded-xl backdrop-blur-sm">
               <div className="text-4xl mb-4">🛡️</div>
-              <h3 className="text-xl font-bold mb-2">100% Seguro</h3>
-              <p className="opacity-90">
+              <h3 className="text-xl font-bold mb-2 text-black">100% Seguro</h3>
+              <p className="text-black">
                 Pagamentos via PIX com criptografia de ponta a ponta. Seus dados sempre protegidos.
               </p>
             </div>
             
             <div className="text-center p-6 bg-white bg-opacity-10 rounded-xl backdrop-blur-sm">
               <div className="text-4xl mb-4">🏆</div>
-              <h3 className="text-xl font-bold mb-2">Prêmios Incríveis</h3>
-              <p className="opacity-90">
+              <h3 className="text-xl font-bold mb-2 text-black">Prêmios Incríveis</h3>
+              <p className="text-black">
                 Concorra a prêmios variados e exclusivos todas as semanas.
               </p>
             </div>
             
             <div className="text-center p-6 bg-white bg-opacity-10 rounded-xl backdrop-blur-sm">
               <div className="text-4xl mb-4">📱</div>
-              <h3 className="text-xl font-bold mb-2">Fácil e Rápido</h3>
-              <p className="opacity-90">
+              <h3 className="text-xl font-bold mb-2 text-black">Fácil e Rápido</h3>
+              <p className="text-black">
                 Compre sua rifa em minutos diretamente do seu celular.
               </p>
             </div>
@@ -183,10 +183,10 @@ export default function Home() {
       <div className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-extrabold text-gray-900 mb-4">
+            <h2 className="text-3xl font-extrabold text-black mb-4">
               Como Funciona?
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="text-lg text-black max-w-3xl mx-auto">
               Participar das nossas rifas é muito simples e seguro
             </p>
           </div>
@@ -196,8 +196,8 @@ export default function Home() {
               <div className="bg-blue-600 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 text-xl font-bold">
                 1
               </div>
-              <h3 className="font-bold text-lg mb-2">Escolha a Rifa</h3>
-              <p className="text-gray-600 text-sm">
+              <h3 className="font-bold text-lg mb-2 text-black">Escolha a Rifa</h3>
+              <p className="text-black text-sm">
                 Navegue pelas rifas disponíveis e selecione a que deseja participar
               </p>
             </div>
@@ -206,8 +206,8 @@ export default function Home() {
               <div className="bg-blue-600 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 text-xl font-bold">
                 2
               </div>
-              <h3 className="font-bold text-lg mb-2">Compre sua Rifa</h3>
-              <p className="text-gray-600 text-sm">
+              <h3 className="font-bold text-lg mb-2 text-black">Compre sua Rifa</h3>
+              <p className="text-black text-sm">
                 Pague com PIX de forma rápida e segura
               </p>
             </div>
@@ -216,8 +216,8 @@ export default function Home() {
               <div className="bg-blue-600 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 text-xl font-bold">
                 3
               </div>
-              <h3 className="font-bold text-lg mb-2">Aguarde o Sorteio</h3>
-              <p className="text-gray-600 text-sm">
+              <h3 className="font-bold text-lg mb-2 text-black">Aguarde o Sorteio</h3>
+              <p className="text-black text-sm">
                 Os sorteios acontecem nas datas previstas de forma automática
               </p>
             </div>
@@ -226,8 +226,8 @@ export default function Home() {
               <div className="bg-blue-600 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 text-xl font-bold">
                 4
               </div>
-              <h3 className="font-bold text-lg mb-2">Receba seu Prêmio</h3>
-              <p className="text-gray-600 text-sm">
+              <h3 className="font-bold text-lg mb-2 text-black">Receba seu Prêmio</h3>
+              <p className="text-black text-sm">
                 Se for sorteado, você será contatado para receber seu prêmio
               </p>
             </div>
@@ -236,7 +236,7 @@ export default function Home() {
           <div className="text-center mt-10">
             <Link 
               href="/como-funciona" 
-              className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+              className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-black bg-blue-600 hover:bg-blue-700"
             >
               Saiba Mais
               <svg className="ml-2 -mr-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -250,10 +250,10 @@ export default function Home() {
       {/* Call to Action Final */}
       <div className="py-16 text-center px-4">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
+          <h2 className="text-3xl md:text-4xl font-bold text-black mb-6">
             Pronto para tentar a sorte?
           </h2>
-          <p className="text-xl text-gray-600 mb-8">
+          <p className="text-xl text-black mb-8">
             Junte-se aos milhares de pessoas que já experimentaram nossa plataforma!
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
@@ -265,7 +265,7 @@ export default function Home() {
             </button>
             <button 
               onClick={() => window.location.href = '/contato'}
-              className="px-8 py-4 bg-white hover:bg-gray-100 text-blue-600 font-bold rounded-full border-2 border-blue-600 transition duration-300"
+              className="px-8 py-4 bg-white hover:bg-gray-100 text-black font-bold rounded-full border-2 border-blue-600 transition duration-300"
             >
               Fale Conosco
             </button>

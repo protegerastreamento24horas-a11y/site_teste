@@ -61,35 +61,33 @@ export default function MinhasRifasPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-indigo-100 py-8">
-      <div className="max-w-7xl mx-auto px-4">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-indigo-100 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-            Minhas Rifas
+          <h1 className="text-4xl font-extrabold text-black sm:text-5xl sm:tracking-tight lg:text-6xl">
+            Minhas <span className="text-blue-600">Rifas</span>
           </h1>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Acompanhe todas as rifas que você comprou e verifique seus números da sorte.
+          <p className="mt-5 max-w-xl mx-auto text-xl text-black">
+            Veja todas as rifas que você adquiriu e acompanhe os sorteios
           </p>
         </div>
 
         {userRaffles.length === 0 ? (
-          <div className="bg-white rounded-2xl shadow-lg p-12 text-center max-w-2xl mx-auto">
-            <div className="text-5xl mb-4">🎫</div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
-              Você ainda não comprou nenhuma rifa
-            </h2>
-            <p className="text-gray-600 mb-6">
+          <div className="bg-white rounded-2xl shadow-lg p-12 text-center max-w-3xl mx-auto">
+            <div className="text-5xl mb-6">🎫</div>
+            <h2 className="text-2xl font-bold text-black mb-4">Você ainda não comprou nenhuma rifa</h2>
+            <p className="text-black mb-8">
               Que tal começar agora? Temos rifas incríveis com prêmios exclusivos esperando por você!
             </p>
             <button 
               onClick={() => window.location.href = '/rifas'}
-              className="bg-gradient-to-r from-blue-600 to-purple-700 hover:from-blue-700 hover:to-purple-800 text-white font-bold py-3 px-8 rounded-lg transition duration-300"
+              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition duration-300"
             >
-              Comprar Rifas
+              Ver Rifas Disponíveis
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
             {userRaffles.map((raffle) => (
               <div key={raffle.id} className="bg-white rounded-2xl shadow-lg overflow-hidden">
                 <div className="relative">
@@ -103,53 +101,44 @@ export default function MinhasRifasPage() {
                       {getStatusText(raffle.status, raffle.winner)}
                     </span>
                   </div>
-                  {raffle.winner && (
-                    <div className="absolute top-4 left-4 bg-yellow-500 text-black font-bold py-1 px-3 rounded-full">
-                      GANHADOR!
-                    </div>
-                  )}
                 </div>
                 
                 <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-800 mb-2">
-                    {raffle.title}
-                  </h3>
-                  <p className="text-gray-600 text-sm mb-4">
-                    {raffle.description}
-                  </p>
+                  <h3 className="text-xl font-bold text-black mb-2">{raffle.title}</h3>
+                  <p className="text-black mb-4">{raffle.description}</p>
                   
                   <div className="space-y-3 mb-4">
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-500">Data da Compra:</span>
-                      <span>{new Date(raffle.purchaseDate).toLocaleDateString('pt-BR')}</span>
+                      <span className="text-black">Data da Compra:</span>
+                      <span className="font-medium text-black">
+                        {new Date(raffle.purchaseDate).toLocaleDateString('pt-BR')}
+                      </span>
                     </div>
+                    
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-500">Data do Sorteio:</span>
-                      <span>{new Date(raffle.drawDate).toLocaleDateString('pt-BR')}</span>
+                      <span className="text-black">Data do Sorteio:</span>
+                      <span className="font-medium text-black">
+                        {new Date(raffle.drawDate).toLocaleDateString('pt-BR')}
+                      </span>
                     </div>
+                    
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-500">Valor da Rifa:</span>
-                      <span className="font-medium">R$ {raffle.price}</span>
+                      <span className="text-black">Números da Sorte:</span>
+                      <span className="font-medium text-black">{raffle.numbers.length}</span>
                     </div>
-                  </div>
-                  
-                  <div className="mb-4">
-                    <h4 className="font-bold text-gray-800 mb-2">
-                      Seus Números ({raffle.numbers.length})
-                    </h4>
-                    <div className="flex flex-wrap gap-2">
-                      {raffle.numbers.map((number) => (
-                        <span 
-                          key={number} 
-                          className={`px-3 py-1 rounded-full text-sm font-medium ${
-                            raffle.winner 
-                              ? 'bg-yellow-100 text-yellow-800 border border-yellow-300' 
-                              : 'bg-gray-100 text-gray-800'
-                          }`}
-                        >
-                          {number.toString().padStart(4, '0')}
-                        </span>
-                      ))}
+                    
+                    <div className="pt-2">
+                      <p className="text-sm text-black mb-2">Seus números:</p>
+                      <div className="flex flex-wrap gap-2">
+                        {raffle.numbers.map((number) => (
+                          <span 
+                            key={number} 
+                            className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-sm font-medium"
+                          >
+                            {number.toString().padStart(4, '0')}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   </div>
                   
@@ -171,7 +160,7 @@ export default function MinhasRifasPage() {
                   
                   <button 
                     onClick={() => window.location.href = `/rifas/${raffle.id}`}
-                    className="w-full py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-lg font-medium transition duration-300"
+                    className="w-full py-2 bg-gray-100 hover:bg-gray-200 text-black rounded-lg font-medium transition duration-300"
                   >
                     Ver Detalhes
                   </button>
@@ -182,7 +171,7 @@ export default function MinhasRifasPage() {
         )}
         
         <div className="mt-12 bg-white rounded-2xl shadow-lg p-6 max-w-4xl mx-auto">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">
+          <h2 className="text-2xl font-bold text-black mb-4">
             Como funcionam nossas rifas?
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -190,8 +179,8 @@ export default function MinhasRifasPage() {
               <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl font-bold text-blue-600">1</span>
               </div>
-              <h3 className="font-bold text-gray-800 mb-2">Compra Automática</h3>
-              <p className="text-gray-600 text-sm">
+              <h3 className="font-bold text-black mb-2">Compra Automática</h3>
+              <p className="text-black text-sm">
                 O sistema escolhe automaticamente números disponíveis para você.
               </p>
             </div>
@@ -199,8 +188,8 @@ export default function MinhasRifasPage() {
               <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl font-bold text-blue-600">2</span>
               </div>
-              <h3 className="font-bold text-gray-800 mb-2">Pagamento via PIX</h3>
-              <p className="text-gray-600 text-sm">
+              <h3 className="font-bold text-black mb-2">Pagamento via PIX</h3>
+              <p className="text-black text-sm">
                 Pagamento rápido e seguro com QR Code PIX.
               </p>
             </div>
@@ -208,8 +197,8 @@ export default function MinhasRifasPage() {
               <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl font-bold text-blue-600">3</span>
               </div>
-              <h3 className="font-bold text-gray-800 mb-2">Sorteio Justo</h3>
-              <p className="text-gray-600 text-sm">
+              <h3 className="font-bold text-black mb-2">Sorteio Justo</h3>
+              <p className="text-black text-sm">
                 Sorteios realizados de forma transparente e automática.
               </p>
             </div>

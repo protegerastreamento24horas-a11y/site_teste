@@ -49,10 +49,10 @@ export default function FAQPage() {
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-indigo-100 py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl sm:tracking-tight lg:text-6xl">
+          <h1 className="text-4xl font-extrabold text-black sm:text-5xl sm:tracking-tight lg:text-6xl">
             Perguntas <span className="text-blue-600">Frequentes</span>
           </h1>
-          <p className="mt-5 max-w-xl mx-auto text-xl text-gray-500">
+          <p className="mt-5 max-w-xl mx-auto text-xl text-black">
             Encontre respostas para as dúvidas mais comuns sobre nosso sistema de rifas
           </p>
         </div>
@@ -65,7 +65,7 @@ export default function FAQPage() {
                   className="flex justify-between items-center w-full text-left"
                   onClick={() => toggleFAQ(index)}
                 >
-                  <h3 className="text-lg font-medium text-gray-900">{faq.question}</h3>
+                  <h3 className="text-lg font-medium text-black">{faq.question}</h3>
                   <svg 
                     className={`h-5 w-5 text-blue-600 transform transition-transform ${openIndex === index ? 'rotate-180' : ''}`} 
                     xmlns="http://www.w3.org/2000/svg" 
@@ -78,7 +78,7 @@ export default function FAQPage() {
                 
                 {openIndex === index && (
                   <div className="mt-4 pr-12">
-                    <p className="text-gray-600">{faq.answer}</p>
+                    <p className="text-black">{faq.answer}</p>
                   </div>
                 )}
               </div>
@@ -100,7 +100,7 @@ export default function FAQPage() {
             </Link>
             <Link 
               href="/rifas" 
-              className="px-6 py-3 bg-white hover:bg-gray-100 text-blue-600 font-bold rounded-full transition duration-300"
+              className="px-6 py-3 bg-white hover:bg-gray-100 text-black font-bold rounded-full transition duration-300"
             >
               Comprar Rifa
             </Link>
