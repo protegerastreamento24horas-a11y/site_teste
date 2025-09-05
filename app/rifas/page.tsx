@@ -54,12 +54,11 @@ export default function RifasPage() {
 
   const handlePurchase = async () => {
     if (selectedRaffle === null) {
-      setError("Por favor, selecione uma rifa!");
+      alert("Por favor, selecione uma rifa!");
       return;
     }
 
     setIsProcessing(true);
-    setError(null);
     
     try {
       // Simular chamada à API para gerar pagamento PIX
