@@ -38,6 +38,10 @@ export default function PixPayment() {
         const errorMessage = data.message || data.error || 'Erro ao gerar o código PIX';
         setError(errorMessage);
         console.error('Erro na resposta:', data);
+        // Mostrar detalhes adicionais do erro no console
+        if (data.details) {
+          console.error('Detalhes do erro:', data.details);
+        }
       }
     } catch (error) {
       console.error('Erro:', error);
