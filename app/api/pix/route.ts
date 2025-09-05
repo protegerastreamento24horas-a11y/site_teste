@@ -9,6 +9,11 @@ async function getHorsePayAccessToken() {
     throw new Error('Credenciais da HorsePay não configuradas');
   }
 
+  console.log('Tentando obter token com credenciais:', {
+    clientKey: clientKey ? `${clientKey.substring(0, 5)}...` : 'vazio',
+    clientSecret: clientSecret ? `${clientSecret.substring(0, 5)}...` : 'vazio'
+  });
+
   const response = await fetch('https://api.horsepay.io/auth/token', {
     method: 'POST',
     headers: {
@@ -20,11 +25,16 @@ async function getHorsePayAccessToken() {
     }),
   });
 
+  console.log('Resposta da API de token:', response.status);
+
   if (!response.ok) {
-    throw new Error(`Erro ao obter token: ${response.status}`);
+    const errorText = await response.text();
+    console.error('Erro ao obter token:', errorText);
+    throw new Error(`Erro ao obter token: ${response.status} - ${errorText}`);
   }
 
   const data = await response.json();
+  console.log('Token obtido com sucesso');
   return data.access_token;
 }
 
@@ -39,6 +49,12 @@ async function createHorsePayOrder(accessToken: string, amount: number, descript
 
   const callbackUrl = `${baseUrl}/api/webhook`;
 
+  console.log('Criando pedido com dados:', {
+    payer_name: payerName,
+    amount: amount,
+    callback_url: callbackUrl
+  });
+
   const response = await fetch('https://api.horsepay.io/transaction/neworder', {
     method: 'POST',
     headers: {
@@ -52,18 +68,24 @@ async function createHorsePayOrder(accessToken: string, amount: number, descript
     }),
   });
 
+  console.log('Resposta da API de criação de pedido:', response.status);
+
   if (!response.ok) {
     const errorText = await response.text();
+    console.error('Erro ao criar pedido:', errorText);
     throw new Error(`Erro ao criar pedido: ${response.status} - ${errorText}`);
   }
 
   const data = await response.json();
+  console.log('Pedido criado com sucesso:', data);
   return data;
 }
 
 export async function POST(request: NextRequest) {
   try {
     const { amount, description, payerEmail } = await request.json();
+
+    console.log('Recebida solicitação de pagamento:', { amount, description, payerEmail });
 
     // Validar campos obrigatórios
     if (!amount || !description) {

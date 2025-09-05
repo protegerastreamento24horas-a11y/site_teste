@@ -30,8 +30,8 @@ Este projeto é uma aplicação Next.js para venda de rifas automatizadas com pa
    - Copie o arquivo `.env.local.example` para `.env.local`
    - **Substitua os valores de exemplo pelas suas credenciais reais da HorsePay:**
    ```env
-   HORSEPAY_CLIENT_KEY=suakey_real_aqui
-   HORSEPAY_CLIENT_SECRET=suasecret_real_aqui
+   HORSEPAY_CLIENT_KEY=sua_client_key_real_aqui
+   HORSEPAY_CLIENT_SECRET=sua_client_secret_real_aqui
    ```
 4. Inicie o servidor de desenvolvimento:
    ```bash
