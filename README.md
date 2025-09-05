@@ -1,13 +1,16 @@
-# Next.js PIX Payment Integration
+# Next.js Rifa Automatizada com PIX
 
-Este projeto é uma aplicação Next.js que permite gerar códigos QR PIX para pagamentos utilizando a HorsePay.
+Este projeto é uma aplicação Next.js para venda de rifas automatizadas com pagamento via PIX através da HorsePay.
 
 ## Funcionalidades
 
-- Geração de códigos QR PIX em tempo real
-- Interface amigável para criação de pagamentos
-- Integração completa com a API da HorsePay
+- Sistema de rifas automatizadas com escolha automática de números
+- Integração completa com a API da HorsePay para pagamentos via PIX
+- Página inicial profissional com banner atrativo
+- Carrossel de últimos ganhadores (fake)
+- Sistema de sorteio automático
 - Recebimento de webhooks para atualização de status de pagamento
+- Área para visualização das rifas compradas
 
 ## Tecnologias Utilizadas
 
@@ -48,6 +51,7 @@ O projeto está configurado para deploy no Vercel. Siga estas etapas:
 4. Configure as variáveis de ambiente:
    - `HORSEPAY_CLIENT_KEY`
    - `HORSEPAY_CLIENT_SECRET`
+   - `VERCEL_URL` (definida automaticamente pelo Vercel)
 5. Faça o deploy
 
 ### Variáveis de Ambiente Necessárias
@@ -60,17 +64,12 @@ O projeto está configurado para deploy no Vercel. Siga estas etapas:
 
 ⚠️ **Importante**: Nunca commite credenciais reais no repositório. O arquivo `.env.local` está no `.gitignore` para evitar que credenciais sensíveis sejam expostas publicamente.
 
-## Webhooks
-
-O projeto inclui um endpoint para receber webhooks da HorsePay:
-- Endpoint: `/api/webhook`
-- Este endpoint recebe notificações quando o status de um pagamento é atualizado
-- O endpoint está preparado para processar callbacks de depósito e saque
-
 ## Estrutura do Projeto
 
-- `app/page.tsx`: Página inicial
-- `app/pix/page.tsx`: Interface de geração de PIX
+- `app/page.tsx`: Página inicial com banner e carrossel de ganhadores
+- `app/rifas/page.tsx`: Página de seleção e compra de rifas
+- `app/pagamento/page.tsx`: Página de pagamento via PIX
+- `app/minhas-rifas/page.tsx`: Página para visualizar rifas compradas
 - `app/api/pix/route.ts`: API de integração com a HorsePay
 - `app/api/webhook/route.ts`: Endpoint para receber webhooks da HorsePay
 
