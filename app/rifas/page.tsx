@@ -7,7 +7,6 @@ export default function RifasPage() {
   const [selectedRaffle, setSelectedRaffle] = useState<number | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   // Dados fictícios de rifas disponíveis
   const raffles = [
@@ -82,11 +81,11 @@ export default function RifasPage() {
         // Redirecionar para página de pagamento
         window.location.href = `/pagamento?qr_code=${encodeURIComponent(data.qr_code)}&id=${data.id}`;
       } else {
-        setError(`Erro ao processar pagamento: ${data.message}`);
+        alert(`Erro ao processar pagamento: ${data.message}`);
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error("Erro ao processar pagamento:", error);
-      setError("Erro ao processar pagamento. Tente novamente.");
+      alert("Erro ao processar pagamento. Tente novamente.");
     } finally {
       setIsProcessing(false);
     }
@@ -105,14 +104,6 @@ export default function RifasPage() {
           </p>
         </div>
 
-        {error && (
-          <div className="max-w-2xl mx-auto mb-6">
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-              <strong className="font-bold">Erro! </strong>
-              <span className="block sm:inline">{error}</span>
-            </div>
-          </div>
-        )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-16">
           {raffles.map((raffle, index) => (

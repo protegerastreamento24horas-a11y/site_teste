@@ -21,8 +21,7 @@ async function getHorsePayAccessToken() {
   });
 
   if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`Erro ao obter token: ${response.status} - ${errorText}`);
+    throw new Error(`Erro ao obter token: ${response.status}`);
   }
 
   const data = await response.json();
@@ -143,12 +142,6 @@ export async function POST(request: NextRequest) {
     }
   } catch (error: any) {
     console.error('Erro ao gerar pagamento PIX:', error);
-    console.error('Detalhes do erro:', {
-      message: error.message,
-      status: error.status,
-      cause: error.cause,
-      stack: error.stack
-    });
     
     // Tratar erros específicos da HorsePay
     if (error.status === 401) {
@@ -178,7 +171,7 @@ export async function POST(request: NextRequest) {
         headers: {
           'Content-Type': 'application/json',
         }
-      }
+      );
     );
   }
 }
