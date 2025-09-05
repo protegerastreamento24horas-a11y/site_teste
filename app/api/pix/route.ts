@@ -17,7 +17,7 @@ if (!accessToken) {
 
 const client = new MercadoPagoConfig({ 
   accessToken: accessToken,
-  options: { timeout: 5000 }
+  options: { timeout: 10000 }
 });
 
 const payment = new Payment(client);
@@ -61,10 +61,10 @@ export async function POST(request: NextRequest) {
 
     // Validar email do pagador, se fornecido
     const payer = {
-      email: 'user@example.com', // email padrão
+      email: 'pagador@exemplo.com', // email padrão
     };
     
-    if (payerEmail && typeof payerEmail === 'string') {
+    if (payerEmail && typeof payerEmail === 'string' && payerEmail.includes('@')) {
       payer.email = payerEmail;
     }
 
@@ -101,7 +101,7 @@ export async function POST(request: NextRequest) {
     
     // Verificar se a resposta contém os dados necessários
     if (!result.point_of_interaction?.transaction_data?.qr_code_base64) {
-      console.error('Erro na resposta do Mercado Pago:', result);
+      console.error('Erro na resposta do Mercado Pago:', JSON.stringify(result, null, 2));
       return new Response(
         JSON.stringify({ 
           error: 'Erro na resposta do Mercado Pago',
@@ -137,7 +137,8 @@ export async function POST(request: NextRequest) {
     console.error('Detalhes do erro:', {
       message: error.message,
       status: error.status,
-      cause: error.cause
+      cause: error.cause,
+      stack: error.stack
     });
     
     // Tratar erros específicos do Mercado Pago
@@ -178,7 +179,7 @@ export async function POST(request: NextRequest) {
     return new Response(
       JSON.stringify({ 
         error: 'Erro ao gerar pagamento PIX',
-        message: error.message || 'Erro desconhecido',
+        message: error.message || 'Erro desconhecido ao conectar com o Mercado Pago',
         status: error.status || 500
       }),
       { 
