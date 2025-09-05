@@ -7,6 +7,7 @@ Este projeto é uma aplicação Next.js que permite gerar códigos QR PIX para p
 - Geração de códigos QR PIX em tempo real
 - Interface amigável para criação de pagamentos
 - Integração completa com a API da HorsePay
+- Recebimento de webhooks para atualização de status de pagamento
 
 ## Tecnologias Utilizadas
 
@@ -53,16 +54,25 @@ O projeto está configurado para deploy no Vercel. Siga estas etapas:
 
 - `HORSEPAY_CLIENT_KEY`: Chave de cliente da HorsePay
 - `HORSEPAY_CLIENT_SECRET`: Segredo de cliente da HorsePay
+- `VERCEL_URL`: URL do seu projeto no Vercel (definida automaticamente pelo Vercel)
 
 ## Segurança
 
 ⚠️ **Importante**: Nunca commite credenciais reais no repositório. O arquivo `.env.local` está no `.gitignore` para evitar que credenciais sensíveis sejam expostas publicamente.
+
+## Webhooks
+
+O projeto inclui um endpoint para receber webhooks da HorsePay:
+- Endpoint: `/api/webhook`
+- Este endpoint recebe notificações quando o status de um pagamento é atualizado
+- O endpoint está preparado para processar callbacks de depósito e saque
 
 ## Estrutura do Projeto
 
 - `app/page.tsx`: Página inicial
 - `app/pix/page.tsx`: Interface de geração de PIX
 - `app/api/pix/route.ts`: API de integração com a HorsePay
+- `app/api/webhook/route.ts`: Endpoint para receber webhooks da HorsePay
 
 ## Como Contribuir
 
