@@ -30,6 +30,15 @@ async function getHorsePayAccessToken() {
 
 // Função para criar um pedido na HorsePay
 async function createHorsePayOrder(accessToken: string, amount: number, description: string, payerName: string) {
+  // Obter a URL base do ambiente
+  const baseUrl = process.env.VERCEL_URL 
+    ? `https://${process.env.VERCEL_URL}`
+    : process.env.NODE_ENV === 'development'
+    ? 'http://localhost:3000'
+    : 'https://seu-dominio.com'; // Substitua pelo seu domínio em produção
+
+  const callbackUrl = `${baseUrl}/api/webhook`;
+
   const response = await fetch('https://api.horsepay.io/transaction/neworder', {
     method: 'POST',
     headers: {
@@ -39,7 +48,7 @@ async function createHorsePayOrder(accessToken: string, amount: number, descript
     body: JSON.stringify({
       payer_name: payerName || 'Cliente',
       amount: amount,
-      callback_url: 'https://seu-webhook.com/callback', // Substitua pela sua URL de callback
+      callback_url: callbackUrl,
     }),
   });
 
