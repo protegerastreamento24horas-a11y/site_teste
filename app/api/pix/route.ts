@@ -1,28 +1,56 @@
 import { NextRequest } from 'next/server';
-import { MercadoPagoConfig, Payment } from 'mercadopago';
 
-// Configuração do Mercado Pago
-const accessToken = process.env.MERCADO_PAGO_ACCESS_TOKEN || '';
+// Função para obter token de acesso da HorsePay
+async function getHorsePayAccessToken() {
+  const clientKey = process.env.HORSEPAY_CLIENT_KEY || '';
+  const clientSecret = process.env.HORSEPAY_CLIENT_SECRET || '';
 
-// Verificar se o token de acesso foi configurado
-console.log('=== DEBUG MERCADO PAGO ===');
-console.log('Token configurado:', !!accessToken);
-console.log('Token length:', accessToken?.length || 0);
-console.log('Token prefix:', accessToken?.substring(0, 20) + '...');
-// Verificar se o token parece válido (deve começar com APP_USR-)
-console.log('Token parece válido:', accessToken?.startsWith('APP_USR-') ?? false);
-console.log('========================');
+  if (!clientKey || !clientSecret) {
+    throw new Error('Credenciais da HorsePay não configuradas');
+  }
 
-if (!accessToken) {
-  console.error('MERCADO_PAGO_ACCESS_TOKEN não está configurado');
+  const response = await fetch('https://api.horsepay.io/auth/token', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      client_key: clientKey,
+      client_secret: clientSecret,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Erro ao obter token: ${response.status}`);
+  }
+
+  const data = await response.json();
+  return data.access_token;
 }
 
-const client = new MercadoPagoConfig({ 
-  accessToken: accessToken,
-  options: { timeout: 10000 }
-});
+// Função para criar um pedido na HorsePay
+async function createHorsePayOrder(accessToken: string, amount: number, description: string, payerName: string) {
+  const response = await fetch('https://api.horsepay.io/transaction/neworder', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      payer_name: payerName || 'Cliente',
+      amount: amount,
+      callback_url: 'https://seu-webhook.com/callback', // Substitua pela sua URL de callback
+    }),
+  });
 
-const payment = new Payment(client);
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Erro ao criar pedido: ${response.status} - ${errorText}`);
+  }
+
+  const data = await response.json();
+  return data;
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -70,20 +98,39 @@ export async function POST(request: NextRequest) {
       payer.email = payerEmail;
     }
 
-    // Criar um pagamento PIX usando o Mercado Pago
-    const body = {
-      transaction_amount: transactionAmount,
-      description: description,
-      payment_method_id: 'pix',
-      payer: payer
-    };
-
-    // Verificar se o token de acesso está configurado antes de fazer a chamada
-    if (!accessToken) {
+    try {
+      // Obter token de acesso
+      const accessToken = await getHorsePayAccessToken();
+      
+      // Criar pedido
+      const order = await createHorsePayOrder(
+        accessToken, 
+        transactionAmount, 
+        description, 
+        payerEmail || 'Cliente'
+      );
+      
+      // Retornar o QR Code e o código PIX
+      return new Response(
+        JSON.stringify({
+          qr_code: order.copy_past,
+          qr_code_base64: order.payment,
+          id: order.external_id,
+          status: order.status,
+        }),
+        { 
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
+      );
+    } catch (horsePayError: any) {
+      console.error('Erro na integração com HorsePay:', horsePayError);
       return new Response(
         JSON.stringify({ 
-          error: 'Configuração incompleta',
-          message: 'Token de acesso do Mercado Pago não configurado'
+          error: 'Erro na integração com HorsePay',
+          message: horsePayError.message || 'Não foi possível gerar o código PIX',
         }),
         { 
           status: 500,
@@ -93,64 +140,6 @@ export async function POST(request: NextRequest) {
         }
       );
     }
-
-    // Verificar se o token parece válido
-    if (!accessToken.startsWith('APP_USR-')) {
-      console.error('Token de acesso parece inválido:', accessToken?.substring(0, 50) + '...');
-      return new Response(
-        JSON.stringify({ 
-          error: 'Configuração inválida',
-          message: 'Token de acesso do Mercado Pago parece inválido'
-        }),
-        { 
-          status: 500,
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        }
-      );
-    }
-
-    // Log para depuração
-    console.log('Usando token de acesso:', accessToken ? 'Token configurado' : 'Token não configurado');
-    console.log('Tamanho do token:', accessToken?.length || 0);
-    console.log('Corpo da requisição:', JSON.stringify(body, null, 2));
-
-    const result = await payment.create({ body });
-    
-    // Verificar se a resposta contém os dados necessários
-    if (!result.point_of_interaction?.transaction_data?.qr_code_base64) {
-      console.error('Erro na resposta do Mercado Pago:', JSON.stringify(result, null, 2));
-      return new Response(
-        JSON.stringify({ 
-          error: 'Erro na resposta do Mercado Pago',
-          message: 'Não foi possível gerar o código PIX',
-          details: result
-        }),
-        { 
-          status: 500,
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        }
-      );
-    }
-    
-    // Retornar o QR Code e o código PIX
-    return new Response(
-      JSON.stringify({
-        qr_code: result.point_of_interaction.transaction_data.qr_code,
-        qr_code_base64: `data:image/png;base64,${result.point_of_interaction.transaction_data.qr_code_base64}`,
-        id: result.id,
-        status: result.status,
-      }),
-      { 
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      }
-    );
   } catch (error: any) {
     console.error('Erro ao gerar pagamento PIX:', error);
     console.error('Detalhes do erro:', {
