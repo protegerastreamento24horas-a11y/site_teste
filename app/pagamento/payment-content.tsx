@@ -12,8 +12,6 @@ export default function PaymentContent() {
   const [loading, setLoading] = useState(true);
   const [pixCode, setPixCode] = useState('');
   const [qrCode, setQrCode] = useState('');
-  const [paymentId, setPaymentId] = useState<number | null>(null);
-  const [paymentStatus, setPaymentStatus] = useState('pending');
   const [error, setError] = useState('');
 
   const raffleId = searchParams.get('id');
@@ -36,7 +34,6 @@ export default function PaymentContent() {
       // Gerar pagamento via HorsePay
       generatePayment(mockRaffle);
     } else {
-      // Se não tiver parâmetros, redirecionar para as rifas
       router.push('/rifas');
     }
   }, [raffleId, quantity, router]);
@@ -55,7 +52,7 @@ export default function PaymentContent() {
         body: JSON.stringify({
           amount: raffleData.total,
           description: `Pagamento de rifa: ${raffleData.title}`,
-          payerEmail: '' // Em um sistema real, pegaríamos o email do usuário logado
+          payerEmail: ''
         }),
       });
 
@@ -64,12 +61,9 @@ export default function PaymentContent() {
       if (response.ok && data.qr_code_base64) {
         setQrCode(data.qr_code_base64);
         setPixCode(data.qr_code);
-        setPaymentId(data.id);
-        setPaymentStatus(data.status);
       } else {
         const errorMessage = data.message || data.error || 'Erro ao gerar o pagamento';
         setError(errorMessage);
-        console.error('Erro na resposta:', data);
       }
     } catch (err) {
       console.error('Erro ao gerar pagamento:', err);
@@ -80,7 +74,6 @@ export default function PaymentContent() {
   };
 
   useEffect(() => {
-    // Iniciar contador regressivo
     if (timeLeft <= 0) return;
     
     const timer = setInterval(() => {
@@ -98,7 +91,6 @@ export default function PaymentContent() {
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(pixCode);
-    // Animação de feedback
     const button = document.getElementById('copy-button');
     if (button) {
       button.textContent = 'Copiado!';
@@ -109,22 +101,21 @@ export default function PaymentContent() {
   };
 
   const handlePaymentConfirmation = () => {
-    // Simular confirmação de pagamento
     router.push('/sucesso');
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-dark-bg py-12">
+      <div className="min-h-screen bg-background py-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
-            <h1 className="text-3xl font-bold text-white mb-4">Processando pagamento</h1>
+            <h1 className="text-3xl font-bold mb-4">Processando pagamento</h1>
             <p className="text-gray-400">Gerando código de pagamento seguro...</p>
           </div>
           
-          <div className="bg-card-bg rounded-2xl shadow-xl p-12 border border-gray-700">
+          <div className="card p-12">
             <div className="flex justify-center mb-8">
-              <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-gold"></div>
+              <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary"></div>
             </div>
             <p className="text-center text-gray-400">Preparando seu pagamento...</p>
           </div>
@@ -134,10 +125,10 @@ export default function PaymentContent() {
   }
 
   return (
-    <div className="min-h-screen bg-dark-bg py-12">
+    <div className="min-h-screen bg-background py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
-          <Link href="/rifas" className="text-gold hover:text-yellow-300 flex items-center">
+          <Link href="/rifas" className="text-primary hover:text-primary-dark flex items-center">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
             </svg>
@@ -145,16 +136,15 @@ export default function PaymentContent() {
           </Link>
         </div>
 
-        <div className="bg-card-bg rounded-2xl shadow-xl overflow-hidden border border-gray-700">
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-gold"></div>
+        <div className="card">
           <div className="p-8">
             <div className="text-center mb-10">
-              <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">Pagamento via PIX</h1>
-              <p className="text-gray-400 text-xl">Escaneie o QR Code ou copie o código PIX</p>
+              <h1 className="text-3xl font-bold mb-4">Pagamento via PIX</h1>
+              <p className="text-gray-400">Escaneie o QR Code ou copie o código PIX</p>
             </div>
 
             {error && (
-              <div className="mb-8 p-6 bg-red-900/30 border border-red-700 rounded-2xl">
+              <div className="mb-8 p-6 bg-red-900/20 border border-red-700 rounded-lg">
                 <div className="flex items-center">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-red-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -164,32 +154,32 @@ export default function PaymentContent() {
               </div>
             )}
 
-            <div className="mb-10 bg-dark-bg rounded-2xl p-6 border border-gray-700">
+            <div className="mb-10 bg-card p-6 rounded-lg border border-border">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between">
                 <div className="flex items-center mb-4 md:mb-0">
-                  <div className="bg-gold w-12 h-12 rounded-full flex items-center justify-center mr-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <div className="bg-primary w-12 h-12 rounded-full flex items-center justify-center mr-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
                   <div>
-                    <h2 className="text-lg font-bold text-white">Pagamento aguardando confirmação</h2>
-                    <p className="text-gray-400">O pagamento expira em <span className="font-bold text-gold">{formatTime(timeLeft)}</span></p>
+                    <h2 className="font-bold text-lg">Pagamento aguardando confirmação</h2>
+                    <p className="text-gray-400">O pagamento expira em <span className="font-bold">{formatTime(timeLeft)}</span></p>
                   </div>
                 </div>
-                <div className="bg-gold text-black px-4 py-2 rounded-full font-bold">
+                <div className="bg-primary text-white px-4 py-2 rounded-full font-bold">
                   {formatTime(timeLeft)} restantes
                 </div>
               </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-10">
-              <div className="bg-dark-bg rounded-2xl p-8 border border-gray-700">
-                <h2 className="text-2xl font-bold text-white mb-6 text-center">QR Code PIX</h2>
+              <div className="card p-8">
+                <h2 className="text-2xl font-bold mb-6 text-center">QR Code PIX</h2>
                 <div className="flex flex-col items-center">
-                  <div className="bg-white p-6 rounded-2xl mb-6">
+                  <div className="bg-white p-6 rounded-lg mb-6">
                     {qrCode ? (
-                      <img src={qrCode} alt="QR Code PIX" className="w-64 h-64" />
+                      <img src={`data:image/png;base64,${qrCode}`} alt="QR Code PIX" className="w-64 h-64" />
                     ) : (
                       <div className="bg-gray-200 border-2 border-dashed rounded-xl w-64 h-64 flex items-center justify-center">
                         <span className="text-gray-500">QR Code não disponível</span>
@@ -200,10 +190,10 @@ export default function PaymentContent() {
                 </div>
               </div>
               
-              <div className="bg-dark-bg rounded-2xl p-8 border border-gray-700">
-                <h2 className="text-2xl font-bold text-white mb-6 text-center">Código PIX</h2>
+              <div className="card p-8">
+                <h2 className="text-2xl font-bold mb-6 text-center">Código PIX</h2>
                 <div className="mb-6">
-                  <div className="bg-card-bg p-6 rounded-2xl break-words text-sm font-mono border border-gray-700">
+                  <div className="bg-background p-6 rounded-lg break-words text-sm font-mono border border-border">
                     {pixCode || 'Código PIX não disponível'}
                   </div>
                 </div>
@@ -211,9 +201,9 @@ export default function PaymentContent() {
                   id="copy-button"
                   onClick={copyToClipboard}
                   disabled={!pixCode}
-                  className={`w-full py-4 px-6 rounded-full font-bold text-lg transition duration-300 ${
+                  className={`w-full py-4 rounded-lg font-bold transition ${
                     pixCode 
-                      ? 'bg-gradient-gold text-black hover:opacity-90' 
+                      ? 'btn btn-primary' 
                       : 'bg-gray-700 text-gray-500 cursor-not-allowed'
                   }`}
                 >
@@ -223,36 +213,36 @@ export default function PaymentContent() {
               </div>
             </div>
 
-            <div className="bg-dark-bg rounded-2xl p-8 border border-gray-700 mb-10">
-              <h2 className="text-2xl font-bold text-white mb-6">Resumo do pedido</h2>
+            <div className="card p-8 mb-10">
+              <h2 className="text-2xl font-bold mb-6">Resumo do pedido</h2>
               <div className="space-y-4">
-                <div className="flex justify-between pb-4 border-b border-gray-700">
+                <div className="flex justify-between pb-4 border-b border-border">
                   <div>
-                    <h3 className="font-bold text-white text-lg">{raffle?.title}</h3>
+                    <h3 className="font-bold text-lg">{raffle?.title}</h3>
                     <p className="text-gray-400">{raffle?.quantity} números selecionados</p>
                   </div>
                   <div className="text-right">
-                    <div className="text-white font-bold text-lg">R$ {raffle?.total.toFixed(2)}</div>
+                    <div className="font-bold">R$ {raffle?.total.toFixed(2)}</div>
                     <div className="text-gray-400">R$ {raffle?.price.toFixed(2)} cada</div>
                   </div>
                 </div>
                 
                 <div className="flex justify-between pt-4">
                   <div>
-                    <h3 className="font-bold text-white">Prêmio</h3>
+                    <h3 className="font-bold">Prêmio</h3>
                     <p className="text-gray-400">Valor estimado do prêmio</p>
                   </div>
                   <div className="text-right">
-                    <div className="text-gold font-black text-2xl">R$ {raffle?.prizeValue.toLocaleString('pt-BR')}</div>
+                    <div className="text-secondary font-bold text-xl">R$ {raffle?.prizeValue.toLocaleString('pt-BR')}</div>
                   </div>
                 </div>
                 
-                <div className="flex justify-between pt-6 border-t border-gray-700">
+                <div className="flex justify-between pt-6 border-t border-border">
                   <div>
-                    <h3 className="font-bold text-white text-xl">Total a pagar</h3>
+                    <h3 className="font-bold text-xl">Total a pagar</h3>
                   </div>
                   <div className="text-right">
-                    <div className="text-gold font-black text-3xl">R$ {raffle?.total.toFixed(2)}</div>
+                    <div className="text-primary font-bold text-2xl">R$ {raffle?.total.toFixed(2)}</div>
                   </div>
                 </div>
               </div>
@@ -261,13 +251,13 @@ export default function PaymentContent() {
             <div className="flex flex-col sm:flex-row gap-4">
               <button
                 onClick={() => router.push('/rifas')}
-                className="flex-1 bg-gray-700 hover:bg-gray-600 text-white font-bold py-4 px-6 rounded-full transition duration-300 text-lg"
+                className="flex-1 bg-card hover:bg-gray-800 text-white font-bold py-4 px-6 rounded-lg transition"
               >
                 Cancelar
               </button>
               <button
                 onClick={handlePaymentConfirmation}
-                className="flex-1 bg-gradient-gold text-black font-black py-4 px-6 rounded-full hover:opacity-90 transition duration-300 text-lg border-2 border-gold"
+                className="flex-1 btn btn-primary py-4 px-6 rounded-lg font-bold"
               >
                 Já realizei o pagamento
               </button>

@@ -8,7 +8,6 @@ interface Raffle {
   title: string;
   description: string;
   price: number;
-  image: string;
   endDate: string;
   totalNumbers: number;
   availableNumbers: number;
@@ -19,7 +18,7 @@ interface Raffle {
 export default function RafflesPage() {
   const [raffles, setRaffles] = useState<Raffle[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState('all'); // all, ending-soon, high-value
+  const [filter, setFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
@@ -30,7 +29,6 @@ export default function RafflesPage() {
         title: 'iPhone 15 Pro Max',
         description: 'iPhone 15 Pro Max 256GB - Cor Titânio Natural',
         price: 5.00,
-        image: '/iphone.jpg',
         endDate: '2024-12-31',
         totalNumbers: 1000,
         availableNumbers: 750,
@@ -42,7 +40,6 @@ export default function RafflesPage() {
         title: 'MacBook Pro M3',
         description: 'MacBook Pro 14" M3 Pro 18GB RAM 512GB SSD',
         price: 10.00,
-        image: '/macbook.jpg',
         endDate: '2024-11-30',
         totalNumbers: 500,
         availableNumbers: 200,
@@ -54,7 +51,6 @@ export default function RafflesPage() {
         title: 'Viagem Disney Orlando',
         description: 'Viagem para Disney Orlando para 4 pessoas',
         price: 20.00,
-        image: '/disney.jpg',
         endDate: '2024-10-31',
         totalNumbers: 1000,
         availableNumbers: 850,
@@ -66,7 +62,6 @@ export default function RafflesPage() {
         title: 'PlayStation 5',
         description: 'PlayStation 5 Standard Edition',
         price: 8.00,
-        image: '/ps5.jpg',
         endDate: '2024-11-15',
         totalNumbers: 750,
         availableNumbers: 600,
@@ -78,7 +73,6 @@ export default function RafflesPage() {
         title: 'Samsung Smart TV 65"',
         description: 'Samsung Smart TV 4K 65" QLED',
         price: 15.00,
-        image: '/tv.jpg',
         endDate: '2024-12-15',
         totalNumbers: 600,
         availableNumbers: 420,
@@ -90,43 +84,18 @@ export default function RafflesPage() {
         title: 'Notebook Gamer',
         description: 'Notebook Gamer com RTX 4060',
         price: 12.00,
-        image: '/notebook.jpg',
         endDate: '2024-11-20',
         totalNumbers: 800,
         availableNumbers: 720,
         prizeValue: 8000,
         category: 'Eletrônicos'
-      },
-      {
-        id: 7,
-        title: 'Carro 0KM',
-        description: 'Volkswagen Gol 1.0 2024',
-        price: 50.00,
-        image: '/car.jpg',
-        endDate: '2024-12-20',
-        totalNumbers: 2000,
-        availableNumbers: 1850,
-        prizeValue: 85000,
-        category: 'Automóveis'
-      },
-      {
-        id: 8,
-        title: 'Motocicleta Harley Davidson',
-        description: 'Harley Davidson Street 750',
-        price: 30.00,
-        image: '/motorcycle.jpg',
-        endDate: '2024-11-10',
-        totalNumbers: 1000,
-        availableNumbers: 750,
-        prizeValue: 45000,
-        category: 'Automóveis'
       }
     ];
 
     setTimeout(() => {
       setRaffles(mockRaffles);
       setLoading(false);
-    }, 1000);
+    }, 800);
   }, []);
 
   const filteredRaffles = raffles.filter(raffle => {
@@ -143,23 +112,21 @@ export default function RafflesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-dark-bg py-12">
+      <div className="min-h-screen bg-background py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-white mb-4">Nossas Rifas</h1>
-            <p className="text-gray-400 text-xl">Carregando rifas premium...</p>
+          <div className="mb-10">
+            <h1 className="text-3xl font-bold mb-2">Nossas Rifas</h1>
+            <p className="text-gray-400">Carregando rifas premium...</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[1, 2, 3].map((item) => (
-              <div key={item} className="bg-card-bg rounded-2xl overflow-hidden shadow-xl border border-gray-700 animate-pulse">
-                <div className="bg-gray-700 h-64 w-full"></div>
-                <div className="p-6">
-                  <div className="h-6 bg-gray-700 rounded mb-4"></div>
-                  <div className="h-4 bg-gray-700 rounded mb-2"></div>
-                  <div className="h-4 bg-gray-700 rounded mb-6 w-3/4"></div>
-                  <div className="h-10 bg-gray-700 rounded"></div>
-                </div>
+              <div key={item} className="card p-6 animate-pulse">
+                <div className="bg-gray-700 h-48 rounded-lg mb-6"></div>
+                <div className="h-6 bg-gray-700 rounded mb-4"></div>
+                <div className="h-4 bg-gray-700 rounded mb-2"></div>
+                <div className="h-4 bg-gray-700 rounded mb-6 w-3/4"></div>
+                <div className="h-10 bg-gray-700 rounded"></div>
               </div>
             ))}
           </div>
@@ -169,17 +136,15 @@ export default function RafflesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-dark-bg py-12">
+    <div className="min-h-screen bg-background py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Rifas Premium</h1>
-          <p className="text-gray-400 text-xl max-w-3xl mx-auto">
-            Escolha entre as melhores rifas com prêmios incríveis e alta probabilidade de ganho
-          </p>
+        <div className="mb-10">
+          <h1 className="text-3xl font-bold mb-2">Rifas Premium</h1>
+          <p className="text-gray-400">Escolha entre as melhores rifas com prêmios incríveis</p>
         </div>
 
         {/* Search and Filters */}
-        <div className="mb-10 bg-card-bg rounded-2xl p-6 border border-gray-700">
+        <div className="card p-6 mb-8">
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1">
               <div className="relative">
@@ -188,9 +153,9 @@ export default function RafflesPage() {
                   placeholder="Buscar rifas..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full bg-dark-bg border border-gray-700 rounded-full py-3 px-6 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gold"
+                  className="w-full bg-background border border-border rounded-lg py-3 px-4 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500 absolute right-6 top-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500 absolute right-4 top-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
@@ -199,30 +164,30 @@ export default function RafflesPage() {
             <div className="flex flex-wrap gap-3">
               <button 
                 onClick={() => setFilter('all')}
-                className={`px-5 py-2 rounded-full font-medium transition duration-300 ${
+                className={`px-4 py-2 rounded-lg font-medium transition ${
                   filter === 'all' 
-                    ? 'bg-gradient-gold text-black' 
-                    : 'bg-dark-bg text-gray-300 hover:bg-gray-800'
+                    ? 'bg-primary text-white' 
+                    : 'bg-card text-gray-300 hover:bg-gray-800'
                 }`}
               >
                 Todas
               </button>
               <button 
                 onClick={() => setFilter('ending-soon')}
-                className={`px-5 py-2 rounded-full font-medium transition duration-300 ${
+                className={`px-4 py-2 rounded-lg font-medium transition ${
                   filter === 'ending-soon' 
-                    ? 'bg-gradient-gold text-black' 
-                    : 'bg-dark-bg text-gray-300 hover:bg-gray-800'
+                    ? 'bg-primary text-white' 
+                    : 'bg-card text-gray-300 hover:bg-gray-800'
                 }`}
               >
                 Terminando em breve
               </button>
               <button 
                 onClick={() => setFilter('high-value')}
-                className={`px-5 py-2 rounded-full font-medium transition duration-300 ${
+                className={`px-4 py-2 rounded-lg font-medium transition ${
                   filter === 'high-value' 
-                    ? 'bg-gradient-gold text-black' 
-                    : 'bg-dark-bg text-gray-300 hover:bg-gray-800'
+                    ? 'bg-primary text-white' 
+                    : 'bg-card text-gray-300 hover:bg-gray-800'
                 }`}
               >
                 Prêmios acima de R$10k
@@ -232,16 +197,16 @@ export default function RafflesPage() {
         </div>
 
         {filteredRaffles.length === 0 ? (
-          <div className="bg-card-bg rounded-2xl shadow-xl p-12 text-center border border-gray-700">
-            <div className="text-6xl mb-6">🎲</div>
-            <h2 className="text-2xl font-bold text-white mb-4">Nenhuma rifa encontrada</h2>
+          <div className="card p-12 text-center">
+            <div className="text-5xl mb-6">🎲</div>
+            <h2 className="text-2xl font-bold mb-4">Nenhuma rifa encontrada</h2>
             <p className="text-gray-400 mb-8">Não há rifas disponíveis com os filtros selecionados.</p>
             <button 
               onClick={() => {
                 setFilter('all');
                 setSearchTerm('');
               }}
-              className="bg-gradient-gold text-black font-bold py-3 px-8 rounded-full hover:opacity-90 transition duration-300"
+              className="btn btn-primary px-6 py-3 rounded-lg"
             >
               Ver todas as rifas
             </button>
@@ -251,32 +216,33 @@ export default function RafflesPage() {
             {filteredRaffles.map((raffle) => (
               <div 
                 key={raffle.id} 
-                className="bg-card-bg rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 border border-gray-700 card-hover relative"
+                className="card overflow-hidden grid-item"
               >
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-gold"></div>
-                <div className="bg-gray-200 border-2 border-dashed rounded-t-2xl w-full h-64" />
+                <div className="bg-gray-200 border-2 border-dashed w-full h-48" />
                 <div className="p-6">
                   <div className="flex justify-between items-start mb-3">
                     <div>
-                      <span className="chip chip-red text-xs">{raffle.category}</span>
+                      <span className="inline-block bg-primary/10 text-primary text-xs px-3 py-1 rounded-full">
+                        {raffle.category}
+                      </span>
                     </div>
                     <div className="text-right">
                       <div className="text-xs text-gray-400">Prêmio</div>
-                      <div className="text-xl font-bold text-gold">R$ {raffle.prizeValue.toLocaleString('pt-BR')}</div>
+                      <div className="text-xl font-bold text-secondary">R$ {raffle.prizeValue.toLocaleString('pt-BR')}</div>
                     </div>
                   </div>
                   
-                  <h2 className="text-2xl font-bold text-white mb-2">{raffle.title}</h2>
-                  <p className="text-gray-400 mb-5">{raffle.description}</p>
+                  <h2 className="text-xl font-bold mb-2">{raffle.title}</h2>
+                  <p className="text-gray-400 text-sm mb-5">{raffle.description}</p>
                   
                   <div className="flex justify-between items-center mb-5">
                     <div>
                       <div className="text-xs text-gray-400">Valor por número</div>
-                      <div className="text-xl font-bold text-green-500">R$ {raffle.price.toFixed(2)}</div>
+                      <div className="text-lg font-bold text-primary">R$ {raffle.price.toFixed(2)}</div>
                     </div>
                     <div className="text-right">
                       <div className="text-xs text-gray-400">Sorteio</div>
-                      <div className="text-sm font-medium text-white">{raffle.endDate}</div>
+                      <div className="text-sm font-medium">{raffle.endDate}</div>
                     </div>
                   </div>
                   
@@ -285,9 +251,9 @@ export default function RafflesPage() {
                       <span>Números disponíveis</span>
                       <span>{raffle.availableNumbers}/{raffle.totalNumbers}</span>
                     </div>
-                    <div className="w-full bg-gray-700 rounded-full h-3">
+                    <div className="w-full bg-gray-800 rounded-full h-2">
                       <div 
-                        className="bg-gradient-gold h-3 rounded-full" 
+                        className="bg-primary h-2 rounded-full" 
                         style={{ width: `${((raffle.totalNumbers - raffle.availableNumbers) / raffle.totalNumbers) * 100}%` }}
                       ></div>
                     </div>
@@ -295,7 +261,7 @@ export default function RafflesPage() {
                   
                   <Link 
                     href={`/rifas/${raffle.id}`}
-                    className="w-full bg-gradient-gold text-black font-bold py-3 px-4 rounded-full hover:opacity-90 transition-colors text-center block font-bold border-2 border-gold"
+                    className="btn btn-primary w-full py-3 rounded-lg font-semibold"
                   >
                     Ver detalhes
                   </Link>
