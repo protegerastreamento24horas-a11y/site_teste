@@ -3,169 +3,168 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
-export default function MinhasRifasPage() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [raffles, setRaffles] = useState<any[]>([]);
+interface UserRaffle {
+  id: number;
+  title: string;
+  numbers: number[];
+  status: 'active' | 'drawn' | 'winner';
+  purchaseDate: string;
+  drawDate?: string;
+  prize?: string;
+}
 
-  // Verificar se o usuário está logado
+export default function MyRafflesPage() {
+  const [raffles, setRaffles] = useState<UserRaffle[]>([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    const userPhone = localStorage.getItem('userPhone');
-    if (userPhone) {
-      setIsLoggedIn(true);
-      // Carregar rifas compradas (simulação)
-      loadUserRaffles();
-    }
-  }, []);
-
-  const loadUserRaffles = () => {
-    // Simular carregamento de rifas compradas
-    // Em uma implementação real, isso viria de uma API
-    const userRaffles = [
+    // Simular carregamento das rifas do usuário
+    const mockRaffles: UserRaffle[] = [
       {
         id: 1,
-        title: "iPhone 15 Pro Max",
-        description: "Último iPhone da Apple com tecnologia avançada",
-        price: 10,
-        image: "https://images.unsplash.com/photo-1601593346740-925612772716?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
-        purchaseDate: "10/04/2025",
-        numbers: ["001", "015", "023", "045", "102"],
-        status: "pending"
+        title: 'Rifa iPhone 15 Pro',
+        numbers: [123, 456, 789],
+        status: 'active',
+        purchaseDate: '2024-09-01'
       },
       {
         id: 2,
-        title: "Notebook Gamer RTX 4090",
-        description: "Notebook de alto desempenho para jogos",
-        price: 20,
-        image: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
-        purchaseDate: "05/04/2025",
-        numbers: ["012", "067", "123"],
-        status: "won"
+        title: 'Rifa MacBook Pro',
+        numbers: [234, 567],
+        status: 'drawn',
+        purchaseDate: '2024-08-15',
+        drawDate: '2024-09-01',
+        prize: 'MacBook Pro 14" M3 Pro'
+      },
+      {
+        id: 3,
+        title: 'Rifa Viagem Disney',
+        numbers: [345, 678, 901, 234],
+        status: 'winner',
+        purchaseDate: '2024-07-20',
+        drawDate: '2024-08-15',
+        prize: 'Viagem para Disney Orlando para 4 pessoas'
       }
     ];
-    setRaffles(userRaffles);
+
+    setTimeout(() => {
+      setRaffles(mockRaffles);
+      setLoading(false);
+    }, 1000);
+  }, []);
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'active': return 'bg-blue-100 text-blue-800';
+      case 'drawn': return 'bg-gray-100 text-gray-800';
+      case 'winner': return 'bg-green-100 text-green-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('userPhone');
-    window.location.href = '/';
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case 'active': return 'Ativa';
+      case 'drawn': return 'Sorteada';
+      case 'winner': return 'Ganhadora!';
+      default: return 'Desconhecido';
+    }
   };
 
-  if (!isLoggedIn) {
+  if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-indigo-100 flex items-center justify-center">
-        <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full text-center">
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">
-            Acesso Restrito
-          </h1>
-          <p className="text-gray-600 mb-6">
-            Você precisa estar logado para ver suas rifas.
-          </p>
-          <Link 
-            href="/login" 
-            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition duration-300 inline-block"
-          >
-            Fazer Login
-          </Link>
+      <div className="min-h-screen bg-gray-100 py-6 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Carregando suas rifas...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-indigo-100 py-12">
+    <div className="min-h-screen bg-gray-100 py-6">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-extrabold text-black sm:text-5xl sm:tracking-tight lg:text-6xl">
-            Minhas <span className="text-blue-600">Rifas</span>
-          </h1>
-          <p className="mt-5 max-w-xl mx-auto text-xl text-black">
-            Veja todas as rifas que você comprou
-          </p>
-          
-          <div className="mt-4">
-            <button 
-              onClick={handleLogout}
-              className="text-sm text-blue-600 hover:text-blue-800"
-            >
-              Sair
-            </button>
-          </div>
+        <div className="text-center mb-10">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Minhas Rifas</h1>
+          <p className="text-gray-600">Acompanhe suas rifas adquiridas</p>
         </div>
 
         {raffles.length === 0 ? (
-          <div className="bg-white rounded-2xl shadow-lg p-12 max-w-2xl mx-auto text-center">
-            <svg className="w-24 h-24 text-gray-300 mx-auto mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+          <div className="bg-white rounded-lg shadow-md p-8 text-center">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
             </svg>
-            <h2 className="text-2xl font-bold text-black mb-4">Nenhuma rifa comprada ainda</h2>
-            <p className="text-black mb-8">
-              Você ainda não comprou nenhuma rifa. Que tal dar uma olhada nas rifas disponíveis?
-            </p>
+            <h2 className="text-xl font-bold text-gray-900 mb-2">Nenhuma rifa encontrada</h2>
+            <p className="text-gray-600 mb-6">Você ainda não adquiriu nenhuma rifa.</p>
             <Link 
-              href="/rifas" 
-              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition duration-300 inline-block"
+              href="/rifas"
+              className="bg-green-500 text-white py-2 px-6 rounded-md hover:bg-green-600 transition-colors font-medium inline-block"
             >
-              Ver Rifas Disponíveis
+              Ver rifas disponíveis
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {raffles.map((raffle) => (
-              <div key={raffle.id} className="bg-white rounded-2xl shadow-lg overflow-hidden">
-                <div className="relative">
-                  <img 
-                    src={raffle.image} 
-                    alt={raffle.title}
-                    className="w-full h-48 object-cover"
-                  />
-                  <div className="absolute top-4 right-4 bg-yellow-500 text-black font-bold py-1 px-3 rounded-full text-sm">
-                    R$ {raffle.price}
-                  </div>
-                  {raffle.status === 'won' && (
-                    <div className="absolute top-4 left-4 bg-green-500 text-white font-bold py-1 px-3 rounded-full text-sm">
-                      GANHOU!
-                    </div>
-                  )}
-                </div>
-                
+              <div key={raffle.id} className="bg-white rounded-lg shadow-md overflow-hidden">
                 <div className="p-6">
-                  <h3 className="text-xl font-bold text-black mb-2">{raffle.title}</h3>
-                  <p className="text-black mb-4">{raffle.description}</p>
+                  <div className="flex justify-between items-start mb-4">
+                    <h2 className="text-xl font-bold text-gray-900">{raffle.title}</h2>
+                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(raffle.status)}`}>
+                      {getStatusText(raffle.status)}
+                    </span>
+                  </div>
                   
                   <div className="mb-4">
-                    <p className="text-sm text-black">
-                      <span className="font-medium">Comprada em:</span> {raffle.purchaseDate}
-                    </p>
-                    <p className="text-sm text-black">
-                      <span className="font-medium">Números:</span> {raffle.numbers.join(', ')}
-                    </p>
+                    <p className="text-gray-600 text-sm mb-2">Números adquiridos:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {raffle.numbers.map((number) => (
+                        <span 
+                          key={number} 
+                          className="bg-gray-100 text-gray-800 px-3 py-1 rounded-md font-mono"
+                        >
+                          {number.toString().padStart(3, '0')}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                   
-                  <div className="flex justify-between items-center">
-                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                      raffle.status === 'pending' 
-                        ? 'bg-yellow-100 text-yellow-800' 
-                        : raffle.status === 'won' 
-                          ? 'bg-green-100 text-green-800' 
-                          : 'bg-gray-100 text-gray-800'
-                    }`}>
-                      {raffle.status === 'pending' ? 'Aguardando sorteio' : raffle.status === 'won' ? 'Ganhou!' : 'Participando'}
-                    </span>
-                    <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                      Detalhes
-                    </button>
+                  <div className="border-t border-gray-200 pt-4">
+                    <div className="flex justify-between text-sm text-gray-600 mb-2">
+                      <span>Data da compra:</span>
+                      <span>{raffle.purchaseDate}</span>
+                    </div>
+                    
+                    {raffle.drawDate && (
+                      <div className="flex justify-between text-sm text-gray-600 mb-2">
+                        <span>Data do sorteio:</span>
+                        <span>{raffle.drawDate}</span>
+                      </div>
+                    )}
+                    
+                    {raffle.status === 'winner' && raffle.prize && (
+                      <div className="mt-3 p-3 bg-green-50 rounded-md">
+                        <p className="text-sm text-green-800">
+                          <span className="font-bold">Prêmio:</span> {raffle.prize}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="mt-4">
+                    <Link 
+                      href={`/rifas/${raffle.id}`}
+                      className="text-green-500 hover:text-green-600 text-sm font-medium"
+                    >
+                      Ver detalhes da rifa
+                    </Link>
                   </div>
                 </div>
               </div>
             ))}
           </div>
         )}
-
-        <div className="text-center mt-12">
-          <Link href="/rifas" className="text-blue-600 hover:text-blue-800 font-medium">
-            ← Voltar para Rifas
-          </Link>
-        </div>
       </div>
     </div>
   );

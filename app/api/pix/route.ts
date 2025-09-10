@@ -1,137 +1,22 @@
 import { NextRequest } from 'next/server';
 
-// Função para obter token de acesso da HorsePay
-async function getHorsePayAccessToken() {
-  const clientKey = process.env.HORSEPAY_CLIENT_KEY || '';
-  const clientSecret = process.env.HORSEPAY_CLIENT_SECRET || '';
+// Configuração do HorsePay
+const HORSEPAY_API_URL = 'https://api.horsepay.com.br';
+const HORSEPAY_API_KEY = process.env.HORSEPAY_API_KEY || '';
 
-  if (!clientKey || !clientSecret) {
-    throw new Error('Credenciais da HorsePay não configuradas');
-  }
+// Verificar se a chave de API foi configurada
+console.log('=== DEBUG HORSEPAY ===');
+console.log('API Key configurada:', !!HORSEPAY_API_KEY);
+console.log('API Key length:', HORSEPAY_API_KEY?.length || 0);
+console.log('======================');
 
-  console.log('Tentando obter token com credenciais:', {
-    clientKey: clientKey ? `${clientKey.substring(0, 5)}...` : 'vazio',
-    clientSecret: clientSecret ? `${clientSecret.substring(0, 5)}...` : 'vazio'
-  });
-
-  const requestBody = {
-    client_key: clientKey,
-    client_secret: clientSecret,
-  };
-
-  console.log('Corpo da requisição:', JSON.stringify(requestBody));
-
-  const response = await fetch('https://api.horsepay.io/auth/token', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(requestBody),
-  });
-
-  console.log('Resposta da API de token:', response.status);
-  console.log('Headers da resposta:', [...response.headers.entries()]);
-
-  // Log do corpo da resposta para depuração
-  const responseText = await response.text();
-  console.log('Corpo da resposta (texto):', responseText);
-
-  if (!response.ok) {
-    console.error('Erro ao obter token:', responseText);
-    throw new Error(`Erro ao obter token: ${response.status} - ${responseText}`);
-  }
-
-  let data;
-  try {
-    data = JSON.parse(responseText);
-  } catch (parseError: any) {
-    console.error('Erro ao parsear resposta JSON:', parseError);
-    throw new Error(`Erro ao parsear resposta JSON: ${parseError.message || parseError}`);
-  }
-
-  console.log('Token obtido com sucesso:', data);
-  return data.access_token;
-}
-
-// Função para criar um pedido na HorsePay
-async function createHorsePayOrder(accessToken: string, amount: number, description: string, payerName: string) {
-  // Obter a URL base do ambiente
-  const baseUrl = process.env.VERCEL_URL 
-    ? `https://${process.env.VERCEL_URL}`
-    : process.env.NODE_ENV === 'development'
-    ? 'http://localhost:3000'
-    : 'https://seu-dominio.com'; // Substitua pelo seu domínio em produção
-
-  const callbackUrl = `${baseUrl}/api/webhook`;
-
-  console.log('Criando pedido com dados:', {
-    payer_name: payerName,
-    amount: amount,
-    callback_url: callbackUrl
-  });
-
-  const requestBody = {
-    payer_name: payerName || 'Cliente',
-    amount: amount,
-    callback_url: callbackUrl,
-  };
-
-  console.log('Corpo da requisição de pedido:', JSON.stringify(requestBody));
-
-  const response = await fetch('https://api.horsepay.io/transaction/neworder', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${accessToken}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(requestBody),
-  });
-
-  console.log('Resposta da API de criação de pedido:', response.status);
-  console.log('Headers da resposta:', [...response.headers.entries()]);
-
-  // Log do corpo da resposta para depuração
-  const responseText = await response.text();
-  console.log('Corpo da resposta (texto):', responseText);
-
-  if (!response.ok) {
-    console.error('Erro ao criar pedido:', responseText);
-    throw new Error(`Erro ao criar pedido: ${response.status} - ${responseText}`);
-  }
-
-  let data;
-  try {
-    data = JSON.parse(responseText);
-  } catch (parseError: any) {
-    console.error('Erro ao parsear resposta JSON:', parseError);
-    throw new Error(`Erro ao parsear resposta JSON: ${parseError.message || parseError}`);
-  }
-
-  console.log('Pedido criado com sucesso:', data);
-  
-  // Verificar se os dados do QR Code estão presentes
-  if (!data.qr_code && !data.qr_code_base64) {
-    console.error('Dados do QR Code não encontrados na resposta:', data);
-    throw new Error('Dados do QR Code não encontrados na resposta da API da HorsePay');
-  }
-  
-  return data;
+if (!HORSEPAY_API_KEY) {
+  console.error('HORSEPAY_API_KEY não está configurado');
 }
 
 export async function POST(request: NextRequest) {
   try {
     const { amount, description, payerEmail } = await request.json();
-    
-    // Obter a URL base do ambiente
-    const baseUrl = process.env.VERCEL_URL 
-      ? `https://${process.env.VERCEL_URL}`
-      : process.env.NODE_ENV === 'development'
-      ? 'http://localhost:3000'
-      : 'https://seu-dominio.com'; // Substitua pelo seu domínio em produção
-
-    const successUrl = `${baseUrl}/sucesso`;
-
-    console.log('Recebida solicitação de pagamento:', { amount, description, payerEmail });
 
     // Validar campos obrigatórios
     if (!amount || !description) {
@@ -166,40 +51,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    try {
-      // Obter token de acesso
-      const accessToken = await getHorsePayAccessToken();
-      
-      // Criar pedido
-      const order = await createHorsePayOrder(
-        accessToken, 
-        transactionAmount, 
-        description, 
-        payerEmail || 'Cliente'
-      );
-      
-      // Retornar o QR Code e o código PIX
-      return new Response(
-        JSON.stringify({
-          qr_code: order.qr_code,
-          qr_code_base64: order.qr_code_base64,
-          id: order.id,
-          status: order.status,
-          success_url: successUrl
-        }),
-        { 
-          status: 200,
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        }
-      );
-    } catch (horsePayError: any) {
-      console.error('Erro na integração com HorsePay:', horsePayError);
+    // Validar email do pagador, se fornecido
+    const payer = {
+      email: 'user@example.com', // email padrão
+    };
+    
+    if (payerEmail && typeof payerEmail === 'string') {
+      payer.email = payerEmail;
+    }
+
+    // Verificar se a chave de API está configurada antes de fazer a chamada
+    if (!HORSEPAY_API_KEY) {
       return new Response(
         JSON.stringify({ 
-          error: 'Erro na integração com HorsePay',
-          message: horsePayError.message || 'Não foi possível gerar o código PIX',
+          error: 'Configuração incompleta',
+          message: 'Chave de API do HorsePay não configurada'
         }),
         { 
           status: 500,
@@ -209,25 +75,82 @@ export async function POST(request: NextRequest) {
         }
       );
     }
-  } catch (error: any) {
-    console.error('Erro ao gerar pagamento PIX:', error);
-    
-    // Tratar erros específicos da HorsePay
-    if (error.status === 401) {
+
+    // Criar um pagamento PIX usando o HorsePay
+    const response = await fetch(`${HORSEPAY_API_URL}/v1/pix/payments`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${HORSEPAY_API_KEY}`,
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({
+        amount: transactionAmount,
+        description: description,
+        payer: payer,
+        currency: 'BRL'
+      }),
+    });
+
+    const result = await response.json();
+
+    // Verificar se houve erro na resposta
+    if (!response.ok) {
+      console.error('Erro na resposta do HorsePay:', result);
       return new Response(
         JSON.stringify({ 
-          error: 'Erro de autenticação',
-          message: 'Credenciais inválidas ou expiradas',
-          status: error.status
+          error: 'Erro na resposta do HorsePay',
+          message: result.message || 'Não foi possível gerar o código PIX',
+          details: result
         }),
         { 
-          status: 401,
+          status: response.status,
           headers: {
             'Content-Type': 'application/json',
           }
         }
       );
     }
+    
+    // Verificar se a resposta contém os dados necessários
+    if (!result.qrCode || !result.pixCode) {
+      return new Response(
+        JSON.stringify({ 
+          error: 'Erro na resposta do HorsePay',
+          message: 'Não foi possível gerar o código PIX',
+          details: result
+        }),
+        { 
+          status: 500,
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
+      );
+    }
+    
+    // Retornar o QR Code e o código PIX
+    return new Response(
+      JSON.stringify({
+        qr_code: result.pixCode,
+        qr_code_base64: result.qrCode,
+        id: result.id,
+        status: result.status,
+      }),
+      { 
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      }
+    );
+  } catch (error: any) {
+    console.error('Erro ao gerar pagamento PIX:', error);
+    console.error('Detalhes do erro:', {
+      message: error.message,
+      status: error.status,
+      cause: error.cause
+    });
     
     return new Response(
       JSON.stringify({ 

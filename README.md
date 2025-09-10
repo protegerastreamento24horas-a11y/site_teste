@@ -1,90 +1,69 @@
-# Next.js Rifa Automatizada com PIX
+# Site para geração de pagamentos PIX com HorsePay
 
-Este projeto é uma aplicação Next.js para venda de rifas automatizadas com pagamento via PIX através da HorsePay.
+Este é um projeto [Next.js](https://nextjs.org/) criado com [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) que permite gerar pagamentos PIX através do HorsePay.
 
 ## Funcionalidades
 
-- Sistema de rifas automatizadas com escolha automática de números
-- Integração completa com a API da HorsePay para pagamentos via PIX
-- Página inicial profissional com banner atrativo
-- Carrossel de últimos ganhadores (fake)
-- Sistema de sorteio automático
-- Recebimento de webhooks para atualização de status de pagamento
-- Área para visualização das rifas compradas
+- Geração de códigos PIX para pagamentos
+- Interface amigável com QR Code
+- Integração completa com a API do HorsePay
 
-## Tecnologias Utilizadas
+## Tecnologias utilizadas
 
-- Next.js 15
-- React 19
-- TypeScript
-- Tailwind CSS
+- [Next.js 15](https://nextjs.org/)
+- [React 19](https://reactjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [HorsePay SDK](https://horsepay.com.br/docs)
 
-## Como rodar o projeto localmente
+## Como configurar o projeto
 
-1. Clone o repositório
+1. Clone o repositório:
+   ```bash
+   git clone <url-do-repositorio>
+   ```
+
 2. Instale as dependências:
    ```bash
    npm install
    ```
+
 3. Configure as variáveis de ambiente:
-   - Copie o arquivo `.env.local.example` para `.env.local`
-   - **Substitua os valores de exemplo pelas suas credenciais reais da HorsePay:**
-   ```env
-   HORSEPAY_CLIENT_KEY=sua_client_key_real_aqui
-   HORSEPAY_CLIENT_SECRET=sua_client_secret_real_aqui
-   ```
-4. Inicie o servidor de desenvolvimento:
+   - Copie o arquivo `.env.example` para `.env.local`
+   - Obtenha suas credenciais do HorsePay em [https://horsepay.com.br/dashboard/settings/api-keys](https://horsepay.com.br/dashboard/settings/api-keys)
+   - Preencha a variável `HORSEPAY_API_KEY` com sua chave de API
+
+4. Execute o servidor de desenvolvimento:
    ```bash
    npm run dev
    ```
-5. Acesse [http://localhost:3000](http://localhost:3000)
 
-## Como obter credenciais da HorsePay
+5. Abra [http://localhost:3001](http://localhost:3001) no seu navegador para ver o resultado (a porta pode ser diferente se a 3000 estiver em uso).
 
-1. Acesse [https://horsepay.io](https://horsepay.io)
-2. Crie uma conta ou faça login
-3. Vá até a seção de desenvolvedores ou API
-4. Gere um par de credenciais (Client Key e Client Secret)
-5. Substitua as credenciais de exemplo no arquivo `.env.local` pelas suas credenciais reais
+## Testando a funcionalidade de PIX
 
-## Deploy
+1. Na página inicial, clique no botão "Gerar PIX"
+2. Preencha o valor e uma descrição para o pagamento
+3. Clique no botão "Gerar PIX"
+4. Se tudo estiver configurado corretamente, será exibido um QR Code e o código copia e cola
 
-### Vercel (Recomendado)
+## Estrutura do projeto
 
-O projeto está configurado para deploy no Vercel. Siga estas etapas:
+- `app/page.tsx` - Página inicial
+- `app/pix/page.tsx` - Página para geração de PIX
+- `app/api/pix/route.ts` - API route para integração com o HorsePay
 
-1. Acesse [https://vercel.com](https://vercel.com)
-2. Faça login com sua conta do GitHub
-3. Importe o repositório
-4. Configure as variáveis de ambiente:
-   - `HORSEPAY_CLIENT_KEY` (sua chave real)
-   - `HORSEPAY_CLIENT_SECRET` (seu segredo real)
-   - `VERCEL_URL` (definida automaticamente pelo Vercel)
-5. Faça o deploy
+## Como fazer o deploy na Vercel
 
-### Variáveis de Ambiente Necessárias
+O jeito mais fácil de fazer o deploy do seu aplicativo Next.js é usando a [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) dos mesmos criadores do Next.js.
 
-- `HORSEPAY_CLIENT_KEY`: Chave de cliente da HorsePay
-- `HORSEPAY_CLIENT_SECRET`: Segredo de cliente da HorsePay
-- `VERCEL_URL`: URL do seu projeto no Vercel (definida automaticamente pelo Vercel)
+Confira nossa [documentação de deploy Next.js](https://nextjs.org/docs/deployment) para mais detalhes.
 
-## Segurança
+## Aprendizado
 
-⚠️ **Importante**: Nunca commite credenciais reais no repositório. O arquivo `.env.local` está no `.gitignore` para evitar que credenciais sensíveis sejam expostas publicamente.
+Para aprender mais sobre Next.js, dê uma olhada nos seguintes recursos:
 
-## Estrutura do Projeto
+- [Documentação do Next.js](https://nextjs.org/docs) - aprenda sobre os recursos e API do Next.js.
+- [Aprenda Next.js](https://nextjs.org/learn) - um tutorial interativo do Next.js.
 
-- `app/page.tsx`: Página inicial com banner e carrossel de ganhadores
-- `app/rifas/page.tsx`: Página de seleção e compra de rifas
-- `app/pagamento/page.tsx`: Página de pagamento via PIX
-- `app/minhas-rifas/page.tsx`: Página para visualizar rifas compradas
-- `app/api/pix/route.ts`: API de integração com a HorsePay
-- `app/api/webhook/route.ts`: Endpoint para receber webhooks da HorsePay
-
-## Como Contribuir
-
-1. Faça um fork do projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/nome-da-feature`)
-3. Commit suas mudanças (`git commit -m 'Adiciona nova feature'`)
-4. Push para a branch (`git push origin feature/nome-da-feature`)
-5. Abra um Pull Request
+Você também pode conferir [o repositório do Next.js no GitHub](https://github.com/vercel/next.js/).

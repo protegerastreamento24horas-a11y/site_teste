@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "RifaFácil - Compre Rifas Online com PIX",
-  description: "Compre rifas online de forma fácil e segura com pagamento via PIX. Concorra a prêmios incríveis!",
+  title: "Rifas Online - Participe de rifas e concorra a prêmios",
+  description: "Participe de nossas rifas online e concorra a prêmios incríveis. Compra simples e segura via PIX.",
 };
 
 export default function RootLayout({
@@ -27,13 +25,9 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Header />
-        <main className="flex-grow">
-          {children}
-        </main>
-        <Footer />
+        {children}
       </body>
     </html>
   );

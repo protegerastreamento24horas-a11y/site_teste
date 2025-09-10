@@ -2,34 +2,38 @@ import React from 'react';
 
 interface LoadingSpinnerProps {
   size?: 'sm' | 'md' | 'lg';
-  color?: 'blue' | 'white' | 'black';
+  color?: 'primary' | 'secondary' | 'white';
   message?: string;
 }
 
 export default function LoadingSpinner({ 
   size = 'md', 
-  color = 'blue',
+  color = 'primary',
   message 
 }: LoadingSpinnerProps) {
   const sizeClasses = {
-    sm: 'w-6 h-6',
-    md: 'w-12 h-12',
-    lg: 'w-16 h-16'
+    sm: 'h-6 w-6',
+    md: 'h-10 w-10',
+    lg: 'h-16 w-16'
   };
 
   const colorClasses = {
-    blue: 'border-blue-600 border-t-blue-600',
-    white: 'border-white border-t-white',
-    black: 'border-black border-t-black'
+    primary: 'border-green-500',
+    secondary: 'border-blue-500',
+    white: 'border-white'
   };
 
   return (
-    <div className="flex flex-col items-center justify-center p-4">
-      <div className={`rounded-full border-4 border-opacity-25 animate-spin ${sizeClasses[size]} ${colorClasses[color]}`} />
+    <div className="flex flex-col items-center justify-center">
+      <div 
+        className={`animate-spin rounded-full border-b-2 ${sizeClasses[size]} ${colorClasses[color]}`}
+        role="status"
+        aria-label="Carregando"
+      >
+        <span className="sr-only">Carregando...</span>
+      </div>
       {message && (
-        <p className="mt-4 text-center text-black">
-          {message}
-        </p>
+        <p className="mt-3 text-gray-600 text-center">{message}</p>
       )}
     </div>
   );

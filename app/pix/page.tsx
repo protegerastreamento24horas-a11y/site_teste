@@ -15,8 +15,7 @@ export default function PixPayment() {
     setLoading(true);
     setError('');
     try {
-      // Esta é uma implementação de exemplo
-      // Na prática, você precisaria chamar sua API backend que se conecta ao Mercado Pago
+      // Chamar a API do HorsePay através do nosso backend
       const response = await fetch('/api/pix', {
         method: 'POST',
         headers: {
@@ -38,10 +37,6 @@ export default function PixPayment() {
         const errorMessage = data.message || data.error || 'Erro ao gerar o código PIX';
         setError(errorMessage);
         console.error('Erro na resposta:', data);
-        // Mostrar detalhes adicionais do erro no console
-        if (data.details) {
-          console.error('Detalhes do erro:', data.details);
-        }
       }
     } catch (error) {
       console.error('Erro:', error);
@@ -66,6 +61,12 @@ export default function PixPayment() {
             </div>
             
             <h1 className="text-2xl font-bold text-center mt-4 mb-8">Gerar pagamento PIX</h1>
+            
+            {error && (
+              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-md">
+                <p className="text-red-700">{error}</p>
+              </div>
+            )}
             
             <div className="divide-y divide-gray-200">
               <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
@@ -109,52 +110,65 @@ export default function PixPayment() {
                   </label>
                 </div>
                 
-                {error && (
-                  <div className="text-red-500 text-sm py-2">
-                    {error}
-                  </div>
-                )}
-                
-                <div className="flex justify-center mt-10">
+                <div className="relative">
                   <button
                     onClick={generatePix}
                     disabled={loading || !amount || !description}
-                    className={`px-6 py-3 rounded-lg text-white font-medium ${
-                      loading || !amount || !description
-                        ? 'bg-gray-400 cursor-not-allowed'
-                        : 'bg-green-500 hover:bg-green-600'
+                    className={`w-full bg-green-500 text-white rounded-md py-2 font-semibold ${
+                      loading || !amount || !description 
+                        ? 'opacity-50 cursor-not-allowed' 
+                        : 'hover:bg-green-600'
                     }`}
                   >
                     {loading ? 'Gerando...' : 'Gerar PIX'}
                   </button>
                 </div>
-                
-                {qrCode && (
-                  <div className="mt-8 p-4 bg-gray-50 rounded-lg flex flex-col items-center">
-                    <h2 className="text-lg font-semibold mb-4">Código PIX</h2>
-                    <div className="bg-white p-4 rounded border">
-                      <img src={qrCode} alt="QR Code PIX" className="w-48 h-48" />
-                    </div>
-                    <div className="mt-4 w-full">
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Código Copia e Cola</label>
-                      <textarea
-                        readOnly
-                        value={pixCode}
-                        className="w-full h-24 p-2 text-xs border border-gray-300 rounded resize-none"
+              </div>
+              
+              {qrCode && (
+                <div className="pt-6 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                  <h2 className="text-xl font-bold">Seu código PIX</h2>
+                  
+                  <div className="flex flex-col items-center">
+                    <div className="bg-gray-100 p-4 rounded-lg mb-4">
+                      <img 
+                        src={qrCode} 
+                        alt="QR Code PIX" 
+                        className="w-48 h-48 object-contain"
                       />
-                      <button
-                        onClick={() => {
-                          navigator.clipboard.writeText(pixCode);
-                          alert('Código copiado para a área de transferência!');
-                        }}
-                        className="mt-2 w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
-                      >
-                        Copiar código
-                      </button>
+                    </div>
+                    
+                    <div className="w-full">
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Código PIX (cópia e cola):
+                      </label>
+                      <div className="flex">
+                        <input
+                          type="text"
+                          readOnly
+                          value={pixCode}
+                          className="flex-1 border border-gray-300 rounded-l-md px-3 py-2 text-sm font-mono"
+                        />
+                        <button
+                          onClick={() => {
+                            navigator.clipboard.writeText(pixCode);
+                            alert('Código copiado para a área de transferência!');
+                          }}
+                          className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-r-md text-sm font-medium"
+                        >
+                          Copiar
+                        </button>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-6 text-center">
+                      <p className="text-sm text-gray-600">
+                        Aponte a câmera do seu banco para o QR Code ou copie o código acima para realizar o pagamento.
+                      </p>
                     </div>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
