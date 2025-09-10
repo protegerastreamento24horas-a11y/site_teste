@@ -14,12 +14,13 @@ export default function PaymentContent() {
   const [qrCode, setQrCode] = useState('');
   const [paymentId, setPaymentId] = useState<number | null>(null);
   const [paymentStatus, setPaymentStatus] = useState('pending');
+  const [error, setError] = useState('');
 
   const raffleId = searchParams.get('id');
   const quantity = searchParams.get('quantity');
 
   useEffect(() => {
-    // Simular carregamento de dados da rifa
+    // Carregar dados da rifa
     if (raffleId && quantity) {
       const mockRaffle = {
         id: parseInt(raffleId),
@@ -31,18 +32,51 @@ export default function PaymentContent() {
       
       setRaffle(mockRaffle);
       
-      // Simular geração de código PIX via HorsePay
-      setTimeout(() => {
-        setPixCode('00020126890014BR.GOV.BCB.PIX2567api.horsepay.com.br/v1/payments/12345678905204000053039865406100.005802BR5925FULANO DE TAL6008BRASILIA61087000000062190515RP12345678-901236304ABC12');
-        setQrCode('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAACCCAMAAADQNkiAAAAA1BMVEW10NBjBBbqAAAAH0lEQVRo3u3BAQ0AAADCoPdPbQ43oAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAICLAcTSYAAAAABJRU5ErkJggg==');
-        setPaymentId(123456);
-        setLoading(false);
-      }, 1500);
+      // Gerar pagamento via HorsePay
+      generatePayment(mockRaffle);
     } else {
       // Se não tiver parâmetros, redirecionar para as rifas
       router.push('/rifas');
     }
   }, [raffleId, quantity, router]);
+
+  const generatePayment = async (raffleData: any) => {
+    try {
+      setLoading(true);
+      setError('');
+      
+      // Chamar a API PIX para gerar o pagamento
+      const response = await fetch('/api/pix', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          amount: raffleData.total,
+          description: `Pagamento de rifa: ${raffleData.title}`,
+          payerEmail: '' // Em um sistema real, pegaríamos o email do usuário logado
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.qr_code_base64) {
+        setQrCode(data.qr_code_base64);
+        setPixCode(data.qr_code);
+        setPaymentId(data.id);
+        setPaymentStatus(data.status);
+      } else {
+        const errorMessage = data.message || data.error || 'Erro ao gerar o pagamento';
+        setError(errorMessage);
+        console.error('Erro na resposta:', data);
+      }
+    } catch (err) {
+      console.error('Erro ao gerar pagamento:', err);
+      setError('Erro de conexão. Por favor, tente novamente.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     // Iniciar contador regressivo
@@ -92,6 +126,12 @@ export default function PaymentContent() {
               <p className="text-gray-600">Escaneie o QR Code ou copie o código PIX</p>
             </div>
 
+            {error && (
+              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-md">
+                <p className="text-red-700">{error}</p>
+              </div>
+            )}
+
             <div className="mb-8">
               <div className="flex justify-between items-center bg-yellow-50 p-4 rounded-md border border-yellow-200">
                 <div className="flex items-center">
@@ -114,7 +154,9 @@ export default function PaymentContent() {
                       {qrCode ? (
                         <img src={qrCode} alt="QR Code PIX" className="w-48 h-48" />
                       ) : (
-                        <div className="bg-gray-200 border-2 border-dashed rounded-xl w-48 h-48" />
+                        <div className="bg-gray-200 border-2 border-dashed rounded-xl w-48 h-48 flex items-center justify-center">
+                          <span className="text-gray-500">QR Code não disponível</span>
+                        </div>
                       )}
                     </div>
                     <p className="text-gray-600 text-center">Escaneie com o app do seu banco</p>
@@ -126,12 +168,17 @@ export default function PaymentContent() {
                     <h2 className="text-lg font-bold text-gray-900 mb-4">Ou copie o código PIX</h2>
                     <div className="mb-4">
                       <div className="bg-gray-100 p-4 rounded-md break-words text-sm font-mono">
-                        {pixCode}
+                        {pixCode || 'Código PIX não disponível'}
                       </div>
                     </div>
                     <button
                       onClick={copyToClipboard}
-                      className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors font-medium"
+                      disabled={!pixCode}
+                      className={`w-full py-2 px-4 rounded-md font-medium ${
+                        pixCode 
+                          ? 'bg-blue-600 text-white hover:bg-blue-700' 
+                          : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      }`}
                     >
                       Copiar código PIX
                     </button>
