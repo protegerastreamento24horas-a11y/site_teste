@@ -12,12 +12,15 @@ interface Raffle {
   endDate: string;
   totalNumbers: number;
   availableNumbers: number;
+  prizeValue: number;
+  category: string;
 }
 
 export default function RafflesPage() {
   const [raffles, setRaffles] = useState<Raffle[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all'); // all, ending-soon, high-value
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     // Simular carregamento de rifas
@@ -30,7 +33,9 @@ export default function RafflesPage() {
         image: '/iphone.jpg',
         endDate: '2024-12-31',
         totalNumbers: 1000,
-        availableNumbers: 750
+        availableNumbers: 750,
+        prizeValue: 6500,
+        category: 'Eletrônicos'
       },
       {
         id: 2,
@@ -40,7 +45,9 @@ export default function RafflesPage() {
         image: '/macbook.jpg',
         endDate: '2024-11-30',
         totalNumbers: 500,
-        availableNumbers: 200
+        availableNumbers: 200,
+        prizeValue: 15000,
+        category: 'Eletrônicos'
       },
       {
         id: 3,
@@ -50,7 +57,9 @@ export default function RafflesPage() {
         image: '/disney.jpg',
         endDate: '2024-10-31',
         totalNumbers: 1000,
-        availableNumbers: 850
+        availableNumbers: 850,
+        prizeValue: 25000,
+        category: 'Viagens'
       },
       {
         id: 4,
@@ -60,7 +69,9 @@ export default function RafflesPage() {
         image: '/ps5.jpg',
         endDate: '2024-11-15',
         totalNumbers: 750,
-        availableNumbers: 600
+        availableNumbers: 600,
+        prizeValue: 3500,
+        category: 'Eletrônicos'
       },
       {
         id: 5,
@@ -70,7 +81,9 @@ export default function RafflesPage() {
         image: '/tv.jpg',
         endDate: '2024-12-15',
         totalNumbers: 600,
-        availableNumbers: 420
+        availableNumbers: 420,
+        prizeValue: 5500,
+        category: 'Eletrônicos'
       },
       {
         id: 6,
@@ -80,7 +93,33 @@ export default function RafflesPage() {
         image: '/notebook.jpg',
         endDate: '2024-11-20',
         totalNumbers: 800,
-        availableNumbers: 720
+        availableNumbers: 720,
+        prizeValue: 8000,
+        category: 'Eletrônicos'
+      },
+      {
+        id: 7,
+        title: 'Carro 0KM',
+        description: 'Volkswagen Gol 1.0 2024',
+        price: 50.00,
+        image: '/car.jpg',
+        endDate: '2024-12-20',
+        totalNumbers: 2000,
+        availableNumbers: 1850,
+        prizeValue: 85000,
+        category: 'Automóveis'
+      },
+      {
+        id: 8,
+        title: 'Motocicleta Harley Davidson',
+        description: 'Harley Davidson Street 750',
+        price: 30.00,
+        image: '/motorcycle.jpg',
+        endDate: '2024-11-10',
+        totalNumbers: 1000,
+        availableNumbers: 750,
+        prizeValue: 45000,
+        category: 'Automóveis'
       }
     ];
 
@@ -91,98 +130,164 @@ export default function RafflesPage() {
   }, []);
 
   const filteredRaffles = raffles.filter(raffle => {
-    if (filter === 'ending-soon') {
-      // Filtrar rifas que terminam em 30 dias
-      const endDate = new Date(raffle.endDate);
-      const today = new Date();
-      const diffTime = endDate.getTime() - today.getTime();
-      const diffDays = diffTime / (1000 * 3600 * 24);
-      return diffDays <= 30;
-    }
-    if (filter === 'high-value') {
-      // Filtrar rifas com preço acima de R$10
-      return raffle.price >= 10;
-    }
-    return true; // all
+    const matchesFilter = filter === 'all' || 
+      (filter === 'ending-soon' && new Date(raffle.endDate) < new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)) ||
+      (filter === 'high-value' && raffle.prizeValue >= 10000);
+      
+    const matchesSearch = raffle.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      raffle.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      raffle.category.toLowerCase().includes(searchTerm.toLowerCase());
+      
+    return matchesFilter && matchesSearch;
   });
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-100 py-6 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Carregando rifas...</p>
+      <div className="min-h-screen bg-dark-bg py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h1 className="text-4xl font-bold text-white mb-4">Nossas Rifas</h1>
+            <p className="text-gray-400 text-xl">Carregando rifas premium...</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[1, 2, 3].map((item) => (
+              <div key={item} className="bg-card-bg rounded-2xl overflow-hidden shadow-xl border border-gray-700 animate-pulse">
+                <div className="bg-gray-700 h-64 w-full"></div>
+                <div className="p-6">
+                  <div className="h-6 bg-gray-700 rounded mb-4"></div>
+                  <div className="h-4 bg-gray-700 rounded mb-2"></div>
+                  <div className="h-4 bg-gray-700 rounded mb-6 w-3/4"></div>
+                  <div className="h-10 bg-gray-700 rounded"></div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 py-6">
+    <div className="min-h-screen bg-dark-bg py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-10">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Nossas Rifas</h1>
-          <p className="text-gray-600">Escolha uma rifa e concorra aos prêmios</p>
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Rifas Premium</h1>
+          <p className="text-gray-400 text-xl max-w-3xl mx-auto">
+            Escolha entre as melhores rifas com prêmios incríveis e alta probabilidade de ganho
+          </p>
         </div>
 
-        {/* Filtros */}
-        <div className="mb-8 flex flex-wrap justify-center gap-4">
-          <button 
-            onClick={() => setFilter('all')}
-            className={`px-4 py-2 rounded-full ${filter === 'all' ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-100'}`}
-          >
-            Todas
-          </button>
-          <button 
-            onClick={() => setFilter('ending-soon')}
-            className={`px-4 py-2 rounded-full ${filter === 'ending-soon' ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-100'}`}
-          >
-            Terminando em breve
-          </button>
-          <button 
-            onClick={() => setFilter('high-value')}
-            className={`px-4 py-2 rounded-full ${filter === 'high-value' ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-100'}`}
-          >
-            Valores mais altos
-          </button>
+        {/* Search and Filters */}
+        <div className="mb-10 bg-card-bg rounded-2xl p-6 border border-gray-700">
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="flex-1">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Buscar rifas..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full bg-dark-bg border border-gray-700 rounded-full py-3 px-6 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gold"
+                />
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500 absolute right-6 top-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+            </div>
+            
+            <div className="flex flex-wrap gap-3">
+              <button 
+                onClick={() => setFilter('all')}
+                className={`px-5 py-2 rounded-full font-medium transition duration-300 ${
+                  filter === 'all' 
+                    ? 'bg-gradient-gold text-black' 
+                    : 'bg-dark-bg text-gray-300 hover:bg-gray-800'
+                }`}
+              >
+                Todas
+              </button>
+              <button 
+                onClick={() => setFilter('ending-soon')}
+                className={`px-5 py-2 rounded-full font-medium transition duration-300 ${
+                  filter === 'ending-soon' 
+                    ? 'bg-gradient-gold text-black' 
+                    : 'bg-dark-bg text-gray-300 hover:bg-gray-800'
+                }`}
+              >
+                Terminando em breve
+              </button>
+              <button 
+                onClick={() => setFilter('high-value')}
+                className={`px-5 py-2 rounded-full font-medium transition duration-300 ${
+                  filter === 'high-value' 
+                    ? 'bg-gradient-gold text-black' 
+                    : 'bg-dark-bg text-gray-300 hover:bg-gray-800'
+                }`}
+              >
+                Prêmios acima de R$10k
+              </button>
+            </div>
+          </div>
         </div>
 
         {filteredRaffles.length === 0 ? (
-          <div className="bg-white rounded-lg shadow-md p-8 text-center">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
-            </svg>
-            <h2 className="text-xl font-bold text-gray-900 mb-2">Nenhuma rifa encontrada</h2>
-            <p className="text-gray-600 mb-6">Não há rifas disponíveis com os filtros selecionados.</p>
+          <div className="bg-card-bg rounded-2xl shadow-xl p-12 text-center border border-gray-700">
+            <div className="text-6xl mb-6">🎲</div>
+            <h2 className="text-2xl font-bold text-white mb-4">Nenhuma rifa encontrada</h2>
+            <p className="text-gray-400 mb-8">Não há rifas disponíveis com os filtros selecionados.</p>
             <button 
-              onClick={() => setFilter('all')}
-              className="bg-blue-600 text-white py-2 px-6 rounded-md hover:bg-blue-700 transition-colors font-medium"
+              onClick={() => {
+                setFilter('all');
+                setSearchTerm('');
+              }}
+              className="bg-gradient-gold text-black font-bold py-3 px-8 rounded-full hover:opacity-90 transition duration-300"
             >
               Ver todas as rifas
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredRaffles.map((raffle) => (
-              <div key={raffle.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                <div className="bg-gray-200 border-2 border-dashed rounded-xl w-full h-48" />
+              <div 
+                key={raffle.id} 
+                className="bg-card-bg rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 border border-gray-700 card-hover relative"
+              >
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-gold"></div>
+                <div className="bg-gray-200 border-2 border-dashed rounded-t-2xl w-full h-64" />
                 <div className="p-6">
-                  <h2 className="text-xl font-bold text-gray-900 mb-2">{raffle.title}</h2>
-                  <p className="text-gray-600 mb-4">{raffle.description}</p>
-                  
-                  <div className="flex justify-between items-center mb-4">
-                    <span className="text-2xl font-bold text-green-600">R$ {raffle.price.toFixed(2)}</span>
-                    <span className="text-sm text-gray-500">Até {raffle.endDate}</span>
+                  <div className="flex justify-between items-start mb-3">
+                    <div>
+                      <span className="chip chip-red text-xs">{raffle.category}</span>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-xs text-gray-400">Prêmio</div>
+                      <div className="text-xl font-bold text-gold">R$ {raffle.prizeValue.toLocaleString('pt-BR')}</div>
+                    </div>
                   </div>
                   
-                  <div className="mb-4">
-                    <div className="flex justify-between text-sm text-gray-500 mb-1">
+                  <h2 className="text-2xl font-bold text-white mb-2">{raffle.title}</h2>
+                  <p className="text-gray-400 mb-5">{raffle.description}</p>
+                  
+                  <div className="flex justify-between items-center mb-5">
+                    <div>
+                      <div className="text-xs text-gray-400">Valor por número</div>
+                      <div className="text-xl font-bold text-green-500">R$ {raffle.price.toFixed(2)}</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-xs text-gray-400">Sorteio</div>
+                      <div className="text-sm font-medium text-white">{raffle.endDate}</div>
+                    </div>
+                  </div>
+                  
+                  <div className="mb-6">
+                    <div className="flex justify-between text-sm text-gray-400 mb-1">
                       <span>Números disponíveis</span>
                       <span>{raffle.availableNumbers}/{raffle.totalNumbers}</span>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="w-full bg-gray-700 rounded-full h-3">
                       <div 
-                        className="bg-green-600 h-2 rounded-full" 
+                        className="bg-gradient-gold h-3 rounded-full" 
                         style={{ width: `${((raffle.totalNumbers - raffle.availableNumbers) / raffle.totalNumbers) * 100}%` }}
                       ></div>
                     </div>
@@ -190,7 +295,7 @@ export default function RafflesPage() {
                   
                   <Link 
                     href={`/rifas/${raffle.id}`}
-                    className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors text-center block font-medium"
+                    className="w-full bg-gradient-gold text-black font-bold py-3 px-4 rounded-full hover:opacity-90 transition-colors text-center block font-bold border-2 border-gold"
                   >
                     Ver detalhes
                   </Link>
