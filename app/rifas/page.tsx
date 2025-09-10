@@ -1,13 +1,24 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function RifasPage() {
   const [selectedRaffle, setSelectedRaffle] = useState<number | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const router = useRouter();
+
+  // Verificar se o usuário está logado
+  useEffect(() => {
+    const userPhone = localStorage.getItem('userPhone');
+    if (userPhone) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   // Dados fictícios de rifas disponíveis
   const raffles = [
@@ -90,6 +101,20 @@ export default function RifasPage() {
     }
   };
 
+  const handleSelectRaffle = (index: number) => {
+    if (!isLoggedIn) {
+      router.push('/login');
+      return;
+    }
+    setSelectedRaffle(index);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('userPhone');
+    setIsLoggedIn(false);
+    router.push('/');
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-indigo-100 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -100,27 +125,18 @@ export default function RifasPage() {
           <p className="mt-5 max-w-xl mx-auto text-xl text-black">
             Escolha uma de nossas rifas e concorra a prêmios incríveis
           </p>
-        </div>
-
-        {error && (
-          <div className="max-w-2xl mx-auto mb-8">
-            <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-              <div className="flex">
-                <div className="flex-shrink-0">
-                  <svg className="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <div className="ml-3">
-                  <h3 className="text-sm font-medium text-red-800">Erro</h3>
-                  <div className="mt-2 text-sm text-red-700">
-                    <p>{error}</p>
-                  </div>
-                </div>
-              </div>
+          
+          {isLoggedIn && (
+            <div className="mt-4">
+              <button 
+                onClick={handleLogout}
+                className="text-sm text-blue-600 hover:text-blue-800"
+              >
+                Sair
+              </button>
             </div>
-          </div>
-        )}
+          )}
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {raffles.map((raffle, index) => (
@@ -165,7 +181,7 @@ export default function RifasPage() {
                 </div>
                 
                 <button 
-                  onClick={() => setSelectedRaffle(index)}
+                  onClick={() => handleSelectRaffle(index)}
                   className={`w-full py-2 rounded-lg font-medium transition-colors ${
                     selectedRaffle === index 
                       ? 'bg-blue-600 text-white' 
@@ -234,19 +250,25 @@ export default function RifasPage() {
                       +
                     </button>
                   </div>
-                  <p className="text-sm text-black mt-1">
-                    Máximo: {raffles[selectedRaffle].availableNumbers} rifas
+                  <p className="text-sm text-black mt-2">
+                    Total de números: {quantity}
                   </p>
                 </div>
               </div>
               
               <div className="md:w-1/2">
-                <div className="bg-blue-50 rounded-xl p-6">
-                  <h3 className="text-lg font-bold text-black mb-4">
-                    Resumo do Pedido
-                  </h3>
+                <div className="bg-blue-50 rounded-lg p-6">
+                  <h3 className="text-lg font-bold text-black mb-4">Resumo do Pedido</h3>
                   
-                  <div className="space-y-3 mb-6">
+                  <div className="space-y-3">
+                    <div className="flex justify-between">
+                      <span className="text-black">Preço unitário:</span>
+                      <span className="font-medium text-black">R$ {raffles[selectedRaffle].price}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-black">Quantidade:</span>
+                      <span className="font-medium text-black">{quantity}</span>
+                    </div>
                     <div className="flex justify-between">
                       <span className="text-black">Subtotal:</span>
                       <span className="font-medium text-black">R$ {(raffles[selectedRaffle].price * quantity).toFixed(2)}</span>
@@ -266,7 +288,7 @@ export default function RifasPage() {
                   <button
                     onClick={handlePayment}
                     disabled={isProcessing}
-                    className={`w-full py-3 rounded-lg font-bold transition-colors ${
+                    className={`w-full py-3 rounded-lg font-bold transition-colors mt-6 ${
                       isProcessing 
                         ? 'bg-gray-400 cursor-not-allowed' 
                         : 'bg-gradient-to-r from-blue-600 to-purple-700 hover:from-blue-700 hover:to-purple-800 text-white'
@@ -284,34 +306,18 @@ export default function RifasPage() {
           </div>
         )}
 
-        <div className="text-center py-8">
-          <h2 className="text-2xl font-bold text-black mb-4">
-            Como funciona o sistema automático?
-          </h2>
-          <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-md p-6">
-            <ul className="space-y-3 text-black">
-              <li className="flex items-start">
-                <span className="text-green-500 font-bold mr-2">✓</span>
-                <span>Escolha a rifa que deseja participar</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-green-500 font-bold mr-2">✓</span>
-                <span>Defina a quantidade de rifas que deseja comprar</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-green-500 font-bold mr-2">✓</span>
-                <span>O sistema automaticamente escolhe números disponíveis para você</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-green-500 font-bold mr-2">✓</span>
-                <span>Pague com PIX e receba os números em seu email</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-green-500 font-bold mr-2">✓</span>
-                <span>Aguarde o sorteio na data prevista</span>
-              </li>
-            </ul>
+        {error && (
+          <div className="max-w-2xl mx-auto">
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-8">
+              <p className="text-red-800 text-center">{error}</p>
+            </div>
           </div>
+        )}
+
+        <div className="text-center">
+          <Link href="/" className="text-blue-600 hover:text-blue-800 font-medium">
+            ← Voltar para Home
+          </Link>
         </div>
       </div>
     </div>
