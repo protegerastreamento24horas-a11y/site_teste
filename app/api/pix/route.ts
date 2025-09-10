@@ -92,43 +92,7 @@ export async function POST(request: NextRequest) {
       ? 'http://localhost:3000'
       : 'https://seu-dominio.com'; // Substitua pelo seu domínio em produção
 
-    const successUrl = `${baseUrl}/success`;
-```
-
-app/api/pix/route.ts
-```typescript
-<<<<<<< SEARCH
-      // Retornar o QR Code e o código PIX
-      return new Response(
-        JSON.stringify({
-          qr_code: order.copy_past,
-          qr_code_base64: order.payment,
-          id: order.external_id,
-          status: order.status,
-        }),
-        { 
-          status: 200,
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        }
-      );
-      // Retornar o QR Code e o código PIX
-      return new Response(
-        JSON.stringify({
-          qr_code: order.copy_past,
-          qr_code_base64: order.payment,
-          id: order.external_id,
-          status: order.status,
-          success_url: successUrl
-        }),
-        { 
-          status: 200,
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        }
-      );
+    const successUrl = `${baseUrl}/sucesso`;
 
     console.log('Recebida solicitação de pagamento:', { amount, description, payerEmail });
 
@@ -184,6 +148,7 @@ app/api/pix/route.ts
           qr_code_base64: order.payment,
           id: order.external_id,
           status: order.status,
+          success_url: successUrl
         }),
         { 
           status: 200,
