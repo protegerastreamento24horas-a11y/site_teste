@@ -2,47 +2,39 @@
 
 import Link from 'next/link';
 
-export default function RegulationsPage() {
-  const regulations = [
+export default function PrivacyPage() {
+  const privacySections = [
     {
-      title: '1. Das Disposições Gerais',
-      content: 'O presente regulamento estabelece as regras gerais aplicáveis às raspadinhas virtuais oferecidas pela MEGA RASPADINHA. Ao participar, o usuário declara ter lido, compreendido e aceito todas as disposições aqui contidas.'
+      title: '1. Informações que Coletamos',
+      content: 'Coletamos informações pessoais que você nos fornece diretamente, como nome, endereço de email, número de telefone, data de nascimento e informações de pagamento. Também coletamos automaticamente informações sobre o uso do site, como endereço IP, tipo de navegador, páginas visitadas e tempo de permanência.'
     },
     {
-      title: '2. Da Participação',
-      content: 'Para participar das raspadinhas virtuais, o usuário deve ser maior de 18 anos, residente no território brasileiro, possuir conta cadastrada na plataforma e realizar o pagamento do valor correspondente à raspadinha escolhida via PIX.'
+      title: '2. Como Usamos suas Informações',
+      content: 'Utilizamos suas informações para fornecer e melhorar nossos serviços, processar transações, enviar comunicações relevantes, personalizar sua experiência e cumprir obrigações legais. Não vendemos, alugamos ou compartilhamos suas informações pessoais com terceiros para fins comerciais sem o seu consentimento.'
     },
     {
-      title: '3. Dos Prêmios',
-      content: 'Os prêmios variam de acordo com a raspadinha escolhida e são definidos aleatoriamente pelo sistema. Os valores dos prêmios podem variar desde R$ 1,00 até o prêmio máximo anunciado para cada tipo de raspadinha.'
+      title: '3. Proteção de Dados',
+      content: 'Implementamos medidas de segurança técnicas e organizacionais para proteger suas informações contra acesso não autorizado, alteração, divulgação ou destruição. Utilizamos criptografia, firewalls e outras tecnologias para garantir a segurança dos seus dados.'
     },
     {
-      title: '4. Das Taxas de Retorno',
-      content: 'Cada raspadinha tem uma taxa de retorno ao jogador (RTP - Return to Player) de no mínimo 90%, garantindo jogos justos e transparentes. Os resultados são gerados por um sistema de números aleatórios certificado.'
+      title: '4. Cookies e Tecnologias Semelhantes',
+      content: 'Utilizamos cookies e tecnologias semelhantes para melhorar sua experiência em nosso site, analisar tendências, administrar o site, acompanhar as preferências dos usuários e coletar informações demográficas. Você pode configurar seu navegador para recusar todos ou alguns cookies.'
     },
     {
-      title: '5. Dos Pagamentos',
-      content: 'Os prêmios são creditados imediatamente na conta do usuário após a revelação da raspadinha. Para sacar os prêmios, o usuário deve seguir o processo de saque descrito na plataforma, podendo ser solicitado documentação para validação.'
+      title: '5. Compartilhamento de Informações',
+      content: 'Podemos compartilhar suas informações com prestadores de serviços terceirizados que nos auxiliam na operação do site, processamento de pagamentos, análise de dados e atendimento ao cliente. Também podemos divulgar informações quando exigido por lei ou para proteger nossos direitos.'
     },
     {
-      title: '6. Das Responsabilidades',
-      content: 'A MEGA RASPADINHA não se responsabiliza por falhas de conexão, problemas técnicos ou qualquer outro fator externo que possa interferir na participação do usuário. Em caso de falhas, o usuário deve entrar em contato com o suporte.'
+      title: '6. Seus Direitos',
+      content: 'Você tem o direito de acessar, corrigir ou excluir suas informações pessoais, bem como se opor ao processamento dos seus dados. Para exercer esses direitos, entre em contato conosco através dos canais disponibilizados em nossa página de contato.'
     },
     {
-      title: '7. Das Penalidades',
-      content: 'A plataforma se reserva o direito de bloquear contas de usuários que violem este regulamento, tentem fraudar o sistema ou pratiquem qualquer forma de abuso. Nesses casos, os prêmios poderão ser cancelados e os valores retidos.'
+      title: '7. Retenção de Dados',
+      content: 'Mantemos suas informações pessoais apenas pelo tempo necessário para cumprir as finalidades descritas nesta política, exceto quando um período de retenção mais longo for exigido ou permitido por lei.'
     },
     {
-      title: '8. Da Privacidade',
-      content: 'Todos os dados pessoais dos usuários são tratados conforme a Política de Privacidade da plataforma, garantindo segurança e sigilo das informações fornecidas.'
-    },
-    {
-      title: '9. Das Alterações',
-      content: 'A MEGA RASPADINHA se reserva o direito de alterar este regulamento a qualquer momento, comprometendo-se a informar os usuários sobre quaisquer mudanças através da plataforma.'
-    },
-    {
-      title: '10. Das Disposições Finais',
-      content: 'Este regulamento é regido pelas leis da República Federativa do Brasil. Em caso de controvérsias, o foro eleito será o da comarca de São Paulo/SP, com renúncia a qualquer outro, por mais privilegiado que seja.'
+      title: '8. Alterações nesta Política',
+      content: 'Podemos atualizar esta Política de Privacidade periodicamente. Notificaremos você sobre quaisquer alterações publicando a nova política em nosso site. Recomendamos que você revise esta política regularmente para estar ciente de como protegemos suas informações.'
     }
   ];
 
@@ -78,7 +70,7 @@ export default function RegulationsPage() {
       <div className="py-4 px-4 bg-gray-900">
         <div className="max-w-7xl mx-auto">
           <nav className="text-gray-400">
-            <Link href="/" className="hover:text-yellow-400 transition">Início</Link> / Regulamento
+            <Link href="/" className="hover:text-yellow-400 transition">Início</Link> / Privacidade
           </nav>
         </div>
       </div>
@@ -87,44 +79,44 @@ export default function RegulationsPage() {
       <main className="py-12 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold mb-4">Regulamento</h1>
+            <h1 className="text-4xl font-bold mb-4">Política de Privacidade</h1>
             <p className="text-xl text-gray-300">
-              Leia atentamente as regras que regem nossa plataforma
+              Sua privacidade é importante para nós. Leia como protegemos seus dados.
             </p>
           </div>
 
           <div className="bg-gradient-to-b from-purple-900/40 to-black rounded-xl border border-purple-800 overflow-hidden">
             <div className="bg-gradient-to-r from-purple-700 to-purple-900 p-6">
-              <h2 className="text-2xl font-bold text-center">Regras e Condições Gerais</h2>
+              <h2 className="text-2xl font-bold text-center">Proteção de Dados Pessoais</h2>
             </div>
             
             <div className="p-8">
               <div className="prose prose-invert max-w-none">
                 <p className="text-gray-300 mb-8">
-                  Este Regulamento estabelece as regras e condições gerais aplicáveis ao uso da plataforma MEGA RASPADINHA, 
-                  constituindo um acordo legal entre o usuário e a plataforma. Ao acessar e utilizar nossos serviços, 
-                  o usuário declara estar ciente e de acordo com todos os termos aqui estabelecidos.
+                  Esta Política de Privacidade descreve como a MEGA RASPADINHA coleta, usa e protege suas informações pessoais 
+                  quando você utiliza nosso site e serviços. Ao utilizar nossa plataforma, você concorda com as práticas descritas 
+                  nesta política.
                 </p>
                 
                 <div className="space-y-8">
-                  {regulations.map((regulation, index) => (
+                  {privacySections.map((section, index) => (
                     <div key={index} className="border-b border-gray-800 pb-8 last:border-0 last:pb-0">
-                      <h3 className="text-xl font-bold mb-4 text-yellow-400">{regulation.title}</h3>
-                      <p className="text-gray-300">{regulation.content}</p>
+                      <h3 className="text-xl font-bold mb-4 text-yellow-400">{section.title}</h3>
+                      <p className="text-gray-300">{section.content}</p>
                     </div>
                   ))}
                 </div>
                 
                 <div className="mt-12 p-6 bg-gray-900 rounded-lg border border-gray-700">
-                  <h3 className="text-xl font-bold mb-4 text-yellow-400">Importante</h3>
+                  <h3 className="text-xl font-bold mb-4 text-yellow-400">Contato</h3>
                   <p className="text-gray-300 mb-4">
-                    Ao utilizar a plataforma MEGA RASPADINHA, você reconhece que:
+                    Se você tiver dúvidas sobre esta Política de Privacidade ou desejar exercer seus direitos de privacidade, 
+                    entre em contato conosco:
                   </p>
                   <ul className="list-disc list-inside text-gray-300 space-y-2">
-                    <li>Está ciente de que o jogo envolve risco e pode resultar em perdas</li>
-                    <li>É responsável por suas ações e decisões ao utilizar a plataforma</li>
-                    <li>Deve manter seus dados de acesso em sigilo e segurança</li>
-                    <li>Concorda em utilizar a plataforma de forma ética e legal</li>
+                    <li>Email: privacidade@megaraspadinha.com</li>
+                    <li>Telefone: (11) 99999-9999</li>
+                    <li>Endereço: Av. Paulista, 1000 - São Paulo - SP, 01310-100</li>
                   </ul>
                 </div>
               </div>

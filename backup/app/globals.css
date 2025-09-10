@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
+  --background: #0a0a0a;
   --foreground: #ffffff;
-  --background: #000000;
   --primary: #ff2d55;
   --primary-dark: #e02744;
   --secondary: #00dc82;
@@ -18,54 +18,13 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   overflow-x: hidden;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
-  }
-  
-  /* Add new utilities */
-  .btn {
-    @apply inline-flex items-center justify-center rounded-full font-bold transition;
-  }
-  
-  .btn-primary {
-    @apply bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black;
-  }
-  
-  .btn-secondary {
-    @apply bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 text-white;
-  }
-  
-  .btn-outline {
-    @apply border-2 border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black;
-  }
-  
-  .card {
-    @apply bg-gradient-to-b from-purple-900/40 to-black rounded-xl border border-purple-800 overflow-hidden;
-  }
-  
-  .link {
-    @apply text-purple-400 hover:text-purple-300 transition;
-  }
-  
-  .input {
-    @apply bg-black border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500;
-  }
-  
-  .table {
-    @apply w-full border-collapse;
-  }
-  
-  .table th {
-    @apply py-4 px-4 text-left font-bold text-yellow-400 border-b border-gray-700;
-  }
-  
-  .table td {
-    @apply py-4 px-4 border-b border-gray-800;
   }
 }
 
@@ -114,22 +73,7 @@ body {
   color: var(--gold);
 }
 
-/* Animações */
-@keyframes marquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
-.animate-marquee {
-  display: flex;
-  width: max-content;
-  animation: marquee 20s linear infinite;
-}
-
+/* Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -331,33 +275,11 @@ body {
   }
 }
 
-/* Scrollbar personalizada */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #1a1a1a;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #8b5cf6;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #a78bfa;
-}
-
-/* Responsividade */
+/* Responsive utilities */
 @media (max-width: 768px) {
   .glass {
     background: var(--card-bg);
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
-  }
-  
-  .animate-marquee {
-    animation-duration: 15s;
   }
 }

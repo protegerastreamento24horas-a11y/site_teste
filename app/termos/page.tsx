@@ -2,47 +2,51 @@
 
 import Link from 'next/link';
 
-export default function RegulationsPage() {
-  const regulations = [
+export default function TermsPage() {
+  const termsSections = [
     {
-      title: '1. Das Disposições Gerais',
-      content: 'O presente regulamento estabelece as regras gerais aplicáveis às raspadinhas virtuais oferecidas pela MEGA RASPADINHA. Ao participar, o usuário declara ter lido, compreendido e aceito todas as disposições aqui contidas.'
+      title: '1. Aceitação dos Termos',
+      content: 'Ao acessar e utilizar a plataforma MEGA RASPADINHA, você concorda em cumprir estes Termos de Uso e todas as leis e regulamentos aplicáveis. Se você não concordar com algum destes termos, não utilize nosso site e serviços.'
     },
     {
-      title: '2. Da Participação',
-      content: 'Para participar das raspadinhas virtuais, o usuário deve ser maior de 18 anos, residente no território brasileiro, possuir conta cadastrada na plataforma e realizar o pagamento do valor correspondente à raspadinha escolhida via PIX.'
+      title: '2. Descrição do Serviço',
+      content: 'A MEGA RASPADINHA oferece uma plataforma online de jogos de raspadinhas virtuais, onde os usuários podem adquirir raspadinhas e concorrer a prêmios em dinheiro real. Os resultados dos jogos são determinados por um sistema de números aleatórios certificado.'
     },
     {
-      title: '3. Dos Prêmios',
-      content: 'Os prêmios variam de acordo com a raspadinha escolhida e são definidos aleatoriamente pelo sistema. Os valores dos prêmios podem variar desde R$ 1,00 até o prêmio máximo anunciado para cada tipo de raspadinha.'
+      title: '3. Elegibilidade',
+      content: 'Para utilizar nossos serviços, você deve ter pelo menos 18 anos de idade e ser residente no território brasileiro. Ao utilizar nossa plataforma, você declara e garante que atende a todos os requisitos de elegibilidade.'
     },
     {
-      title: '4. Das Taxas de Retorno',
-      content: 'Cada raspadinha tem uma taxa de retorno ao jogador (RTP - Return to Player) de no mínimo 90%, garantindo jogos justos e transparentes. Os resultados são gerados por um sistema de números aleatórios certificado.'
+      title: '4. Conta de Usuário',
+      content: 'Para participar das raspadinhas, você deve criar uma conta fornecendo informações verdadeiras, precisas e completas. Você é responsável por manter a confidencialidade de sua senha e por todas as atividades que ocorram em sua conta.'
     },
     {
-      title: '5. Dos Pagamentos',
-      content: 'Os prêmios são creditados imediatamente na conta do usuário após a revelação da raspadinha. Para sacar os prêmios, o usuário deve seguir o processo de saque descrito na plataforma, podendo ser solicitado documentação para validação.'
+      title: '5. Pagamentos e Prêmios',
+      content: 'Todos os pagamentos são processados via PIX. Os prêmios são creditados imediatamente na conta do usuário após a revelação da raspadinha. A MEGA RASPADINHA se reserva o direito de verificar a identidade dos ganhadores antes do pagamento dos prêmios.'
     },
     {
-      title: '6. Das Responsabilidades',
-      content: 'A MEGA RASPADINHA não se responsabiliza por falhas de conexão, problemas técnicos ou qualquer outro fator externo que possa interferir na participação do usuário. Em caso de falhas, o usuário deve entrar em contato com o suporte.'
+      title: '6. Direitos de Propriedade Intelectual',
+      content: 'Todo o conteúdo presente em nossa plataforma, incluindo textos, gráficos, logos, ícones, imagens, clips de áudio e software, é de propriedade exclusiva da MEGA RASPADINHA ou de seus licenciadores e é protegido pelas leis de direitos autorais.'
     },
     {
-      title: '7. Das Penalidades',
-      content: 'A plataforma se reserva o direito de bloquear contas de usuários que violem este regulamento, tentem fraudar o sistema ou pratiquem qualquer forma de abuso. Nesses casos, os prêmios poderão ser cancelados e os valores retidos.'
+      title: '7. Conduta do Usuário',
+      content: 'Você concorda em não utilizar a plataforma para qualquer finalidade ilegal ou proibida por estes Termos. Você não deve interferir ou interromper a plataforma ou os servidores conectados a ela, nem violar quaisquer leis ao usar nossos serviços.'
     },
     {
-      title: '8. Da Privacidade',
-      content: 'Todos os dados pessoais dos usuários são tratados conforme a Política de Privacidade da plataforma, garantindo segurança e sigilo das informações fornecidas.'
+      title: '8. Limitação de Responsabilidade',
+      content: 'A MEGA RASPADINHA não será responsável por quaisquer danos diretos, indiretos, incidentais, consequenciais ou punitivos decorrentes do uso ou da incapacidade de usar nossos serviços, exceto conforme exigido por lei.'
     },
     {
-      title: '9. Das Alterações',
-      content: 'A MEGA RASPADINHA se reserva o direito de alterar este regulamento a qualquer momento, comprometendo-se a informar os usuários sobre quaisquer mudanças através da plataforma.'
+      title: '9. Indenização',
+      content: 'Você concorda em indenizar e isentar a MEGA RASPADINHA, seus diretores, funcionários, agentes e afiliados de qualquer reivindicação, demanda, perda, dano, custo ou despesa decorrente do seu uso da plataforma ou violação destes Termos.'
     },
     {
-      title: '10. Das Disposições Finais',
-      content: 'Este regulamento é regido pelas leis da República Federativa do Brasil. Em caso de controvérsias, o foro eleito será o da comarca de São Paulo/SP, com renúncia a qualquer outro, por mais privilegiado que seja.'
+      title: '10. Alterações nos Termos',
+      content: 'Podemos revisar estes Termos de Uso a qualquer momento sem aviso prévio. Ao continuar a usar o site após quaisquer alterações, você concorda em ficar vinculado à versão atual desses Termos de Uso.'
+    },
+    {
+      title: '11. Lei Aplicável',
+      content: 'Estes Termos de Uso são regidos pelas leis da República Federativa do Brasil. Qualquer controvérsia decorrente destes Termos será resolvida pelos tribunais competentes do Estado de São Paulo.'
     }
   ];
 
@@ -78,7 +82,7 @@ export default function RegulationsPage() {
       <div className="py-4 px-4 bg-gray-900">
         <div className="max-w-7xl mx-auto">
           <nav className="text-gray-400">
-            <Link href="/" className="hover:text-yellow-400 transition">Início</Link> / Regulamento
+            <Link href="/" className="hover:text-yellow-400 transition">Início</Link> / Termos de Uso
           </nav>
         </div>
       </div>
@@ -87,44 +91,49 @@ export default function RegulationsPage() {
       <main className="py-12 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold mb-4">Regulamento</h1>
+            <h1 className="text-4xl font-bold mb-4">Termos de Uso</h1>
             <p className="text-xl text-gray-300">
-              Leia atentamente as regras que regem nossa plataforma
+              Leia atentamente os termos e condições para uso de nossa plataforma
             </p>
           </div>
 
           <div className="bg-gradient-to-b from-purple-900/40 to-black rounded-xl border border-purple-800 overflow-hidden">
             <div className="bg-gradient-to-r from-purple-700 to-purple-900 p-6">
-              <h2 className="text-2xl font-bold text-center">Regras e Condições Gerais</h2>
+              <h2 className="text-2xl font-bold text-center">Condições Gerais de Uso</h2>
             </div>
             
             <div className="p-8">
               <div className="prose prose-invert max-w-none">
                 <p className="text-gray-300 mb-8">
-                  Este Regulamento estabelece as regras e condições gerais aplicáveis ao uso da plataforma MEGA RASPADINHA, 
-                  constituindo um acordo legal entre o usuário e a plataforma. Ao acessar e utilizar nossos serviços, 
-                  o usuário declara estar ciente e de acordo com todos os termos aqui estabelecidos.
+                  Estes Termos de Uso regem o acesso e uso da plataforma MEGA RASPADINHA, estabelecendo 
+                  os direitos e obrigações dos usuários ao utilizar nossos serviços. Ao acessar ou usar 
+                  a plataforma, você concorda em cumprir estes termos.
+                </p>
+                
+                <p className="text-gray-300 mb-8">
+                  <strong>Data da última atualização:</strong> {new Date().toLocaleDateString('pt-BR')}
                 </p>
                 
                 <div className="space-y-8">
-                  {regulations.map((regulation, index) => (
+                  {termsSections.map((section, index) => (
                     <div key={index} className="border-b border-gray-800 pb-8 last:border-0 last:pb-0">
-                      <h3 className="text-xl font-bold mb-4 text-yellow-400">{regulation.title}</h3>
-                      <p className="text-gray-300">{regulation.content}</p>
+                      <h3 className="text-xl font-bold mb-4 text-yellow-400">{section.title}</h3>
+                      <p className="text-gray-300">{section.content}</p>
                     </div>
                   ))}
                 </div>
                 
                 <div className="mt-12 p-6 bg-gray-900 rounded-lg border border-gray-700">
-                  <h3 className="text-xl font-bold mb-4 text-yellow-400">Importante</h3>
+                  <h3 className="text-xl font-bold mb-4 text-yellow-400">Aceitação dos Termos</h3>
                   <p className="text-gray-300 mb-4">
                     Ao utilizar a plataforma MEGA RASPADINHA, você reconhece que:
                   </p>
                   <ul className="list-disc list-inside text-gray-300 space-y-2">
-                    <li>Está ciente de que o jogo envolve risco e pode resultar em perdas</li>
-                    <li>É responsável por suas ações e decisões ao utilizar a plataforma</li>
-                    <li>Deve manter seus dados de acesso em sigilo e segurança</li>
-                    <li>Concorda em utilizar a plataforma de forma ética e legal</li>
+                    <li>Leu e compreendeu estes Termos de Uso</li>
+                    <li>Concorda em cumprir todos os termos e condições aqui estabelecidos</li>
+                    <li>Tem pelo menos 18 anos de idade</li>
+                    <li>É residente no território brasileiro</li>
+                    <li>Utilizará a plataforma de forma ética e legal</li>
                   </ul>
                 </div>
               </div>

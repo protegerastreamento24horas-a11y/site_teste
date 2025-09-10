@@ -1,21 +1,19 @@
-import type { Metadata } from "next";
-import "./globals.css";
+import './globals.css';
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Sorteios Automáticos",
-  description: "Participe de sorteios automáticos e ganhe prêmios",
+  title: 'Mega Raspadinha - Raspe e Ganhe de Verdade!',
+  description: 'Sua chance diária de mudar de vida com prêmios incríveis! Inspirada no estilo das grandes loterias, trazemos jogos divertidos, dinâmicos e com prêmios reais de até R$777.777!',
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="pt" className="dark">
-      <body className="antialiased bg-gray-900 text-white min-h-screen">
-        {children}
-      </body>
+    <html lang="pt-BR">
+      <body>{children}</body>
     </html>
   );
 }
