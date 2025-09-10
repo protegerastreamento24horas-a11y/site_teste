@@ -32,6 +32,7 @@ Este é um projeto [Next.js](https://nextjs.org/) criado com [`create-next-app`]
    - Copie o arquivo `.env.example` para `.env.local`
    - Obtenha suas credenciais do HorsePay em [https://horsepay.com.br/dashboard/settings/api-keys](https://horsepay.com.br/dashboard/settings/api-keys)
    - Preencha a variável `HORSEPAY_API_KEY` com sua chave de API
+   - **Importante**: Substitua `sua_api_key_aqui` pela sua chave real da API do HorsePay
 
 4. Execute o servidor de desenvolvimento:
    ```bash

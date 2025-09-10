@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function PixPayment() {
   const [amount, setAmount] = useState('');
@@ -11,7 +11,22 @@ export default function PixPayment() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  // Verificar se a chave do HorsePay está configurada
+  const [isHorsePayConfigured, setIsHorsePayConfigured] = useState(true);
+
+  useEffect(() => {
+    // Em um ambiente real, você pode verificar a configuração do HorsePay aqui
+    // Por enquanto, vamos assumir que está configurado corretamente
+    // Esta verificação seria feita no backend na prática
+    setIsHorsePayConfigured(true);
+  }, []);
+
   const generatePix = async () => {
+    if (!isHorsePayConfigured) {
+      setError('Chave de API do HorsePay não configurada. Verifique o arquivo .env.local.');
+      return;
+    }
+
     setLoading(true);
     setError('');
     try {
@@ -62,6 +77,20 @@ export default function PixPayment() {
             
             <h1 className="text-2xl font-bold text-center mt-4 mb-8">Gerar pagamento PIX</h1>
             
+            {!isHorsePayConfigured && (
+              <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-md">
+                <h2 className="text-lg font-bold text-yellow-800 mb-2">Configuração Necessária</h2>
+                <p className="text-yellow-700 mb-2">
+                  Para usar o sistema de pagamentos PIX, você precisa configurar sua chave de API do HorsePay.
+                </p>
+                <ul className="list-disc pl-5 text-yellow-700">
+                  <li>Copie o arquivo <code className="bg-yellow-100 px-1 rounded">.env.example</code> para <code className="bg-yellow-100 px-1 rounded">.env.local</code></li>
+                  <li>Obtenha sua chave de API em <a href="https://horsepay.com.br/dashboard/settings/api-keys" target="_blank" rel="noopener noreferrer" className="underline">HorsePay Dashboard</a></li>
+                  <li>Substitua <code className="bg-yellow-100 px-1 rounded">sua_api_key_aqui</code> pela sua chave real</li>
+                </ul>
+              </div>
+            )}
+            
             {error && (
               <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-md">
                 <p className="text-red-700">{error}</p>
@@ -78,6 +107,7 @@ export default function PixPayment() {
                     step="0.01"
                     placeholder="Valor (R$)"
                     className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-green-600"
+                    disabled={!isHorsePayConfigured}
                   />
                   <label className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">
                     Valor (R$)
@@ -91,6 +121,7 @@ export default function PixPayment() {
                     type="text"
                     placeholder="Descrição"
                     className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-green-600"
+                    disabled={!isHorsePayConfigured}
                   />
                   <label className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">
                     Descrição
@@ -104,6 +135,7 @@ export default function PixPayment() {
                     type="email"
                     placeholder="Email do pagador (opcional)"
                     className="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-green-600"
+                    disabled={!isHorsePayConfigured}
                   />
                   <label className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm">
                     Email do pagador (opcional)
@@ -113,9 +145,9 @@ export default function PixPayment() {
                 <div className="relative">
                   <button
                     onClick={generatePix}
-                    disabled={loading || !amount || !description}
+                    disabled={loading || !amount || !description || !isHorsePayConfigured}
                     className={`w-full bg-green-500 text-white rounded-md py-2 font-semibold ${
-                      loading || !amount || !description 
+                      loading || !amount || !description || !isHorsePayConfigured
                         ? 'opacity-50 cursor-not-allowed' 
                         : 'hover:bg-green-600'
                     }`}
