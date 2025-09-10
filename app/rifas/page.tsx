@@ -165,6 +165,7 @@ export default function RifasPage() {
                 </div>
                 
                 <button 
+                  onClick={() => setSelectedRaffle(index)}
                   className={`w-full py-2 rounded-lg font-medium transition-colors ${
                     selectedRaffle === index 
                       ? 'bg-blue-600 text-white' 
