@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import Link from 'next-link';
+import Link from 'next/link';
 
 export default function PaymentPage() {
   const router = useRouter();
@@ -18,23 +18,7 @@ export default function PaymentPage() {
   const quantity = searchParams.get('quantity');
 
   // Dados das raspadinhas
-  interface RaffleItem {
-    id: number;
-    title: string;
-    price: number;
-    maxPrize: number;
-    icon: string;
-    quantity?: number;
-    total?: number;
-  }
-
-  const [raffle, setRaffle] = useState<RaffleItem | null>(null);
-  const [pixCode, setPixCode] = useState<string>('');
-  const [qrCode, setQrCode] = useState<string>('');
-  const [error, setError] = useState<string>('');
-
-  // Dados das raspadinhas
-  const raffles: RaffleItem[] = [
+  const raffles = [
     { 
       id: 1, 
       title: 'Raspadinha Ouro', 
@@ -103,20 +87,14 @@ export default function PaymentPage() {
   };
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(pixCode)
-      .then(() => {
-        const button = document.getElementById('copy-button');
-        if (button) {
-          button.textContent = 'Copiado!';
-          setTimeout(() => {
-            button.textContent = 'Copiar código PIX';
-          }, 2000);
-        }
-      })
-      .catch(err => {
-        setError('Falha ao copiar o código PIX. Tente novamente.');
-        console.error('Erro ao copiar:', err);
-      });
+    navigator.clipboard.writeText(pixCode);
+    const button = document.getElementById('copy-button');
+    if (button) {
+      button.textContent = 'Copiado!';
+      setTimeout(() => {
+        button.textContent = 'Copiar código PIX';
+      }, 2000);
+    }
   };
 
   const handlePaymentConfirmation = () => {
@@ -266,11 +244,9 @@ export default function PaymentPage() {
                 <div className="bg-gray-900 p-8 rounded-lg border border-gray-700">
                   <h2 className="text-2xl font-bold mb-6 text-center">QR Code PIX</h2>
                   <div className="flex flex-col items-center">
-                    <div className="bg-white p-4 rounded-lg mb-6 shadow-lg shadow-purple-900/20">
+                    <div className="bg-white p-4 rounded-lg mb-6">
                       <div className="bg-gray-200 border-2 border-dashed rounded-xl w-64 h-64 flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-gray-400 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8h4M4 16h4M16 8h4M16 16h4M8 12h8M8 8v8" />
-                        </svg>
+                        <span className="text-gray-500">QR Code PIX</span>
                       </div>
                     </div>
                     <p className="text-gray-400 text-center">Aponte a câmera do seu banco para o QR Code</p>
@@ -322,11 +298,9 @@ export default function PaymentPage() {
                   <div className="flex justify-between pt-6 border-t border-gray-700">
                     <div>
                       <h3 className="font-bold text-xl">Total a pagar</h3>
-                      <p className="text-sm text-gray-400 mt-1">Pagamento único e seguro</p>
                     </div>
                     <div className="text-right">
                       <div className="text-yellow-400 font-bold text-2xl">R$ {raffle?.total.toFixed(2)}</div>
-                      <p className="text-xs text-gray-400 mt-1">IVA incluído</p>
                     </div>
                   </div>
                 </div>
@@ -354,7 +328,7 @@ export default function PaymentPage() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-900 py-12 px-4 border-t border-gray-800">
+      <footer className="bg-gray-900 py-12 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
