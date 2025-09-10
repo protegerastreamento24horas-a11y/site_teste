@@ -5,14 +5,7 @@ import { useState, useEffect } from 'react';
 
 export default function Home() {
   const [isVisible, setIsVisible] = useState(false);
-  const [winners] = useState([
-    { id: 1, name: 'Carlos Silva', prize: 'R$ 5.500,00', time: 'Agora mesmo' },
-    { id: 2, name: 'Ana Oliveira', prize: 'R$ 2.800,00', time: '2 minutos atrás' },
-    { id: 3, name: 'Roberto Santos', prize: 'R$ 10.000,00', time: '5 minutos atrás' },
-    { id: 4, name: 'Mariana Costa', prize: 'R$ 1.500,00', time: '7 minutos atrás' },
-    { id: 5, name: 'Pedro Almeida', prize: 'R$ 15.000,00', time: '10 minutos atrás' },
-  ]);
-
+  
   useEffect(() => {
     setIsVisible(true);
   }, []);
@@ -21,93 +14,108 @@ export default function Home() {
     {
       title: "Prêmios Instantâneos",
       description: "Ganhe prêmios em dinheiro real imediatamente após raspar",
-      icon: "💰"
+      icon: "⚡"
     },
     {
       title: "Sorteios Exclusivos",
       description: "Participe de sorteios especiais com prêmios maiores",
-      icon: "🎁"
+      icon: "🏆"
     },
     {
       title: "Diversas Temáticas",
       description: "Jogos com diferentes temas para todos os gostos",
-      icon: "🍀"
+      icon: "🎨"
     },
     {
       title: "Jogue a Qualquer Hora",
       description: "Acesse de onde estiver, a qualquer momento",
-      icon: "📲"
+      icon: "📱"
     }
   ];
 
   const raffles = [
-    { id: 1, title: 'Raspadinha Ouro', prize: 5000, icon: '🥇' },
-    { id: 2, title: 'Raspadinha Prata', prize: 2000, icon: '🥈' },
-    { id: 3, title: 'Raspadinha Bronze', prize: 1000, icon: '🥉' },
+    { id: 1, title: 'Raspadinha Ouro', prize: 10000, icon: '🥇' },
+    { id: 2, title: 'Raspadinha Diamante', prize: 50000, icon: '💎' },
+    { id: 3, title: 'Raspadinha Platina', prize: 25000, icon: '🔮' },
+  ];
+
+  const testimonials = [
+    { 
+      name: 'Carlos Silva', 
+      prize: 'R$ 15.000,00', 
+      text: 'Ganhei meu primeiro prêmio em apenas 5 minutos! Incrível!',
+      avatar: 'CS'
+    },
+    { 
+      name: 'Ana Oliveira', 
+      prize: 'R$ 7.500,00', 
+      text: 'O melhor site de raspadinhas que já experimentei. Totalmente confiável!',
+      avatar: 'AO'
+    },
+    { 
+      name: 'Roberto Santos', 
+      prize: 'R$ 30.000,00', 
+      text: 'Já ganhei 3 vezes! Recomendo para todos os meus amigos.',
+      avatar: 'RS'
+    }
   ];
 
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
       <div className="relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
           <div className={`text-center transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">
-              <span className="block">🎯 Raspe e Ganhe</span>
-              <span className="block text-gradient-gold mt-2">de Verdade!</span>
+            <h1 className="text-4xl md:text-7xl font-extrabold tracking-tight mb-6">
+              <span className="block bg-gradient-primary text-transparent bg-clip-text">Raspe & Ganhe</span>
+              <span className="block text-2xl md:text-3xl font-bold text-foreground mt-4">Prêmios Reais de até R$777.777!</span>
             </h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-4">
-              Sua chance diária de mudar de vida com prêmios incríveis!
-            </p>
-            <p className="text-lg text-gray-400 max-w-3xl mx-auto mb-10">
-              Inspirada no estilo das grandes loterias, trazemos jogos divertidos, dinâmicos e com prêmios reais de até R$777.777!
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-10">
+              Experimente a emoção de raspar e ganhar prêmios em dinheiro real. 
+              Jogue a qualquer hora, de qualquer lugar!
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Link 
                 href="/rifas" 
-                className="btn btn-gold px-8 py-4 text-lg font-bold rounded-xl text-black"
+                className="btn btn-primary btn-lg px-8 py-4 rounded-full font-bold text-lg"
               >
-                Raspar Agora
+                Começar Agora
               </Link>
               <Link 
                 href="/como-funciona" 
-                className="btn btn-outline px-8 py-4 text-lg font-semibold rounded-xl"
+                className="btn btn-outline btn-lg px-8 py-4 rounded-full font-bold text-lg"
               >
                 Como Funciona
               </Link>
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Winners Marquee */}
-      <div className="py-4 bg-card border-y border-border">
-        <div className="flex animate-marquee whitespace-nowrap">
-          {[...winners, ...winners].map((winner, index) => (
-            <div key={index} className="mx-8 flex items-center">
-              <div className="w-3 h-3 rounded-full bg-green-500 mr-3"></div>
-              <span className="text-green-500 font-bold">GANHADOR!</span>
-              <span className="text-white mx-2">•</span>
-              <span className="text-white font-medium">{winner.name}</span>
-              <span className="text-white mx-2">ganhou</span>
-              <span className="text-yellow-400 font-bold">{winner.prize}</span>
-            </div>
-          ))}
-        </div>
+        
+        {/* Elementos decorativos */}
+        <div className="absolute top-20 left-10 w-64 h-64 bg-primary rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+        <div className="absolute top-40 right-10 w-72 h-72 bg-secondary rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+        <div className="absolute bottom-20 left-1/2 w-60 h-60 bg-accent rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
       </div>
 
       {/* Features Section */}
-      <div className="py-16">
+      <div className="py-20 bg-gradient-to-b from-background to-card-bg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Por que escolher nossas raspadinhas?</h2>
+            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+              Oferecemos a melhor experiência de jogo com prêmios reais e segurança garantida
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
               <div 
                 key={index} 
-                className="card p-6 text-center grid-item"
+                className="card p-8 text-center grid-item hover:glow"
               >
-                <div className="text-4xl mb-4">{feature.icon}</div>
-                <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
-                <p className="text-gray-400">{feature.description}</p>
+                <div className="text-5xl mb-6">{feature.icon}</div>
+                <h3 className="text-2xl font-bold mb-4">{feature.title}</h3>
+                <p className="text-gray-300">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -115,28 +123,30 @@ export default function Home() {
       </div>
 
       {/* Featured Raffles */}
-      <div className="py-16 bg-card">
+      <div className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
+          <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Raspadinhas em Destaque</h2>
-            <p className="text-xl text-gray-400">Escolha sua raspadinha e comece a raspar agora mesmo!</p>
+            <p className="text-xl text-gray-400">
+              Escolha entre nossas raspadinhas mais lucrativas
+            </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             {raffles.map((raffle) => (
               <div 
                 key={raffle.id} 
                 className="scratch-card grid-item"
               >
                 <div className="card p-8 h-full">
-                  <div className="text-6xl mb-6 text-center">{raffle.icon}</div>
+                  <div className="text-7xl mb-6 text-center">{raffle.icon}</div>
                   <h3 className="text-2xl font-bold text-center mb-4">{raffle.title}</h3>
-                  <div className="text-3xl font-bold text-gold text-center mb-6">
+                  <div className="text-4xl font-bold text-gradient-primary text-center mb-8">
                     R$ {raffle.prize.toLocaleString('pt-BR')}
                   </div>
                   <Link 
                     href={`/rifas/${raffle.id}`}
-                    className="btn btn-gold w-full py-3 rounded-lg font-bold text-black"
+                    className="btn btn-primary w-full py-4 rounded-full font-bold"
                   >
                     Raspar Agora
                   </Link>
@@ -147,21 +157,56 @@ export default function Home() {
         </div>
       </div>
 
-      {/* CTA Section */}
-      <div className="py-20 bg-gradient-gold">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-black mb-6">
-            Raspe e tenha a chance de ganhar!
-          </h2>
-          <p className="text-xl text-gray-900 max-w-3xl mx-auto mb-10">
-            Junte-se a milhares de usuários que já ganharam dinheiro conosco
-          </p>
-          <Link 
-            href="/cadastro" 
-            className="btn btn-primary px-8 py-4 text-lg font-bold rounded-xl text-white"
-          >
-            Criar Minha Conta Agora
-          </Link>
+      {/* Testimonials */}
+      <div className="py-20 bg-card-bg">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">O que nossos jogadores dizem</h2>
+            <p className="text-xl text-gray-400">
+              Histórias reais de vitórias e prêmios conquistados
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <div 
+                key={index} 
+                className="card p-8 grid-item"
+              >
+                <div className="flex items-center mb-6">
+                  <div className="w-12 h-12 rounded-full bg-gradient-primary flex items-center justify-center text-white font-bold mr-4">
+                    {testimonial.avatar}
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold">{testimonial.name}</h3>
+                    <p className="text-gradient-primary font-bold">Ganhou {testimonial.prize}</p>
+                  </div>
+                </div>
+                <p className="text-gray-300 italic">"{testimonial.text}"</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* CTA Final */}
+      <div className="py-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="card p-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              Pronto para tentar a sorte?
+            </h2>
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-10">
+              Junte-se a milhares de usuários que já ganharam dinheiro conosco. 
+              Comece agora e tenha a chance de ganhar prêmios incríveis!
+            </p>
+            <Link 
+              href="/rifas" 
+              className="btn btn-accent btn-lg px-10 py-4 rounded-full font-bold text-lg"
+            >
+              Raspar Agora
+            </Link>
+          </div>
         </div>
       </div>
     </div>
