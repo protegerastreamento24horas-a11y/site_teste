@@ -13,7 +13,7 @@ export default function Home() {
     { id: 6, name: 'Juliana Pereira', prize: 'R$ 500,00', time: '15 minutos atrás' },
   ]);
 
-  const [raffles, setRaffles] = useState([
+  const [raffles] = useState([
     { id: 1, title: 'Prêmio de R$ 1.000,00', probability: 95, prize: 1000 },
     { id: 2, title: 'Prêmio de R$ 500,00', probability: 92, prize: 500 },
     { id: 3, title: 'Prêmio de R$ 2.000,00', probability: 90, prize: 2000 },

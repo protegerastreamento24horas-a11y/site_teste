@@ -1,12 +1,14 @@
-# Site para geração de pagamentos PIX com HorsePay
+# Site de Sorteios Automáticos com Integração HorsePay
 
-Este é um projeto [Next.js](https://nextjs.org/) criado com [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) que permite gerar pagamentos PIX através do HorsePay.
+Este é um projeto [Next.js](https://nextjs.org/) criado com [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) que permite criar um site de sorteios automáticos com pagamento via PIX através do HorsePay.
 
 ## Funcionalidades
 
-- Geração de códigos PIX para pagamentos
-- Interface amigável com QR Code
-- Integração completa com a API do HorsePay
+- Sistema de sorteios automáticos com probabilidades configuráveis
+- Integração completa com a API do HorsePay para pagamentos via PIX
+- Painel do usuário com saldo, histórico de participações e recarga
+- Painel administrativo completo para gerenciar sorteios, usuários e configurações
+- Design responsivo com tema dark e elementos de cassino
 
 ## Tecnologias utilizadas
 
@@ -15,6 +17,17 @@ Este é um projeto [Next.js](https://nextjs.org/) criado com [`create-next-app`]
 - [TypeScript](https://www.typescriptlang.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [HorsePay SDK](https://horsepay.com.br/docs)
+
+## Estrutura do projeto
+
+- `app/page.tsx` - Página inicial com carrossel de ganhadores
+- `app/login/page.tsx` - Página de autenticação
+- `app/dashboard/page.tsx` - Painel do usuário
+- `app/sorteios/page.tsx` - Lista de sorteios disponíveis
+- `app/sorteios/[id]/page.tsx` - Detalhes e participação em sorteio específico
+- `app/recarga/page.tsx` - Recarga de saldo via PIX
+- `app/admin/page.tsx` - Painel administrativo
+- `app/api/pix/route.ts` - API route para integração com o HorsePay
 
 ## Como configurar o projeto
 
@@ -32,28 +45,14 @@ Este é um projeto [Next.js](https://nextjs.org/) criado com [`create-next-app`]
    - Copie o arquivo `.env.example` para `.env.local`
    - Obtenha suas credenciais do HorsePay em [https://horsepay.com.br/dashboard/settings/api-keys](https://horsepay.com.br/dashboard/settings/api-keys)
    - Preencha as variáveis `HORSEPAY_CLIENT_KEY` e `HORSEPAY_CLIENT_SECRET` com suas credenciais
-   - Configure a variável `NEXT_PUBLIC_BASE_URL` com a URL base do seu site (necessária para webhooks)
-   - **Importante**: Substitua `sua_client_key_aqui` e `sua_client_secret_aqui` pelas suas credenciais reais
+   - Configure a variável `NEXT_PUBLIC_BASE_URL` com a URL do seu site
 
 4. Execute o servidor de desenvolvimento:
    ```bash
    npm run dev
    ```
 
-5. Abra [http://localhost:3001](http://localhost:3001) no seu navegador para ver o resultado (a porta pode ser diferente se a 3000 estiver em uso).
-
-## Testando a funcionalidade de PIX
-
-1. Na página inicial, clique no botão "Gerar PIX"
-2. Preencha o valor e uma descrição para o pagamento
-3. Clique no botão "Gerar PIX"
-4. Se tudo estiver configurado corretamente, será exibido um QR Code e o código copia e cola
-
-## Estrutura do projeto
-
-- `app/page.tsx` - Página inicial
-- `app/pix/page.tsx` - Página para geração de PIX
-- `app/api/pix/route.ts` - API route para integração com o HorsePay
+5. Abra [http://localhost:3000](http://localhost:3000) no seu navegador para ver o resultado.
 
 ## Como fazer o deploy na Vercel
 
