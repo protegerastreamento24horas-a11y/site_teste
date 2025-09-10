@@ -27,15 +27,19 @@ export default function Home() {
         </ol>
 
         <div className="bg-yellow-50 border border-yellow-200 rounded-md p-4 mb-6 w-full">
-          <h2 className="text-lg font-bold text-yellow-800 mb-2">Importante</h2>
+          <h2 className="text-lg font-bold text-yellow-800 mb-2">Configuração do HorsePay</h2>
           <p className="text-yellow-700 mb-2">
-            Para usar o sistema de pagamentos PIX, você precisa configurar sua chave de API do HorsePay.
+            Para usar o sistema de pagamentos PIX, você precisa configurar suas credenciais do HorsePay.
           </p>
-          <ul className="list-disc pl-5 text-yellow-700">
+          <ul className="list-disc pl-5 text-yellow-700 mb-2">
             <li>Copie o arquivo <code className="bg-yellow-100 px-1 rounded">.env.example</code> para <code className="bg-yellow-100 px-1 rounded">.env.local</code></li>
-            <li>Obtenha sua chave de API em <a href="https://horsepay.com.br/dashboard/settings/api-keys" target="_blank" rel="noopener noreferrer" className="underline">HorsePay Dashboard</a></li>
-            <li>Substitua <code className="bg-yellow-100 px-1 rounded">sua_api_key_aqui</code> pela sua chave real</li>
+            <li>Obtenha suas credenciais em <a href="https://horsepay.com.br/dashboard/settings/api-keys" target="_blank" rel="noopener noreferrer" className="underline">HorsePay Dashboard</a></li>
+            <li>Preencha as variáveis <code className="bg-yellow-100 px-1 rounded">HORSEPAY_CLIENT_KEY</code> e <code className="bg-yellow-100 px-1 rounded">HORSEPAY_CLIENT_SECRET</code></li>
+            <li>Configure a variável <code className="bg-yellow-100 px-1 rounded">NEXT_PUBLIC_BASE_URL</code> com a URL do seu site</li>
           </ul>
+          <p className="text-yellow-700 text-sm">
+            <strong>Importante:</strong> As credenciais são necessárias para autenticação na API do HorsePay.
+          </p>
         </div>
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">

@@ -31,8 +31,9 @@ Este é um projeto [Next.js](https://nextjs.org/) criado com [`create-next-app`]
 3. Configure as variáveis de ambiente:
    - Copie o arquivo `.env.example` para `.env.local`
    - Obtenha suas credenciais do HorsePay em [https://horsepay.com.br/dashboard/settings/api-keys](https://horsepay.com.br/dashboard/settings/api-keys)
-   - Preencha a variável `HORSEPAY_API_KEY` com sua chave de API
-   - **Importante**: Substitua `sua_api_key_aqui` pela sua chave real da API do HorsePay
+   - Preencha as variáveis `HORSEPAY_CLIENT_KEY` e `HORSEPAY_CLIENT_SECRET` com suas credenciais
+   - Configure a variável `NEXT_PUBLIC_BASE_URL` com a URL base do seu site (necessária para webhooks)
+   - **Importante**: Substitua `sua_client_key_aqui` e `sua_client_secret_aqui` pelas suas credenciais reais
 
 4. Execute o servidor de desenvolvimento:
    ```bash
