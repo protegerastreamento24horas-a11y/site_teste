@@ -84,6 +84,51 @@ async function createHorsePayOrder(accessToken: string, amount: number, descript
 export async function POST(request: NextRequest) {
   try {
     const { amount, description, payerEmail } = await request.json();
+    
+    // Obter a URL base do ambiente
+    const baseUrl = process.env.VERCEL_URL 
+      ? `https://${process.env.VERCEL_URL}`
+      : process.env.NODE_ENV === 'development'
+      ? 'http://localhost:3000'
+      : 'https://seu-dominio.com'; // Substitua pelo seu domínio em produção
+
+    const successUrl = `${baseUrl}/success`;
+```
+
+app/api/pix/route.ts
+```typescript
+<<<<<<< SEARCH
+      // Retornar o QR Code e o código PIX
+      return new Response(
+        JSON.stringify({
+          qr_code: order.copy_past,
+          qr_code_base64: order.payment,
+          id: order.external_id,
+          status: order.status,
+        }),
+        { 
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
+      );
+      // Retornar o QR Code e o código PIX
+      return new Response(
+        JSON.stringify({
+          qr_code: order.copy_past,
+          qr_code_base64: order.payment,
+          id: order.external_id,
+          status: order.status,
+          success_url: successUrl
+        }),
+        { 
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
+      );
 
     console.log('Recebida solicitação de pagamento:', { amount, description, payerEmail });
 

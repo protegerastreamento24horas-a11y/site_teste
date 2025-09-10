@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 
 export default function MinhasRifasPage() {
   // Dados fictícios das rifas compradas pelo usuário
@@ -158,12 +159,12 @@ export default function MinhasRifasPage() {
                     </div>
                   )}
                   
-                  <button 
-                    onClick={() => window.location.href = `/rifas/${raffle.id}`}
-                    className="w-full py-2 bg-gray-100 hover:bg-gray-200 text-black rounded-lg font-medium transition duration-300"
+                  <Link 
+                    href={`/rifas/${raffle.id}`}
+                    className="w-full py-2 bg-gray-100 hover:bg-gray-200 text-black rounded-lg font-medium transition duration-300 text-center block"
                   >
                     Ver Detalhes
-                  </button>
+                  </Link>
                 </div>
               </div>
             ))}

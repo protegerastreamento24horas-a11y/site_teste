@@ -27,6 +27,9 @@ export default function Header() {
             <Link href="/minhas-rifas" className="text-black hover:text-blue-600 font-medium">
               Minhas Rifas
             </Link>
+            <Link href="/minha-conta" className="text-black hover:text-blue-600 font-medium">
+              Minha Conta
+            </Link>
             <Link href="/como-funciona" className="text-black hover:text-blue-600 font-medium">
               Como Funciona
             </Link>
@@ -81,6 +84,13 @@ export default function Header() {
               onClick={() => setIsMenuOpen(false)}
             >
               Minhas Rifas
+            </Link>
+            <Link 
+              href="/minha-conta" 
+              className="block px-3 py-2 rounded-md text-base font-medium text-black hover:text-blue-600 hover:bg-gray-50"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Minha Conta
             </Link>
             <Link 
               href="/como-funciona" 

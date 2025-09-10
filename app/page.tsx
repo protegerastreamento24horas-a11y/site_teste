@@ -39,7 +39,7 @@ export default function Home() {
     }
   ];
 
-  // Efeito para mudar o ganhador em destaque a cada 5 segundos (movendo para a direita)
+  // Efeito para mudar o ganhador em destaque a cada 5 segundos
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentWinner((prev) => (prev + 1) % winners.length);
@@ -71,7 +71,7 @@ export default function Home() {
                 </Link>
                 <Link 
                   href="/como-funciona" 
-                  className="px-8 py-4 bg-white hover:bg-gray-100 text-black font-bold rounded-full text-center transition duration-300"
+                  className="px-8 py-4 bg-white hover:bg-gray-100 text-blue-600 font-bold rounded-full text-center transition duration-300"
                 >
                   Como Funciona
                 </Link>
@@ -79,7 +79,7 @@ export default function Home() {
             </div>
             <div className="flex justify-center">
               <div className="relative">
-                <div className="bg-gray-200 border-2 border-dashed rounded-xl w-full h-96 flex items-center justify-center text-gray-900">
+                <div className="bg-gray-200 border-2 border-dashed rounded-xl w-full h-96 flex items-center justify-center text-black">
                   Imagem de destaque das rifas
                 </div>
                 <div className="absolute -bottom-4 -left-4 bg-white text-black font-bold py-2 px-6 rounded-full shadow-lg">
@@ -90,6 +90,20 @@ export default function Home() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Banner de destaque */}
+      <div className="bg-yellow-500 py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-center">
+            <svg className="w-6 h-6 text-black mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <p className="text-black font-bold text-center">
+              Promoção relâmpago: Compre 5 rifas e ganhe 1 grátis! <Link href="/rifas" className="underline">Aproveite agora</Link>
+            </p>
           </div>
         </div>
       </div>
@@ -152,24 +166,30 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center p-6 bg-white bg-opacity-10 rounded-xl backdrop-blur-sm">
-              <div className="text-4xl mb-4">🛡️</div>
-              <h3 className="text-xl font-bold mb-2 text-black">100% Seguro</h3>
+            <div className="bg-white rounded-2xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl font-bold text-blue-600">1</span>
+              </div>
+              <h3 className="text-xl font-bold mb-2 text-black">Totalmente Seguro</h3>
               <p className="text-black">
                 Pagamentos via PIX com criptografia de ponta a ponta. Seus dados sempre protegidos.
               </p>
             </div>
             
-            <div className="text-center p-6 bg-white bg-opacity-10 rounded-xl backdrop-blur-sm">
-              <div className="text-4xl mb-4">🏆</div>
+            <div className="bg-white rounded-2xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl font-bold text-blue-600">2</span>
+              </div>
               <h3 className="text-xl font-bold mb-2 text-black">Prêmios Incríveis</h3>
               <p className="text-black">
                 Concorra a prêmios variados e exclusivos todas as semanas.
               </p>
             </div>
             
-            <div className="text-center p-6 bg-white bg-opacity-10 rounded-xl backdrop-blur-sm">
-              <div className="text-4xl mb-4">📱</div>
+            <div className="bg-white rounded-2xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl font-bold text-blue-600">3</span>
+              </div>
               <h3 className="text-xl font-bold mb-2 text-black">Fácil e Rápido</h3>
               <p className="text-black">
                 Compre sua rifa em minutos diretamente do seu celular.
@@ -192,7 +212,7 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="text-center">
+            <div className="text-center bg-white p-6 rounded-2xl shadow-lg">
               <div className="bg-blue-600 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 text-xl font-bold">
                 1
               </div>
@@ -202,7 +222,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="text-center">
+            <div className="text-center bg-white p-6 rounded-2xl shadow-lg">
               <div className="bg-blue-600 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 text-xl font-bold">
                 2
               </div>
@@ -212,7 +232,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="text-center">
+            <div className="text-center bg-white p-6 rounded-2xl shadow-lg">
               <div className="bg-blue-600 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 text-xl font-bold">
                 3
               </div>
@@ -222,7 +242,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="text-center">
+            <div className="text-center bg-white p-6 rounded-2xl shadow-lg">
               <div className="bg-blue-600 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 text-xl font-bold">
                 4
               </div>
@@ -236,7 +256,7 @@ export default function Home() {
           <div className="text-center mt-10">
             <Link 
               href="/como-funciona" 
-              className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-black bg-blue-600 hover:bg-blue-700"
+              className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
             >
               Saiba Mais
               <svg className="ml-2 -mr-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -265,7 +285,7 @@ export default function Home() {
             </button>
             <button 
               onClick={() => window.location.href = '/contato'}
-              className="px-8 py-4 bg-white hover:bg-gray-100 text-black font-bold rounded-full border-2 border-blue-600 transition duration-300"
+              className="px-8 py-4 bg-white hover:bg-gray-100 text-blue-600 font-bold rounded-full border-2 border-blue-600 transition duration-300"
             >
               Fale Conosco
             </button>

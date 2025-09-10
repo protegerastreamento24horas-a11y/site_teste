@@ -21,6 +21,7 @@ export default function Footer() {
               <li><Link href="/" className="text-black hover:text-blue-600 transition">Início</Link></li>
               <li><Link href="/rifas" className="text-black hover:text-blue-600 transition">Rifas</Link></li>
               <li><Link href="/minhas-rifas" className="text-black hover:text-blue-600 transition">Minhas Rifas</Link></li>
+              <li><Link href="/minha-conta" className="text-black hover:text-blue-600 transition">Minha Conta</Link></li>
               <li><Link href="/como-funciona" className="text-black hover:text-blue-600 transition">Como Funciona</Link></li>
             </ul>
           </div>
