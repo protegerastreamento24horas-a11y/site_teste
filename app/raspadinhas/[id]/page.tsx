@@ -4,6 +4,22 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
+// Definição dos tipos para melhor tipagem
+type Raffle = {
+  id: number;
+  title: string;
+  description: string;
+  price: number;
+  maxPrize: number;
+  icon: string;
+  color: string;
+};
+
+type ScratchResult = {
+  win: boolean;
+  prize?: number;
+} | null;
+
 export default function RaffleDetailsPage({ params }: { params: { id: string } }) {
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
@@ -87,6 +103,76 @@ export default function RaffleDetailsPage({ params }: { params: { id: string } }
     router.push(`/pagamento?id=${raffle.id}&quantity=${quantity}`);
   };
 
+  // Componente reutilizável para botões primários
+  const PrimaryButton = ({ 
+    onClick, 
+    href,
+    children,
+    className = ""
+  }: { 
+    onClick?: () => void;
+    href?: string;
+    children: React.ReactNode;
+    className?: string;
+  }) => {
+    const baseClasses = "flex items-center justify-center bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black font-bold py-3 px-6 rounded-full transition";
+    
+    if (href) {
+      return (
+        <Link 
+          href={href} 
+          className={`${baseClasses} ${className}`}
+        >
+          {children}
+        </Link>
+      );
+    }
+    
+    return (
+      <button 
+        onClick={onClick}
+        className={`${baseClasses} ${className}`}
+      >
+        {children}
+      </button>
+    );
+  };
+
+  // Componente reutilizável para botões secundários
+  const SecondaryButton = ({ 
+    onClick, 
+    href,
+    children,
+    className = ""
+  }: { 
+    onClick?: () => void;
+    href?: string;
+    children: React.ReactNode;
+    className?: string;
+  }) => {
+    const baseClasses = "flex items-center justify-center bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 text-white font-bold py-3 px-6 rounded-full transition";
+    
+    if (href) {
+      return (
+        <Link 
+          href={href} 
+          className={`${baseClasses} ${className}`}
+        >
+          {children}
+        </Link>
+      );
+    }
+    
+    return (
+      <button 
+        onClick={onClick}
+        className={`${baseClasses} ${className}`}
+      >
+        {children}
+      </button>
+    );
+  };
+  
   if (!raffle) {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
@@ -94,12 +180,9 @@ export default function RaffleDetailsPage({ params }: { params: { id: string } }
           <div className="text-5xl mb-6">🎲</div>
           <h1 className="text-3xl font-bold mb-4">Raspadinha não encontrada</h1>
           <p className="text-gray-400 mb-8">A raspadinha que você procura não existe.</p>
-          <Link 
-            href="/raspadinhas" 
-            className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-6 rounded-full"
-          >
+          <PrimaryButton href="/raspadinhas">
             Ver raspadinhas disponíveis
-          </Link>
+          </PrimaryButton>
         </div>
       </div>
     );
@@ -138,7 +221,7 @@ export default function RaffleDetailsPage({ params }: { params: { id: string } }
         <div className="max-w-7xl mx-auto">
           <nav className="text-gray-400">
             <Link href="/" className="hover:text-yellow-400 transition">Início</Link> / 
-            <Link href="/raspadinhas" className="hover:text-yellow-400 transition"> Raspadinhas</Link> / {raffle.title}
+            <Link href="/raspadinhas" className="hover:text-yellow-400 transition"> Raspadinhas</Link> / <span className="text-yellow-400">{raffle.title}</span>
           </nav>
         </div>
       </div>
@@ -216,18 +299,18 @@ export default function RaffleDetailsPage({ params }: { params: { id: string } }
                         <h3 className="text-3xl font-bold text-red-500 mb-6">NÃO FOI DESSA VEZ!</h3>
                         <p className="text-gray-300 mb-8">Tente novamente, sua sorte está próxima!</p>
                         <div className="flex flex-col sm:flex-row gap-4">
-                          <button
+                          <PrimaryButton
                             onClick={() => setScratchResult(null)}
-                            className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black font-bold py-4 px-6 rounded-full transition"
+                            className="flex-1"
                           >
                             Tentar Novamente
-                          </button>
-                          <Link 
-                            href="/raspadinhas" 
-                            className="flex-1 bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 text-white font-bold py-4 px-6 rounded-full transition"
+                          </PrimaryButton>
+                          <SecondaryButton
+                            href="/raspadinhas"
+                            className="flex-1"
                           >
                             Outras Raspadinhas
-                          </Link>
+                          </SecondaryButton>
                         </div>
                       </div>
                     )}
@@ -270,21 +353,21 @@ export default function RaffleDetailsPage({ params }: { params: { id: string } }
                     </div>
                     
                     <div className="space-y-4">
-                      <button
+                      <PrimaryButton
                         onClick={handleScratch}
-                        className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black font-bold py-4 px-6 rounded-full text-lg transition"
+                        className="w-full text-lg"
                       >
                         Raspar Agora
-                      </button>
+                      </PrimaryButton>
                       
                       <div className="text-center py-4">
                         <p className="text-gray-500 mb-2">Ou prefere comprar e raspar depois?</p>
-                        <button
+                        <PrimaryButton
                           onClick={handleBuy}
                           className="text-purple-400 hover:text-purple-300 font-medium"
                         >
                           Comprar raspadinhas
-                        </button>
+                        </PrimaryButton>
                       </div>
                     </div>
                   </div>

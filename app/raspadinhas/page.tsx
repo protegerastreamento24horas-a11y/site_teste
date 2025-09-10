@@ -3,8 +3,18 @@
 import Link from 'next/link';
 import { useState } from 'react';
 
+interface Raffle {
+  id: number;
+  title: string;
+  description: string;
+  price: number;
+  maxPrize: number;
+  icon: string;
+  color: string;
+}
+
 export default function RafflesPage() {
-  const [raffles] = useState([
+  const [raffles] = useState<Raffle[]>([
     { 
       id: 1, 
       title: 'Raspadinha Ouro', 

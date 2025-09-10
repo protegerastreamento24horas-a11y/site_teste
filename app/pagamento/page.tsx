@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
+import Link from 'next-link';
 
 export default function PaymentPage() {
   const router = useRouter();
@@ -18,7 +18,23 @@ export default function PaymentPage() {
   const quantity = searchParams.get('quantity');
 
   // Dados das raspadinhas
-  const raffles = [
+  interface RaffleItem {
+    id: number;
+    title: string;
+    price: number;
+    maxPrize: number;
+    icon: string;
+    quantity?: number;
+    total?: number;
+  }
+
+  const [raffle, setRaffle] = useState<RaffleItem | null>(null);
+  const [pixCode, setPixCode] = useState<string>('');
+  const [qrCode, setQrCode] = useState<string>('');
+  const [error, setError] = useState<string>('');
+
+  // Dados das raspadinhas
+  const raffles: RaffleItem[] = [
     { 
       id: 1, 
       title: 'Raspadinha Ouro', 
@@ -87,14 +103,20 @@ export default function PaymentPage() {
   };
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(pixCode);
-    const button = document.getElementById('copy-button');
-    if (button) {
-      button.textContent = 'Copiado!';
-      setTimeout(() => {
-        button.textContent = 'Copiar código PIX';
-      }, 2000);
-    }
+    navigator.clipboard.writeText(pixCode)
+      .then(() => {
+        const button = document.getElementById('copy-button');
+        if (button) {
+          button.textContent = 'Copiado!';
+          setTimeout(() => {
+            button.textContent = 'Copiar código PIX';
+          }, 2000);
+        }
+      })
+      .catch(err => {
+        setError('Falha ao copiar o código PIX. Tente novamente.');
+        console.error('Erro ao copiar:', err);
+      });
   };
 
   const handlePaymentConfirmation = () => {
@@ -113,16 +135,24 @@ export default function PaymentPage() {
             </div>
             
             <nav className="flex space-x-6">
-              <Link href="/" className="hover:text-yellow-400 transition">INÍCIO</Link>
-              <Link href="/raspadinhas" className="hover:text-yellow-400 transition">RASPADINHAS</Link>
-              <Link href="/resultados" className="hover:text-yellow-400 transition">RESULTADOS</Link>
-              <Link href="/como-jogar" className="hover:text-yellow-400 transition">COMO JOGAR</Link>
+              <Link href="/" className="hover:text-yellow-400 transition focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50 rounded">
+                INÍCIO
+              </Link>
+              <Link href="/raspadinhas" className="hover:text-yellow-400 transition focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50 rounded">
+                RASPADINHAS
+              </Link>
+              <Link href="/resultados" className="hover:text-yellow-400 transition focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50 rounded">
+                RESULTADOS
+              </Link>
+              <Link href="/como-jogar" className="hover:text-yellow-400 transition focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50 rounded">
+                COMO JOGAR
+              </Link>
             </nav>
             
             <div className="mt-4 md:mt-0">
               <Link 
                 href="/login" 
-                className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 px-6 rounded-full transition"
+                className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 px-6 rounded-full transition focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50"
               >
                 ENTRAR
               </Link>
@@ -223,7 +253,10 @@ export default function PaymentPage() {
                       <p className="text-gray-400">O pagamento expira em <span className="font-bold text-yellow-400">{formatTime(timeLeft)}</span></p>
                     </div>
                   </div>
-                  <div className="bg-yellow-500 text-black px-4 py-2 rounded-full font-bold">
+                  <div className="bg-yellow-500 text-black px-4 py-2 rounded-full font-bold flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
                     {formatTime(timeLeft)} restantes
                   </div>
                 </div>
@@ -233,9 +266,11 @@ export default function PaymentPage() {
                 <div className="bg-gray-900 p-8 rounded-lg border border-gray-700">
                   <h2 className="text-2xl font-bold mb-6 text-center">QR Code PIX</h2>
                   <div className="flex flex-col items-center">
-                    <div className="bg-white p-4 rounded-lg mb-6">
+                    <div className="bg-white p-4 rounded-lg mb-6 shadow-lg shadow-purple-900/20">
                       <div className="bg-gray-200 border-2 border-dashed rounded-xl w-64 h-64 flex items-center justify-center">
-                        <span className="text-gray-500">QR Code PIX</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-gray-400 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8h4M4 16h4M16 8h4M16 16h4M8 12h8M8 8v8" />
+                        </svg>
                       </div>
                     </div>
                     <p className="text-gray-400 text-center">Aponte a câmera do seu banco para o QR Code</p>
@@ -245,7 +280,7 @@ export default function PaymentPage() {
                 <div className="bg-gray-900 p-8 rounded-lg border border-gray-700">
                   <h2 className="text-2xl font-bold mb-6 text-center">Código PIX</h2>
                   <div className="mb-6">
-                    <div className="bg-black p-6 rounded-lg break-words text-sm font-mono border border-gray-700">
+                    <div className="bg-black p-6 rounded-lg break-words text-sm font-mono border border-gray-700 overflow-auto max-h-40">
                       00020126580014BR.GOV.BCB.PIX0136megaraspadinha-4567-4242-9876-4848512204000053039865406100.005802BR5925MEGA RASPADINHA LTDA6009SAO PAULO622505214567890123456789012346304ABCD
                     </div>
                   </div>
@@ -260,7 +295,7 @@ export default function PaymentPage() {
                 </div>
               </div>
 
-              <div className="bg-gray-900 p-8 rounded-lg border border-gray-700 mb-10">
+              <div className="bg-gray-900 p-8 rounded-lg border border-gray-700 mb-10 shadow-lg shadow-purple-900/10">
                 <h2 className="text-2xl font-bold mb-6">Resumo do pedido</h2>
                 <div className="space-y-4">
                   <div className="flex justify-between pb-4 border-b border-gray-700">
@@ -287,9 +322,11 @@ export default function PaymentPage() {
                   <div className="flex justify-between pt-6 border-t border-gray-700">
                     <div>
                       <h3 className="font-bold text-xl">Total a pagar</h3>
+                      <p className="text-sm text-gray-400 mt-1">Pagamento único e seguro</p>
                     </div>
                     <div className="text-right">
                       <div className="text-yellow-400 font-bold text-2xl">R$ {raffle?.total.toFixed(2)}</div>
+                      <p className="text-xs text-gray-400 mt-1">IVA incluído</p>
                     </div>
                   </div>
                 </div>
@@ -297,14 +334,16 @@ export default function PaymentPage() {
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <button
+                  type="button"
                   onClick={() => router.push('/raspadinhas')}
-                  className="flex-1 bg-gray-800 hover:bg-gray-700 text-white font-bold py-4 px-6 rounded-full transition"
+                  className="flex-1 bg-gray-800 hover:bg-gray-700 text-white font-bold py-4 px-6 rounded-full transition focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-opacity-50"
                 >
                   Cancelar
                 </button>
                 <button
+                  type="button"
                   onClick={handlePaymentConfirmation}
-                  className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black font-bold py-4 px-6 rounded-full transition"
+                  className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black font-bold py-4 px-6 rounded-full transition focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50"
                 >
                   Já realizei o pagamento
                 </button>
@@ -315,7 +354,7 @@ export default function PaymentPage() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-900 py-12 px-4">
+      <footer className="bg-gray-900 py-12 px-4 border-t border-gray-800">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
@@ -329,7 +368,12 @@ export default function PaymentPage() {
             </div>
             
             <div>
-              <h4 className="text-lg font-bold mb-4 text-yellow-400">INFORMAÇÕES</h4>
+              <h4 className="text-lg font-bold mb-4 text-yellow-400 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                INFORMAÇÕES
+              </h4>
               <ul className="space-y-2">
                 <li><Link href="/como-jogar" className="text-gray-400 hover:text-yellow-400 transition">Como Jogar</Link></li>
                 <li><Link href="/regulamento" className="text-gray-400 hover:text-yellow-400 transition">Regulamento</Link></li>
@@ -339,7 +383,12 @@ export default function PaymentPage() {
             </div>
             
             <div>
-              <h4 className="text-lg font-bold mb-4 text-yellow-400">SUPORTE</h4>
+              <h4 className="text-lg font-bold mb-4 text-yellow-400 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5h14a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V7a2 2 0 012-2h14a2 2 0 012 2z" />
+                </svg>
+                SUPORTE
+              </h4>
               <ul className="space-y-2">
                 <li><Link href="/contato" className="text-gray-400 hover:text-yellow-400 transition">Contato</Link></li>
                 <li><Link href="/privacidade" className="text-gray-400 hover:text-yellow-400 transition">Privacidade</Link></li>
@@ -348,7 +397,12 @@ export default function PaymentPage() {
             </div>
             
             <div>
-              <h4 className="text-lg font-bold mb-4 text-yellow-400">CONTATO</h4>
+              <h4 className="text-lg font-bold mb-4 text-yellow-400 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                CONTATO
+              </h4>
               <ul className="space-y-2 text-gray-400">
                 <li>Email: contato@megaraspadinha.com</li>
                 <li>WhatsApp: (11) 99999-9999</li>

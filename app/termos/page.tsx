@@ -103,7 +103,7 @@ export default function TermsPage() {
             </div>
             
             <div className="p-8">
-              <div className="prose prose-invert max-w-none">
+              <div>
                 <p className="text-gray-300 mb-8">
                   Estes Termos de Uso regem o acesso e uso da plataforma MEGA RASPADINHA, estabelecendo 
                   os direitos e obrigações dos usuários ao utilizar nossos serviços. Ao acessar ou usar 

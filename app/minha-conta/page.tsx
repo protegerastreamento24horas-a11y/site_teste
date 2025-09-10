@@ -274,9 +274,9 @@ export default function MyAccountPage() {
                           <h4 className="font-bold mb-2">Notificações</h4>
                           <div className="flex items-center justify-between">
                             <span>Receber notificações por email</span>
-                            <label className="switch">
-                              <input type="checkbox" defaultChecked />
-                              <span className="slider round"></span>
+                            <label className="relative inline-flex items-center cursor-pointer">
+                              <input type="checkbox" defaultChecked className="sr-only peer" />
+                              <div className="w-11 h-6 bg-gray-700 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
                             </label>
                           </div>
                         </div>

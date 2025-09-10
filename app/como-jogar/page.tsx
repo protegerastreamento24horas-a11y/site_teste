@@ -69,7 +69,7 @@ export default function HowToPlayPage() {
           <div className="mt-4 md:mt-0">
             <Link 
               href="/login" 
-              className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 px-6 rounded-full transition"
+              className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 px-6 rounded-full transition duration-300"
             >
               ENTRAR
             </Link>
@@ -80,8 +80,10 @@ export default function HowToPlayPage() {
       {/* Breadcrumbs */}
       <div className="py-4 px-4 bg-gray-900">
         <div className="max-w-7xl mx-auto">
-          <nav className="text-gray-400">
-            <Link href="/" className="hover:text-yellow-400 transition">Início</Link> / Como Jogar
+          <nav className="text-gray-400 flex items-center space-x-2">
+            <Link href="/" className="hover:text-yellow-400 transition duration-300">Início</Link>
+            <span>/</span>
+            <span>Como Jogar</span>
           </nav>
         </div>
       </div>
@@ -102,7 +104,7 @@ export default function HowToPlayPage() {
                 key={step.id} 
                 className="bg-gradient-to-b from-purple-900/40 to-black rounded-xl border border-purple-800 p-8 text-center hover:border-yellow-500 transition"
               >
-                <div className="text-6xl mb-6">{step.icon}</div>
+                <div className="text-6xl mb-6 flex justify-center">{step.icon}</div>
                 <div className="text-4xl font-bold text-yellow-400 mb-4">0{step.id}</div>
                 <h3 className="text-2xl font-bold mb-4">{step.title}</h3>
                 <p className="text-gray-300">{step.description}</p>
@@ -118,19 +120,19 @@ export default function HowToPlayPage() {
             <div className="p-8">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="text-center">
-                  <div className="text-5xl mb-4">⚡</div>
+                  <div className="text-5xl mb-4 flex justify-center">⚡</div>
                   <h3 className="text-xl font-bold mb-2">Resultados Imediatos</h3>
                   <p className="text-gray-300">Descubra se ganhou assim que raspar sua raspadinha</p>
                 </div>
                 
                 <div className="text-center">
-                  <div className="text-5xl mb-4">🔒</div>
+                  <div className="text-5xl mb-4 flex justify-center">🔒</div>
                   <h3 className="text-xl font-bold mb-2">Pagamentos Seguros</h3>
                   <p className="text-gray-300">Todas as transações são protegidas com tecnologia de ponta</p>
                 </div>
                 
                 <div className="text-center">
-                  <div className="text-5xl mb-4">🏆</div>
+                  <div className="text-5xl mb-4 flex justify-center">🏆</div>
                   <h3 className="text-xl font-bold mb-2">Prêmios Reais</h3>
                   <p className="text-gray-300">Ganhe dinheiro real que pode ser sacado para sua conta bancária</p>
                 </div>
@@ -159,7 +161,7 @@ export default function HowToPlayPage() {
             <h3 className="text-3xl font-bold mb-6">Pronto para começar a raspar?</h3>
             <Link 
               href="/raspadinhas" 
-              className="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black font-bold py-4 px-8 rounded-full text-lg transition inline-block"
+              className="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black font-bold py-4 px-8 rounded-full text-lg transition duration-300 inline-block"
             >
               Escolher Minha Raspadinha
             </Link>

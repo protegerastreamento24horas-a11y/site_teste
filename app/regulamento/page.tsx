@@ -99,7 +99,7 @@ export default function RegulationsPage() {
             </div>
             
             <div className="p-8">
-              <div className="prose prose-invert max-w-none">
+              <div>
                 <p className="text-gray-300 mb-8">
                   Este Regulamento estabelece as regras e condições gerais aplicáveis ao uso da plataforma MEGA RASPADINHA, 
                   constituindo um acordo legal entre o usuário e a plataforma. Ao acessar e utilizar nossos serviços, 

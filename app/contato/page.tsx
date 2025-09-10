@@ -86,7 +86,7 @@ export default function ContactPage() {
                 
                 <div className="space-y-6">
                   <div className="flex items-start">
-                    <div className="text-2xl mr-4 text-yellow-400">📧</div>
+                    <div className="text-3xl mr-4 text-yellow-400">📧</div>
                     <div>
                       <h3 className="text-lg font-bold mb-1">Email</h3>
                       <p className="text-gray-300">contato@megaraspadinha.com</p>
@@ -95,7 +95,7 @@ export default function ContactPage() {
                   </div>
                   
                   <div className="flex items-start">
-                    <div className="text-2xl mr-4 text-yellow-400">💬</div>
+                    <div className="text-3xl mr-4 text-yellow-400">💬</div>
                     <div>
                       <h3 className="text-lg font-bold mb-1">WhatsApp</h3>
                       <p className="text-gray-300">(11) 99999-9999</p>
@@ -104,7 +104,7 @@ export default function ContactPage() {
                   </div>
                   
                   <div className="flex items-start">
-                    <div className="text-2xl mr-4 text-yellow-400">🕒</div>
+                    <div className="text-3xl mr-4 text-yellow-400">🕒</div>
                     <div>
                       <h3 className="text-lg font-bold mb-1">Horário de Atendimento</h3>
                       <p className="text-gray-300">Segunda a sexta: 9h às 18h</p>
@@ -113,7 +113,7 @@ export default function ContactPage() {
                   </div>
                   
                   <div className="flex items-start">
-                    <div className="text-2xl mr-4 text-yellow-400">📍</div>
+                    <div className="text-3xl mr-4 text-yellow-400">📍</div>
                     <div>
                       <h3 className="text-lg font-bold mb-1">Endereço</h3>
                       <p className="text-gray-300">Av. Paulista, 1000</p>
@@ -124,7 +124,7 @@ export default function ContactPage() {
                 
                 <div className="mt-8">
                   <h3 className="text-xl font-bold mb-4">Redes Sociais</h3>
-                  <div className="flex space-x-4">
+                  <div className="flex flex-wrap gap-4 space-x-0">
                     <a href="#" className="bg-gray-800 hover:bg-gray-700 w-12 h-12 rounded-full flex items-center justify-center transition">
                       <span className="text-xl">📘</span>
                     </a>
@@ -148,7 +148,7 @@ export default function ContactPage() {
                 <h2 className="text-2xl font-bold mb-6">Envie uma Mensagem</h2>
                 
                 <form onSubmit={handleSubmit}>
-                  <div className="mb-6">
+                  <div className="mb-8">
                     <label htmlFor="name" className="block text-gray-300 mb-2">Nome Completo</label>
                     <input
                       type="text"
@@ -161,7 +161,7 @@ export default function ContactPage() {
                     />
                   </div>
                   
-                  <div className="mb-6">
+                  <div className="mb-8">
                     <label htmlFor="email" className="block text-gray-300 mb-2">Email</label>
                     <input
                       type="email"
@@ -174,7 +174,7 @@ export default function ContactPage() {
                     />
                   </div>
                   
-                  <div className="mb-6">
+                  <div className="mb-8">
                     <label htmlFor="subject" className="block text-gray-300 mb-2">Assunto</label>
                     <input
                       type="text"
@@ -187,7 +187,7 @@ export default function ContactPage() {
                     />
                   </div>
                   
-                  <div className="mb-6">
+                  <div className="mb-8">
                     <label htmlFor="message" className="block text-gray-300 mb-2">Mensagem</label>
                     <textarea
                       id="message"
@@ -216,7 +216,7 @@ export default function ContactPage() {
       {/* Footer */}
       <footer className="bg-gray-900 py-12 px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center mb-4">
                 <div className="bg-gray-200 border-2 border-dashed rounded-xl w-12 h-12" />

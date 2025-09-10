@@ -91,7 +91,7 @@ export default function PrivacyPage() {
             </div>
             
             <div className="p-8">
-              <div className="prose prose-invert max-w-none">
+              <div>
                 <p className="text-gray-300 mb-8">
                   Esta Política de Privacidade descreve como a MEGA RASPADINHA coleta, usa e protege suas informações pessoais 
                   quando você utiliza nosso site e serviços. Ao utilizar nossa plataforma, você concorda com as práticas descritas 
