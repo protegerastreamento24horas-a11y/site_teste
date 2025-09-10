@@ -22,11 +22,11 @@ export default function PaymentContent() {
     if (raffleId && quantity) {
       const mockRaffle = {
         id: parseInt(raffleId),
-        title: 'iPhone 15 Pro Max',
+        title: 'Raspadinha Ouro',
         price: 5.00,
         quantity: parseInt(quantity),
         total: 5.00 * parseInt(quantity),
-        prizeValue: 6500
+        prizeValue: 10000
       };
       
       setRaffle(mockRaffle);
@@ -51,7 +51,7 @@ export default function PaymentContent() {
         },
         body: JSON.stringify({
           amount: raffleData.total,
-          description: `Pagamento de rifa: ${raffleData.title}`,
+          description: `Pagamento de raspadinhas: ${raffleData.title}`,
           payerEmail: ''
         }),
       });
@@ -132,7 +132,7 @@ export default function PaymentContent() {
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
             </svg>
-            Voltar para as rifas
+            Voltar para as raspadinhas
           </Link>
         </div>
 
@@ -140,7 +140,7 @@ export default function PaymentContent() {
           <div className="p-8">
             <div className="text-center mb-10">
               <h1 className="text-3xl font-bold mb-4">Pagamento via PIX</h1>
-              <p className="text-gray-400">Escaneie o QR Code ou copie o código PIX</p>
+              <p className="text-gray-400">Escaneie o QR Code ou copie o código PIX para pagar suas raspadinhas</p>
             </div>
 
             {error && (
@@ -167,7 +167,7 @@ export default function PaymentContent() {
                     <p className="text-gray-400">O pagamento expira em <span className="font-bold">{formatTime(timeLeft)}</span></p>
                   </div>
                 </div>
-                <div className="bg-primary text-white px-4 py-2 rounded-full font-bold">
+                <div className="bg-gold text-black px-4 py-2 rounded-full font-bold">
                   {formatTime(timeLeft)} restantes
                 </div>
               </div>
@@ -203,7 +203,7 @@ export default function PaymentContent() {
                   disabled={!pixCode}
                   className={`w-full py-4 rounded-lg font-bold transition ${
                     pixCode 
-                      ? 'btn btn-primary' 
+                      ? 'btn btn-gold text-black' 
                       : 'bg-gray-700 text-gray-500 cursor-not-allowed'
                   }`}
                 >
@@ -219,7 +219,7 @@ export default function PaymentContent() {
                 <div className="flex justify-between pb-4 border-b border-border">
                   <div>
                     <h3 className="font-bold text-lg">{raffle?.title}</h3>
-                    <p className="text-gray-400">{raffle?.quantity} números selecionados</p>
+                    <p className="text-gray-400">{raffle?.quantity} raspadinhas</p>
                   </div>
                   <div className="text-right">
                     <div className="font-bold">R$ {raffle?.total.toFixed(2)}</div>
@@ -229,11 +229,11 @@ export default function PaymentContent() {
                 
                 <div className="flex justify-between pt-4">
                   <div>
-                    <h3 className="font-bold">Prêmio</h3>
-                    <p className="text-gray-400">Valor estimado do prêmio</p>
+                    <h3 className="font-bold">Prêmio máximo possível</h3>
+                    <p className="text-gray-400">Valor estimado do maior prêmio</p>
                   </div>
                   <div className="text-right">
-                    <div className="text-secondary font-bold text-xl">R$ {raffle?.prizeValue.toLocaleString('pt-BR')}</div>
+                    <div className="text-gold font-bold text-xl">R$ {raffle?.prizeValue.toLocaleString('pt-BR')}</div>
                   </div>
                 </div>
                 
@@ -257,7 +257,7 @@ export default function PaymentContent() {
               </button>
               <button
                 onClick={handlePaymentConfirmation}
-                className="flex-1 btn btn-primary py-4 px-6 rounded-lg font-bold"
+                className="flex-1 btn btn-gold py-4 px-6 rounded-lg font-bold text-black"
               >
                 Já realizei o pagamento
               </button>

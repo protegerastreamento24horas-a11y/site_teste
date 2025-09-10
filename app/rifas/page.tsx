@@ -13,6 +13,7 @@ interface Raffle {
   availableNumbers: number;
   prizeValue: number;
   category: string;
+  icon: string;
 }
 
 export default function RafflesPage() {
@@ -26,69 +27,75 @@ export default function RafflesPage() {
     const mockRaffles: Raffle[] = [
       {
         id: 1,
-        title: 'iPhone 15 Pro Max',
-        description: 'iPhone 15 Pro Max 256GB - Cor Titânio Natural',
+        title: 'Raspadinha Ouro',
+        description: 'Raspadinha com prêmios de até R$10.000',
         price: 5.00,
         endDate: '2024-12-31',
         totalNumbers: 1000,
         availableNumbers: 750,
-        prizeValue: 6500,
-        category: 'Eletrônicos'
+        prizeValue: 10000,
+        category: 'Premium',
+        icon: '🥇'
       },
       {
         id: 2,
-        title: 'MacBook Pro M3',
-        description: 'MacBook Pro 14" M3 Pro 18GB RAM 512GB SSD',
-        price: 10.00,
+        title: 'Raspadinha Prata',
+        description: 'Raspadinha com prêmios de até R$5.000',
+        price: 3.00,
         endDate: '2024-11-30',
         totalNumbers: 500,
         availableNumbers: 200,
-        prizeValue: 15000,
-        category: 'Eletrônicos'
+        prizeValue: 5000,
+        category: 'Popular',
+        icon: '🥈'
       },
       {
         id: 3,
-        title: 'Viagem Disney Orlando',
-        description: 'Viagem para Disney Orlando para 4 pessoas',
-        price: 20.00,
+        title: 'Raspadinha Bronze',
+        description: 'Raspadinha com prêmios de até R$2.000',
+        price: 1.00,
         endDate: '2024-10-31',
         totalNumbers: 1000,
         availableNumbers: 850,
-        prizeValue: 25000,
-        category: 'Viagens'
+        prizeValue: 2000,
+        category: 'Iniciante',
+        icon: '🥉'
       },
       {
         id: 4,
-        title: 'PlayStation 5',
-        description: 'PlayStation 5 Standard Edition',
-        price: 8.00,
-        endDate: '2024-11-15',
-        totalNumbers: 750,
-        availableNumbers: 600,
-        prizeValue: 3500,
-        category: 'Eletrônicos'
+        title: 'Raspadinha Diamante',
+        description: 'Raspadinha com prêmios de até R$50.000',
+        price: 20.00,
+        endDate: '2024-12-15',
+        totalNumbers: 200,
+        availableNumbers: 50,
+        prizeValue: 50000,
+        category: 'Premium',
+        icon: '💎'
       },
       {
         id: 5,
-        title: 'Samsung Smart TV 65"',
-        description: 'Samsung Smart TV 4K 65" QLED',
-        price: 15.00,
-        endDate: '2024-12-15',
-        totalNumbers: 600,
-        availableNumbers: 420,
-        prizeValue: 5500,
-        category: 'Eletrônicos'
+        title: 'Raspadinha Esmeralda',
+        description: 'Raspadinha com prêmios de até R$15.000',
+        price: 10.00,
+        endDate: '2024-11-20',
+        totalNumbers: 300,
+        availableNumbers: 150,
+        prizeValue: 15000,
+        category: 'Popular',
+        icon: '💚'
       },
       {
         id: 6,
-        title: 'Notebook Gamer',
-        description: 'Notebook Gamer com RTX 4060',
-        price: 12.00,
-        endDate: '2024-11-20',
-        totalNumbers: 800,
-        availableNumbers: 720,
+        title: 'Raspadinha Safira',
+        description: 'Raspadinha com prêmios de até R$8.000',
+        price: 4.00,
+        endDate: '2024-10-25',
+        totalNumbers: 600,
+        availableNumbers: 200,
         prizeValue: 8000,
-        category: 'Eletrônicos'
+        category: 'Iniciante',
+        icon: '💙'
       }
     ];
 
@@ -100,8 +107,9 @@ export default function RafflesPage() {
 
   const filteredRaffles = raffles.filter(raffle => {
     const matchesFilter = filter === 'all' || 
-      (filter === 'ending-soon' && new Date(raffle.endDate) < new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)) ||
-      (filter === 'high-value' && raffle.prizeValue >= 10000);
+      (filter === 'premium' && raffle.category === 'Premium') ||
+      (filter === 'popular' && raffle.category === 'Popular') ||
+      (filter === 'iniciante' && raffle.category === 'Iniciante');
       
     const matchesSearch = raffle.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       raffle.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -115,14 +123,14 @@ export default function RafflesPage() {
       <div className="min-h-screen bg-background py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-10">
-            <h1 className="text-3xl font-bold mb-2">Nossas Rifas</h1>
-            <p className="text-gray-400">Carregando rifas premium...</p>
+            <h1 className="text-3xl font-bold mb-2">Nossas Raspadinhas</h1>
+            <p className="text-gray-400">Carregando raspadinhas premium...</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[1, 2, 3].map((item) => (
               <div key={item} className="card p-6 animate-pulse">
-                <div className="bg-gray-700 h-48 rounded-lg mb-6"></div>
+                <div className="bg-gray-700 h-32 rounded-lg mb-6"></div>
                 <div className="h-6 bg-gray-700 rounded mb-4"></div>
                 <div className="h-4 bg-gray-700 rounded mb-2"></div>
                 <div className="h-4 bg-gray-700 rounded mb-6 w-3/4"></div>
@@ -139,8 +147,8 @@ export default function RafflesPage() {
     <div className="min-h-screen bg-background py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-10">
-          <h1 className="text-3xl font-bold mb-2">Rifas Premium</h1>
-          <p className="text-gray-400">Escolha entre as melhores rifas com prêmios incríveis</p>
+          <h1 className="text-3xl font-bold mb-2">Raspadinhas Premium</h1>
+          <p className="text-gray-400">Escolha entre as melhores raspadinhas com prêmios incríveis</p>
         </div>
 
         {/* Search and Filters */}
@@ -150,7 +158,7 @@ export default function RafflesPage() {
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="Buscar rifas..."
+                  placeholder="Buscar raspadinhas..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full bg-background border border-border rounded-lg py-3 px-4 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
@@ -173,24 +181,34 @@ export default function RafflesPage() {
                 Todas
               </button>
               <button 
-                onClick={() => setFilter('ending-soon')}
+                onClick={() => setFilter('premium')}
                 className={`px-4 py-2 rounded-lg font-medium transition ${
-                  filter === 'ending-soon' 
-                    ? 'bg-primary text-white' 
+                  filter === 'premium' 
+                    ? 'bg-gold text-black' 
                     : 'bg-card text-gray-300 hover:bg-gray-800'
                 }`}
               >
-                Terminando em breve
+                Premium
               </button>
               <button 
-                onClick={() => setFilter('high-value')}
+                onClick={() => setFilter('popular')}
                 className={`px-4 py-2 rounded-lg font-medium transition ${
-                  filter === 'high-value' 
-                    ? 'bg-primary text-white' 
+                  filter === 'popular' 
+                    ? 'bg-secondary text-black' 
                     : 'bg-card text-gray-300 hover:bg-gray-800'
                 }`}
               >
-                Prêmios acima de R$10k
+                Popular
+              </button>
+              <button 
+                onClick={() => setFilter('iniciante')}
+                className={`px-4 py-2 rounded-lg font-medium transition ${
+                  filter === 'iniciante' 
+                    ? 'bg-accent text-white' 
+                    : 'bg-card text-gray-300 hover:bg-gray-800'
+                }`}
+              >
+                Iniciante
               </button>
             </div>
           </div>
@@ -199,8 +217,8 @@ export default function RafflesPage() {
         {filteredRaffles.length === 0 ? (
           <div className="card p-12 text-center">
             <div className="text-5xl mb-6">🎲</div>
-            <h2 className="text-2xl font-bold mb-4">Nenhuma rifa encontrada</h2>
-            <p className="text-gray-400 mb-8">Não há rifas disponíveis com os filtros selecionados.</p>
+            <h2 className="text-2xl font-bold mb-4">Nenhuma raspadinha encontrada</h2>
+            <p className="text-gray-400 mb-8">Não há raspadinhas disponíveis com os filtros selecionados.</p>
             <button 
               onClick={() => {
                 setFilter('all');
@@ -208,7 +226,7 @@ export default function RafflesPage() {
               }}
               className="btn btn-primary px-6 py-3 rounded-lg"
             >
-              Ver todas as rifas
+              Ver todas as raspadinhas
             </button>
           </div>
         ) : (
@@ -216,44 +234,51 @@ export default function RafflesPage() {
             {filteredRaffles.map((raffle) => (
               <div 
                 key={raffle.id} 
-                className="card overflow-hidden grid-item"
+                className="card overflow-hidden grid-item hover:border-gold transition-colors"
               >
-                <div className="bg-gray-200 border-2 border-dashed w-full h-48" />
                 <div className="p-6">
-                  <div className="flex justify-between items-start mb-3">
-                    <div>
-                      <span className="inline-block bg-primary/10 text-primary text-xs px-3 py-1 rounded-full">
-                        {raffle.category}
-                      </span>
-                    </div>
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="text-5xl">{raffle.icon}</div>
                     <div className="text-right">
-                      <div className="text-xs text-gray-400">Prêmio</div>
-                      <div className="text-xl font-bold text-secondary">R$ {raffle.prizeValue.toLocaleString('pt-BR')}</div>
+                      <div className="text-xs text-gray-400">Prêmio máximo</div>
+                      <div className="text-xl font-bold text-gold">R$ {raffle.prizeValue.toLocaleString('pt-BR')}</div>
                     </div>
                   </div>
                   
                   <h2 className="text-xl font-bold mb-2">{raffle.title}</h2>
-                  <p className="text-gray-400 text-sm mb-5">{raffle.description}</p>
+                  <p className="text-gray-400 text-sm mb-4">{raffle.description}</p>
                   
                   <div className="flex justify-between items-center mb-5">
                     <div>
-                      <div className="text-xs text-gray-400">Valor por número</div>
+                      <div className="text-xs text-gray-400">Valor por raspadinha</div>
                       <div className="text-lg font-bold text-primary">R$ {raffle.price.toFixed(2)}</div>
                     </div>
                     <div className="text-right">
-                      <div className="text-xs text-gray-400">Sorteio</div>
-                      <div className="text-sm font-medium">{raffle.endDate}</div>
+                      <div className="text-xs text-gray-400">Categoria</div>
+                      <div className="text-sm font-medium">
+                        <span className={`px-2 py-1 rounded-full text-xs ${
+                          raffle.category === 'Premium' ? 'bg-gold text-black' :
+                          raffle.category === 'Popular' ? 'bg-secondary text-black' :
+                          'bg-accent text-white'
+                        }`}>
+                          {raffle.category}
+                        </span>
+                      </div>
                     </div>
                   </div>
                   
                   <div className="mb-6">
                     <div className="flex justify-between text-sm text-gray-400 mb-1">
-                      <span>Números disponíveis</span>
+                      <span>Raspadinhas disponíveis</span>
                       <span>{raffle.availableNumbers}/{raffle.totalNumbers}</span>
                     </div>
                     <div className="w-full bg-gray-800 rounded-full h-2">
                       <div 
-                        className="bg-primary h-2 rounded-full" 
+                        className={`${
+                          raffle.category === 'Premium' ? 'bg-gold' :
+                          raffle.category === 'Popular' ? 'bg-secondary' :
+                          'bg-accent'
+                        } h-2 rounded-full`} 
                         style={{ width: `${((raffle.totalNumbers - raffle.availableNumbers) / raffle.totalNumbers) * 100}%` }}
                       ></div>
                     </div>
@@ -261,9 +286,9 @@ export default function RafflesPage() {
                   
                   <Link 
                     href={`/rifas/${raffle.id}`}
-                    className="btn btn-primary w-full py-3 rounded-lg font-semibold"
+                    className="btn btn-gold w-full py-3 rounded-lg font-bold text-black"
                   >
-                    Ver detalhes
+                    Raspar Agora
                   </Link>
                 </div>
               </div>

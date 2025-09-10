@@ -5,6 +5,13 @@ import { useState, useEffect } from 'react';
 
 export default function Home() {
   const [isVisible, setIsVisible] = useState(false);
+  const [winners] = useState([
+    { id: 1, name: 'Carlos Silva', prize: 'R$ 5.500,00', time: 'Agora mesmo' },
+    { id: 2, name: 'Ana Oliveira', prize: 'R$ 2.800,00', time: '2 minutos atrás' },
+    { id: 3, name: 'Roberto Santos', prize: 'R$ 10.000,00', time: '5 minutos atrás' },
+    { id: 4, name: 'Mariana Costa', prize: 'R$ 1.500,00', time: '7 minutos atrás' },
+    { id: 5, name: 'Pedro Almeida', prize: 'R$ 15.000,00', time: '10 minutos atrás' },
+  ]);
 
   useEffect(() => {
     setIsVisible(true);
@@ -12,60 +19,55 @@ export default function Home() {
 
   const features = [
     {
-      title: "Sorteios Instantâneos",
-      description: "Resultados em tempo real com apenas um clique",
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-      )
+      title: "Prêmios Instantâneos",
+      description: "Ganhe prêmios em dinheiro real imediatamente após raspar",
+      icon: "💰"
     },
     {
-      title: "Pagamentos Seguros",
-      description: "Integração com HorsePay para transações 100% seguras",
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-        </svg>
-      )
+      title: "Sorteios Exclusivos",
+      description: "Participe de sorteios especiais com prêmios maiores",
+      icon: "🎁"
     },
     {
-      title: "Prêmios Reais",
-      description: "Ganhe dinheiro real diretamente na sua conta",
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-      )
+      title: "Diversas Temáticas",
+      description: "Jogos com diferentes temas para todos os gostos",
+      icon: "🍀"
+    },
+    {
+      title: "Jogue a Qualquer Hora",
+      description: "Acesse de onde estiver, a qualquer momento",
+      icon: "📲"
     }
   ];
 
-  const stats = [
-    { value: "90%+", label: "Taxa de Vitória" },
-    { value: "R$1M+", label: "Já Pagos" },
-    { value: "24/7", label: "Sorteios" },
-    { value: "100%", label: "Seguro" }
+  const raffles = [
+    { id: 1, title: 'Raspadinha Ouro', prize: 5000, icon: '🥇' },
+    { id: 2, title: 'Raspadinha Prata', prize: 2000, icon: '🥈' },
+    { id: 3, title: 'Raspadinha Bronze', prize: 1000, icon: '🥉' },
   ];
 
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
       <div className="relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-36">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
           <div className={`text-center transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">
-              <span className="block">Rifas </span>
-              <span className="block text-gradient">Premiadas Online</span>
+              <span className="block">🎯 Raspe e Ganhe</span>
+              <span className="block text-gradient-gold mt-2">de Verdade!</span>
             </h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-10">
-              Participe de rifas exclusivas com prêmios em dinheiro real. Probabilidade de ganho acima de 90%.
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-4">
+              Sua chance diária de mudar de vida com prêmios incríveis!
+            </p>
+            <p className="text-lg text-gray-400 max-w-3xl mx-auto mb-10">
+              Inspirada no estilo das grandes loterias, trazemos jogos divertidos, dinâmicos e com prêmios reais de até R$777.777!
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Link 
                 href="/rifas" 
-                className="btn btn-primary px-8 py-4 text-lg font-semibold rounded-xl"
+                className="btn btn-gold px-8 py-4 text-lg font-bold rounded-xl text-black"
               >
-                Participar Agora
+                Raspar Agora
               </Link>
               <Link 
                 href="/como-funciona" 
@@ -78,40 +80,33 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Stats Section */}
-      <div className="py-16 bg-card border-y border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-primary mb-2">{stat.value}</div>
-                <div className="text-gray-400">{stat.label}</div>
-              </div>
-            ))}
-          </div>
+      {/* Winners Marquee */}
+      <div className="py-4 bg-card border-y border-border">
+        <div className="flex animate-marquee whitespace-nowrap">
+          {[...winners, ...winners].map((winner, index) => (
+            <div key={index} className="mx-8 flex items-center">
+              <div className="w-3 h-3 rounded-full bg-green-500 mr-3"></div>
+              <span className="text-green-500 font-bold">GANHADOR!</span>
+              <span className="text-white mx-2">•</span>
+              <span className="text-white font-medium">{winner.name}</span>
+              <span className="text-white mx-2">ganhou</span>
+              <span className="text-yellow-400 font-bold">{winner.prize}</span>
+            </div>
+          ))}
         </div>
       </div>
 
       {/* Features Section */}
-      <div className="py-24">
+      <div className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Por que escolher nossas rifas?</h2>
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-              Oferecemos a melhor experiência em rifas online com tecnologia de ponta
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((feature, index) => (
               <div 
                 key={index} 
-                className="card p-8 grid-item"
+                className="card p-6 text-center grid-item"
               >
-                <div className="text-primary mb-6">
-                  {feature.icon}
-                </div>
-                <h3 className="text-2xl font-bold mb-4">{feature.title}</h3>
+                <div className="text-4xl mb-4">{feature.icon}</div>
+                <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
                 <p className="text-gray-400">{feature.description}</p>
               </div>
             ))}
@@ -119,20 +114,53 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Featured Raffles */}
+      <div className="py-16 bg-card">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Raspadinhas em Destaque</h2>
+            <p className="text-xl text-gray-400">Escolha sua raspadinha e comece a raspar agora mesmo!</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {raffles.map((raffle) => (
+              <div 
+                key={raffle.id} 
+                className="scratch-card grid-item"
+              >
+                <div className="card p-8 h-full">
+                  <div className="text-6xl mb-6 text-center">{raffle.icon}</div>
+                  <h3 className="text-2xl font-bold text-center mb-4">{raffle.title}</h3>
+                  <div className="text-3xl font-bold text-gold text-center mb-6">
+                    R$ {raffle.prize.toLocaleString('pt-BR')}
+                  </div>
+                  <Link 
+                    href={`/rifas/${raffle.id}`}
+                    className="btn btn-gold w-full py-3 rounded-lg font-bold text-black"
+                  >
+                    Raspar Agora
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* CTA Section */}
-      <div className="py-24 bg-gradient-primary">
+      <div className="py-20 bg-gradient-gold">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-            Pronto para começar a ganhar?
+          <h2 className="text-3xl md:text-4xl font-bold text-black mb-6">
+            Raspe e tenha a chance de ganhar!
           </h2>
-          <p className="text-xl text-white/90 max-w-3xl mx-auto mb-10">
+          <p className="text-xl text-gray-900 max-w-3xl mx-auto mb-10">
             Junte-se a milhares de usuários que já ganharam dinheiro conosco
           </p>
           <Link 
             href="/cadastro" 
-            className="btn btn-secondary px-8 py-4 text-lg font-semibold rounded-xl"
+            className="btn btn-primary px-8 py-4 text-lg font-bold rounded-xl text-white"
           >
-            Criar Minha Conta
+            Criar Minha Conta Agora
           </Link>
         </div>
       </div>
