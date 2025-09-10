@@ -12,6 +12,8 @@ export default function PaymentContent() {
   const [loading, setLoading] = useState(true);
   const [pixCode, setPixCode] = useState('');
   const [qrCode, setQrCode] = useState('');
+  const [paymentId, setPaymentId] = useState<number | null>(null);
+  const [paymentStatus, setPaymentStatus] = useState('pending');
 
   const raffleId = searchParams.get('id');
   const quantity = searchParams.get('quantity');
@@ -21,7 +23,7 @@ export default function PaymentContent() {
     if (raffleId && quantity) {
       const mockRaffle = {
         id: parseInt(raffleId),
-        title: 'Rifa iPhone 15 Pro',
+        title: 'iPhone 15 Pro Max',
         price: 5.00,
         quantity: parseInt(quantity),
         total: 5.00 * parseInt(quantity)
@@ -29,10 +31,11 @@ export default function PaymentContent() {
       
       setRaffle(mockRaffle);
       
-      // Simular geração de código PIX
+      // Simular geração de código PIX via HorsePay
       setTimeout(() => {
         setPixCode('00020126890014BR.GOV.BCB.PIX2567api.horsepay.com.br/v1/payments/12345678905204000053039865406100.005802BR5925FULANO DE TAL6008BRASILIA61087000000062190515RP12345678-901236304ABC12');
-        setQrCode('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2ZmZiIvPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSIjMDAwIi8+PC9zdmc+');
+        setQrCode('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAACCCAMAAADQNkiAAAAA1BMVEW10NBjBBbqAAAAH0lEQVRo3u3BAQ0AAADCoPdPbQ43oAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAICLAcTSYAAAAABJRU5ErkJggg==');
+        setPaymentId(123456);
         setLoading(false);
       }, 1500);
     } else {
@@ -63,11 +66,16 @@ export default function PaymentContent() {
     alert('Código PIX copiado para a área de transferência!');
   };
 
+  const handlePaymentConfirmation = () => {
+    // Simular confirmação de pagamento
+    router.push('/sucesso');
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-100 py-6 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
           <p className="mt-4 text-gray-600">Gerando pagamento...</p>
         </div>
       </div>
@@ -123,7 +131,7 @@ export default function PaymentContent() {
                     </div>
                     <button
                       onClick={copyToClipboard}
-                      className="w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition-colors font-medium"
+                      className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors font-medium"
                     >
                       Copiar código PIX
                     </button>
@@ -162,8 +170,8 @@ export default function PaymentContent() {
                 Cancelar
               </button>
               <button
-                onClick={() => router.push('/sucesso')}
-                className="flex-1 bg-green-500 text-white py-3 px-4 rounded-md hover:bg-green-600 transition-colors font-medium"
+                onClick={handlePaymentConfirmation}
+                className="flex-1 bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 transition-colors font-medium"
               >
                 Já realizei o pagamento
               </button>

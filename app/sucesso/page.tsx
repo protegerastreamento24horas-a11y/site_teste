@@ -48,7 +48,7 @@ export default function SuccessPage() {
                 <li>Os números da sua rifa já estão reservados</li>
                 <li>Você receberá um e-mail com os detalhes da compra</li>
                 <li>Acompanhe seus números em "Minhas Rifas"</li>
-                <li>O sorteio será realizado na data prevista</li>
+                <li>O sorteio será realizado automaticamente na data prevista</li>
               </ul>
             </div>
             
@@ -62,7 +62,7 @@ export default function SuccessPage() {
             <div className="flex flex-col sm:flex-row gap-4">
               <Link 
                 href="/minhas-rifas"
-                className="flex-1 bg-green-500 text-white py-3 px-4 rounded-md hover:bg-green-600 transition-colors font-medium text-center"
+                className="flex-1 bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 transition-colors font-medium text-center"
               >
                 Ir para Minhas Rifas
               </Link>

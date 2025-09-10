@@ -22,14 +22,14 @@ export default function MyRafflesPage() {
     const mockRaffles: UserRaffle[] = [
       {
         id: 1,
-        title: 'Rifa iPhone 15 Pro',
+        title: 'iPhone 15 Pro Max',
         numbers: [123, 456, 789],
         status: 'active',
         purchaseDate: '2024-09-01'
       },
       {
         id: 2,
-        title: 'Rifa MacBook Pro',
+        title: 'MacBook Pro M3',
         numbers: [234, 567],
         status: 'drawn',
         purchaseDate: '2024-08-15',
@@ -38,7 +38,7 @@ export default function MyRafflesPage() {
       },
       {
         id: 3,
-        title: 'Rifa Viagem Disney',
+        title: 'Viagem Disney Orlando',
         numbers: [345, 678, 901, 234],
         status: 'winner',
         purchaseDate: '2024-07-20',
@@ -75,7 +75,7 @@ export default function MyRafflesPage() {
     return (
       <div className="min-h-screen bg-gray-100 py-6 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
           <p className="mt-4 text-gray-600">Carregando suas rifas...</p>
         </div>
       </div>
@@ -99,7 +99,7 @@ export default function MyRafflesPage() {
             <p className="text-gray-600 mb-6">Você ainda não adquiriu nenhuma rifa.</p>
             <Link 
               href="/rifas"
-              className="bg-green-500 text-white py-2 px-6 rounded-md hover:bg-green-600 transition-colors font-medium inline-block"
+              className="bg-blue-600 text-white py-2 px-6 rounded-md hover:bg-blue-700 transition-colors font-medium inline-block"
             >
               Ver rifas disponíveis
             </Link>
@@ -155,7 +155,7 @@ export default function MyRafflesPage() {
                   <div className="mt-4">
                     <Link 
                       href={`/rifas/${raffle.id}`}
-                      className="text-green-500 hover:text-green-600 text-sm font-medium"
+                      className="text-blue-600 hover:text-blue-800 text-sm font-medium"
                     >
                       Ver detalhes da rifa
                     </Link>

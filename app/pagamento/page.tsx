@@ -14,6 +14,7 @@ export default function PaymentPage() {
       </div>
     }>
       <PaymentContent />
+      <div className="mt-4 text-red-600">HorsePay Integration</div>
     </Suspense>
   );
 }
