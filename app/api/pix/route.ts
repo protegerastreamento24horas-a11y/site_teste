@@ -78,6 +78,13 @@ async function createHorsePayOrder(accessToken: string, amount: number, descript
 
   const data = await response.json();
   console.log('Pedido criado com sucesso:', data);
+  
+  // Verificar se os dados do QR Code estão presentes
+  if (!data.qr_code && !data.qr_code_base64) {
+    console.error('Dados do QR Code não encontrados na resposta:', data);
+    throw new Error('Dados do QR Code não encontrados na resposta da API da HorsePay');
+  }
+  
   return data;
 }
 

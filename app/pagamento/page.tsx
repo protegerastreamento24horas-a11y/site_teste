@@ -13,6 +13,11 @@ export default function PagamentoPage() {
   const [paymentStatus, setPaymentStatus] = useState('pending');
   const [isSendingWhatsApp, setIsSendingWhatsApp] = useState(false);
 
+  // Log de depuração
+  useEffect(() => {
+    console.log('Parâmetros recebidos:', { qrCode, qrCodeBase64, paymentId });
+  }, [qrCode, qrCodeBase64, paymentId]);
+
   // Efeito para o temporizador
   useEffect(() => {
     if (timeLeft <= 0) {
@@ -29,7 +34,7 @@ export default function PagamentoPage() {
 
   // Efeito para verificar o status do pagamento
   useEffect(() => {
-    if (!paymentId || paymentStatus === 'paid' || paymentStatus === 'expired' || paymentStatus === 'refunded') return;
+    if (!paymentId || paymentStatus === 'paid' || paymentStatus === 'expired') return;
 
     const checkPaymentStatus = async () => {
       try {
@@ -154,6 +159,11 @@ Boa sorte! 🍀`;
               <p className="text-black mb-6">
                 Seu pagamento foi processado com sucesso. Você receberá um WhatsApp com os detalhes da sua rifa.
               </p>
+              {isSendingWhatsApp && (
+                <div className="mb-4">
+                  <p className="text-black">Enviando confirmação via WhatsApp...</p>
+                </div>
+              )}
               <button 
                 onClick={() => window.location.href = '/minhas-rifas'}
                 className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition duration-300"
@@ -234,19 +244,24 @@ Boa sorte! 🍀`;
                         alt="QR Code PIX" 
                         className="w-64 h-64"
                       />
+                    ) : qrCode ? (
+                      // Se for texto (código PIX copia e cola)
+                      <div className="bg-gray-100 border-2 border-dashed border-gray-300 rounded-xl w-64 h-64 flex items-center justify-center">
+                        <div className="text-center p-4">
+                          <svg className="w-16 h-16 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path>
+                          </svg>
+                          <p className="text-sm text-gray-600 mt-2">QR Code não disponível</p>
+                        </div>
+                      </div>
                     ) : (
-                      // Se for texto (código PIX copia e cola), exibir como código QR gerado
-                      <div className="bg-gray-200 border-2 border-dashed rounded-xl w-64 h-64 flex items-center justify-center">
-                        <div className="text-center">
-                          <div className="bg-white p-2 rounded mb-2 inline-block">
-                            <svg className="w-16 h-16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path d="M3 3H9V9H3V3Z" fill="black"/>
-                              <path d="M3 15H9V21H3V15Z" fill="black"/>
-                              <path d="M15 3H21V9H15V3Z" fill="black"/>
-                              <path d="M15 15H21V21H15V15Z" fill="black"/>
-                            </svg>
-                          </div>
-                          <p className="text-xs text-black">QR Code</p>
+                      // Se não tiver nada
+                      <div className="bg-gray-100 border-2 border-dashed border-gray-300 rounded-xl w-64 h-64 flex items-center justify-center">
+                        <div className="text-center p-4">
+                          <svg className="w-16 h-16 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path>
+                          </svg>
+                          <p className="text-sm text-gray-600 mt-2">Carregando QR Code...</p>
                         </div>
                       </div>
                     )}
@@ -263,17 +278,26 @@ Boa sorte! 🍀`;
                     <div className="flex">
                       <input
                         type="text"
-                        value={qrCode || ''}
+                        value={qrCode || qrCodeBase64 || 'Carregando...'}
                         readOnly
                         className="flex-1 border border-gray-300 rounded-l-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
                       />
                       <button 
-                        onClick={() => navigator.clipboard.writeText(qrCode || '')}
+                        onClick={() => navigator.clipboard.writeText(qrCode || qrCodeBase64 || '')}
                         className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-r-lg transition duration-300"
                       >
                         Copiar
                       </button>
                     </div>
+                    
+                    {/* Informações de depuração (apenas para desenvolvimento) */}
+                    {process.env.NODE_ENV === 'development' && (
+                      <div className="mt-4 text-left text-xs text-gray-500">
+                        <p>QR Code: {qrCode ? 'Presente' : 'Ausente'}</p>
+                        <p>QR Code Base64: {qrCodeBase64 ? 'Presente' : 'Ausente'}</p>
+                        <p>ID do Pagamento: {paymentId || 'Ausente'}</p>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

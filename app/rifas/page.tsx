@@ -87,13 +87,29 @@ export default function RifasPage() {
       });
       
       const data = await response.json();
+      console.log('Dados recebidos da API de PIX:', data);
       
       if (!response.ok) {
         throw new Error(data.error || 'Erro ao gerar PIX');
       }
       
+      // Verificar se os dados do QR Code estão presentes
+      if (!data.qr_code && !data.qr_code_base64) {
+        throw new Error('Dados do QR Code não encontrados na resposta');
+      }
+      
       // Redirecionar para a página de pagamento
-      window.location.href = `/pagamento?qr_code=${encodeURIComponent(data.qr_code)}&qr_code_base64=${encodeURIComponent(data.qr_code_base64)}&id=${data.id}`;
+      const qrCodeParam = data.qr_code ? `qr_code=${encodeURIComponent(data.qr_code)}` : '';
+      const qrCodeBase64Param = data.qr_code_base64 ? `qr_code_base64=${encodeURIComponent(data.qr_code_base64)}` : '';
+      const idParam = data.id ? `id=${data.id}` : '';
+      
+      const params = [qrCodeParam, qrCodeBase64Param, idParam].filter(param => param !== '').join('&');
+      
+      if (params) {
+        window.location.href = `/pagamento?${params}`;
+      } else {
+        throw new Error('Parâmetros insuficientes para redirecionar para a página de pagamento');
+      }
     } catch (err) {
       console.error('Erro ao processar pagamento:', err);
       setError(err instanceof Error ? err.message : 'Erro ao processar pagamento');
