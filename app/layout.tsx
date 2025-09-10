@@ -1,8 +1,9 @@
+import './globals.css';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Mega Raspadinha - Raspe e Ganhe de Verdade!',
-  description: 'Sua chance diária de mudar de vida com prêmios incríveis! Inspirada no estilo das grandes loterias, trazemos jogos divertidos, dinâmicos e com prêmios reais de até R$777.777!',
+  title: 'Mega Raspadinha - Sua Loteria Online',
+  description: 'Experimente a emoção das raspadinhas e ganhe prêmios incríveis!',
 };
 
 export default function RootLayout({
@@ -12,7 +13,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      <body style={{ backgroundColor: '#000', color: '#fff', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+      <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+      </head>
+      <body>
         {children}
       </body>
     </html>
