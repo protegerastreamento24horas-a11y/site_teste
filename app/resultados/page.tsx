@@ -1,273 +1,154 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useState } from 'react';
+
+interface DrawResult {
+  id: number;
+  raffleTitle: string;
+  drawDate: string;
+  winningNumber: number;
+  winnerName?: string;
+  prize: string;
+}
 
 export default function ResultsPage() {
-  const [winners] = useState([
-    { 
-      id: 1, 
-      name: 'Carlos Silva', 
-      prize: 5500, 
-      raffle: 'Raspadinha Ouro',
-      date: '10/09/2025 14:30',
-      icon: '🥇'
-    },
-    { 
-      id: 2, 
-      name: 'Ana Oliveira', 
-      prize: 2800, 
-      raffle: 'Raspadinha Prata',
-      date: '10/09/2025 13:45',
-      icon: '🥈'
-    },
-    { 
-      id: 3, 
-      name: 'Roberto Santos', 
-      prize: 10000, 
-      raffle: 'Raspadinha Diamante',
-      date: '10/09/2025 12:15',
-      icon: '💎'
-    },
-    { 
-      id: 4, 
-      name: 'Mariana Costa', 
-      prize: 1500, 
-      raffle: 'Raspadinha Bronze',
-      date: '10/09/2025 11:20',
-      icon: '🥉'
-    },
-    { 
-      id: 5, 
-      name: 'Pedro Almeida', 
-      prize: 15000, 
-      raffle: 'Raspadinha Diamante',
-      date: '10/09/2025 10:05',
-      icon: '💎'
-    },
-    { 
-      id: 6, 
-      name: 'Juliana Pereira', 
-      prize: 3200, 
-      raffle: 'Raspadinha Ouro',
-      date: '10/09/2025 09:30',
-      icon: '🥇'
-    },
-    { 
-      id: 7, 
-      name: 'Ricardo Lima', 
-      prize: 800, 
-      raffle: 'Raspadinha Bronze',
-      date: '10/09/2025 08:45',
-      icon: '🥉'
-    },
-    { 
-      id: 8, 
-      name: 'Fernanda Souza', 
-      prize: 25000, 
-      raffle: 'Raspadinha Diamante',
-      date: '09/09/2025 18:20',
-      icon: '💎'
-    },
-  ]);
+  const [results, setResults] = useState<DrawResult[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Header */}
-      <header className="bg-gradient-to-r from-purple-900 to-pink-800 py-4 px-4">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
-          <div className="flex items-center mb-4 md:mb-0">
-            <div className="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16" />
-            <h1 className="text-2xl font-bold ml-3">MEGA RASPADINHA</h1>
-          </div>
-          
-          <nav className="flex space-x-6">
-            <Link href="/" className="hover:text-yellow-400 transition">INÍCIO</Link>
-            <Link href="/raspadinhas" className="hover:text-yellow-400 transition">RASPADINHAS</Link>
-            <Link href="/resultados" className="font-bold text-yellow-400">RESULTADOS</Link>
-            <Link href="/como-jogar" className="hover:text-yellow-400 transition">COMO JOGAR</Link>
-          </nav>
-          
-          <div className="mt-4 md:mt-0">
-            <Link 
-              href="/login" 
-              className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 px-6 rounded-full transition"
-            >
-              ENTRAR
-            </Link>
-          </div>
-        </div>
-      </header>
+  useEffect(() => {
+    // Simular carregamento dos resultados dos sorteios
+    const mockResults: DrawResult[] = [
+      {
+        id: 1,
+        raffleTitle: 'iPhone 15 Pro Max',
+        drawDate: '2024-09-01',
+        winningNumber: 456,
+        winnerName: 'Carlos Silva',
+        prize: 'iPhone 15 Pro Max 256GB'
+      },
+      {
+        id: 2,
+        raffleTitle: 'MacBook Pro M3',
+        drawDate: '2024-08-15',
+        winningNumber: 789,
+        winnerName: 'Ana Oliveira',
+        prize: 'MacBook Pro 14" M3 Pro'
+      },
+      {
+        id: 3,
+        raffleTitle: 'Viagem Disney Orlando',
+        drawDate: '2024-08-15',
+        winningNumber: 234,
+        winnerName: 'Você', // Usuário ganhador
+        prize: 'Viagem para Disney Orlando para 4 pessoas'
+      },
+      {
+        id: 4,
+        raffleTitle: 'PlayStation 5',
+        drawDate: '2024-07-30',
+        winningNumber: 123,
+        winnerName: 'Roberto Santos',
+        prize: 'PlayStation 5 Standard Edition'
+      }
+    ];
 
-      {/* Breadcrumbs */}
-      <div className="py-4 px-4 bg-gray-900">
-        <div className="max-w-7xl mx-auto">
-          <nav className="text-gray-400">
-            <Link href="/" className="hover:text-yellow-400 transition">Início</Link> / Resultados
-          </nav>
+    setTimeout(() => {
+      setResults(mockResults);
+      setLoading(false);
+    }, 1000);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-100 py-6 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Carregando resultados...</p>
         </div>
       </div>
+    );
+  }
 
-      {/* Main Content */}
-      <main className="py-12 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold mb-4">Últimos Resultados</h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Confira os últimos ganhadores e os prêmios conquistados em nossas raspadinhas
-            </p>
+  return (
+    <div className="min-h-screen bg-gray-100 py-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-10">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Resultados dos Sorteios</h1>
+          <p className="text-gray-600">Confira os resultados dos sorteios realizados</p>
+        </div>
+
+        {results.length === 0 ? (
+          <div className="bg-white rounded-lg shadow-md p-8 text-center">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <h2 className="text-xl font-bold text-gray-900 mb-2">Nenhum sorteio realizado ainda</h2>
+            <p className="text-gray-600 mb-6">Os resultados dos sorteios aparecerão aqui após a data marcada.</p>
+            <Link 
+              href="/rifas"
+              className="bg-blue-600 text-white py-2 px-6 rounded-md hover:bg-blue-700 transition-colors font-medium inline-block"
+            >
+              Ver rifas disponíveis
+            </Link>
           </div>
-
-          <div className="bg-gradient-to-b from-purple-900/40 to-black rounded-xl border border-purple-800 overflow-hidden">
-            <div className="bg-gradient-to-r from-yellow-600 to-yellow-800 p-6">
-              <h2 className="text-2xl font-bold text-center text-black">GANHADORES RECENTES</h2>
-            </div>
-            
-            <div className="p-6">
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-gray-700">
-                      <th className="py-4 px-4 text-left">Ganhador</th>
-                      <th className="py-4 px-4 text-left">Raspadinha</th>
-                      <th className="py-4 px-4 text-left">Prêmio</th>
-                      <th className="py-4 px-4 text-left">Data/Hora</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {winners.map((winner) => (
-                      <tr key={winner.id} className="border-b border-gray-800 hover:bg-purple-900/20 transition">
-                        <td className="py-4 px-4">
-                          <div className="flex items-center">
-                            <div className="text-2xl mr-3">{winner.icon}</div>
-                            <span className="font-medium">{winner.name}</span>
-                          </div>
-                        </td>
-                        <td className="py-4 px-4 text-gray-300">{winner.raffle}</td>
-                        <td className="py-4 px-4">
-                          <span className="font-bold text-green-400">R$ {winner.prize.toLocaleString('pt-BR')}</span>
-                        </td>
-                        <td className="py-4 px-4 text-gray-400">{winner.date}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              
-              <div className="mt-8 flex justify-center">
-                <button className="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded-full transition">
-                  Carregar mais resultados
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-gradient-to-b from-purple-900/40 to-black rounded-xl border border-purple-800 p-8">
-              <h3 className="text-2xl font-bold mb-6 text-center">Maiores Prêmios do Mês</h3>
-              <div className="space-y-4">
-                {winners.slice(0, 3).map((winner, index) => (
-                  <div key={index} className="flex items-center justify-between p-4 bg-gray-900 rounded-lg">
-                    <div className="flex items-center">
-                      <div className="text-2xl mr-4">
-                        {index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'}
-                      </div>
-                      <div>
-                        <div className="font-bold">{winner.name}</div>
-                        <div className="text-sm text-gray-400">{winner.raffle}</div>
-                      </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {results.map((result) => (
+              <div 
+                key={result.id} 
+                className={`bg-white rounded-lg shadow-md overflow-hidden ${
+                  result.winnerName === 'Você' ? 'ring-2 ring-green-500' : ''
+                }`}
+              >
+                {result.winnerName === 'Você' && (
+                  <div className="bg-green-500 text-white text-center py-2 font-bold">
+                    VOCÊ GANHOU ESTE PRÊMIO!
+                  </div>
+                )}
+                <div className="p-6">
+                  <h2 className="text-xl font-bold text-gray-900 mb-2">{result.raffleTitle}</h2>
+                  
+                  <div className="mb-4">
+                    <div className="flex justify-between text-sm text-gray-600 mb-1">
+                      <span>Data do sorteio:</span>
+                      <span>{result.drawDate}</span>
                     </div>
-                    <div className="font-bold text-green-400">R$ {winner.prize.toLocaleString('pt-BR')}</div>
                   </div>
-                ))}
-              </div>
-            </div>
-            
-            <div className="bg-gradient-to-b from-purple-900/40 to-black rounded-xl border border-purple-800 p-8">
-              <h3 className="text-2xl font-bold mb-6 text-center">Estatísticas</h3>
-              <div className="space-y-6">
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span className="text-gray-300">Total de prêmios pagos</span>
-                    <span className="font-bold text-yellow-400">R$ 1.245.670,00</span>
+                  
+                  <div className="mb-4">
+                    <p className="text-gray-600 text-sm mb-1">Número sorteado:</p>
+                    <div className="text-3xl font-bold text-center py-3 bg-gray-100 rounded-md">
+                      {result.winningNumber.toString().padStart(3, '0')}
+                    </div>
                   </div>
-                  <div className="w-full bg-gray-800 rounded-full h-2">
-                    <div className="bg-gradient-to-r from-yellow-500 to-yellow-600 h-2 rounded-full" style={{ width: '75%' }}></div>
+                  
+                  <div className="mb-4">
+                    <p className="text-gray-600 text-sm mb-1">Ganhador:</p>
+                    <p className="font-medium">
+                      {result.winnerName || 'Será revelado em breve...'}
+                    </p>
                   </div>
-                </div>
-                
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span className="text-gray-300">Maior prêmio pago</span>
-                    <span className="font-bold text-green-400">R$ 100.000,00</span>
+                  
+                  <div className="border-t border-gray-200 pt-4">
+                    <p className="text-gray-600 text-sm mb-1">Prêmio:</p>
+                    <p className="font-medium">{result.prize}</p>
                   </div>
-                  <div className="w-full bg-gray-800 rounded-full h-2">
-                    <div className="bg-gradient-to-r from-green-500 to-green-600 h-2 rounded-full" style={{ width: '90%' }}></div>
-                  </div>
-                </div>
-                
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span className="text-gray-300">Total de ganhadores</span>
-                    <span className="font-bold text-purple-400">2.458</span>
-                  </div>
-                  <div className="w-full bg-gray-800 rounded-full h-2">
-                    <div className="bg-gradient-to-r from-purple-500 to-purple-600 h-2 rounded-full" style={{ width: '65%' }}></div>
+                  
+                  <div className="mt-4">
+                    <Link 
+                      href={`/rifas/${result.id}`}
+                      className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                    >
+                      Ver detalhes da rifa
+                    </Link>
                   </div>
                 </div>
               </div>
-            </div>
+            ))}
           </div>
-        </div>
-      </main>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 py-12 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-              <div className="flex items-center mb-4">
-                <div className="bg-gray-200 border-2 border-dashed rounded-xl w-12 h-12" />
-                <h3 className="text-xl font-bold ml-2">MEGA RASPADINHA</h3>
-              </div>
-              <p className="text-gray-400">
-                Sua chance diária de mudar de vida com prêmios incríveis!
-              </p>
-            </div>
-            
-            <div>
-              <h4 className="text-lg font-bold mb-4 text-yellow-400">INFORMAÇÕES</h4>
-              <ul className="space-y-2">
-                <li><Link href="/como-jogar" className="text-gray-400 hover:text-yellow-400 transition">Como Jogar</Link></li>
-                <li><Link href="/regulamento" className="text-gray-400 hover:text-yellow-400 transition">Regulamento</Link></li>
-                <li><Link href="/resultados" className="text-gray-400 hover:text-yellow-400 transition">Resultados</Link></li>
-                <li><Link href="/faq" className="text-gray-400 hover:text-yellow-400 transition">FAQ</Link></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="text-lg font-bold mb-4 text-yellow-400">SUPORTE</h4>
-              <ul className="space-y-2">
-                <li><Link href="/contato" className="text-gray-400 hover:text-yellow-400 transition">Contato</Link></li>
-                <li><Link href="/privacidade" className="text-gray-400 hover:text-yellow-400 transition">Privacidade</Link></li>
-                <li><Link href="/termos" className="text-gray-400 hover:text-yellow-400 transition">Termos de Uso</Link></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="text-lg font-bold mb-4 text-yellow-400">CONTATO</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li>Email: contato@megaraspadinha.com</li>
-                <li>WhatsApp: (11) 99999-9999</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500">
-            <p>© {new Date().getFullYear()} Mega Raspadinha. Todos os direitos reservados.</p>
-          </div>
-        </div>
-      </footer>
+        )}
+      </div>
     </div>
   );
 }

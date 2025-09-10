@@ -1,23 +1,19 @@
-import './globals.css';
-import type { Metadata } from 'next';
+import type { Metadata } from "next";
+import "./globals.css";
 
 export const metadata: Metadata = {
-  title: 'Mega Raspadinha - Sua Loteria Online',
-  description: 'Experimente a emoção das raspadinhas e ganhe prêmios incríveis!',
+  title: "Sorteios Automáticos",
+  description: "Participe de sorteios automáticos e ganhe prêmios",
 };
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
-    <html lang="pt-BR">
-      <head>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
-      </head>
-      <body>
+    <html lang="pt" className="dark">
+      <body className="antialiased bg-gray-900 text-white min-h-screen">
         {children}
       </body>
     </html>
