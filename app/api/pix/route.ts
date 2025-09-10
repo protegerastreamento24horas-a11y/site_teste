@@ -144,9 +144,9 @@ export async function POST(request: NextRequest) {
       // Retornar o QR Code e o código PIX
       return new Response(
         JSON.stringify({
-          qr_code: order.copy_past,
-          qr_code_base64: order.payment,
-          id: order.external_id,
+          qr_code: order.qr_code,
+          qr_code_base64: order.qr_code_base64,
+          id: order.id,
           status: order.status,
           success_url: successUrl
         }),

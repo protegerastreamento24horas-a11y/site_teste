@@ -72,7 +72,6 @@ export default function RifasPage() {
         body: JSON.stringify({
           amount: totalAmount,
           description: `Rifa: ${raffles[selectedRaffle].title} - Quantidade: ${quantity}`,
-          externalId: `rifa_${raffles[selectedRaffle].id}_${Date.now()}`,
         }),
       });
       
@@ -83,7 +82,7 @@ export default function RifasPage() {
       }
       
       // Redirecionar para a página de pagamento
-      window.location.href = `/pagamento?qr_code=${encodeURIComponent(data.qr_code)}&qr_code_base64=${encodeURIComponent(data.qr_code_base64)}&external_id=${data.external_id}`;
+      window.location.href = `/pagamento?qr_code=${encodeURIComponent(data.qr_code)}&qr_code_base64=${encodeURIComponent(data.qr_code_base64)}&external_id=${data.id}`;
     } catch (err) {
       console.error('Erro ao processar pagamento:', err);
       setError(err instanceof Error ? err.message : 'Erro ao processar pagamento');
