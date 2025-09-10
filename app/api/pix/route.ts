@@ -14,27 +14,42 @@ async function getHorsePayAccessToken() {
     clientSecret: clientSecret ? `${clientSecret.substring(0, 5)}...` : 'vazio'
   });
 
+  const requestBody = {
+    client_key: clientKey,
+    client_secret: clientSecret,
+  };
+
+  console.log('Corpo da requisição:', JSON.stringify(requestBody));
+
   const response = await fetch('https://api.horsepay.io/auth/token', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      client_key: clientKey,
-      client_secret: clientSecret,
-    }),
+    body: JSON.stringify(requestBody),
   });
 
   console.log('Resposta da API de token:', response.status);
+  console.log('Headers da resposta:', [...response.headers.entries()]);
+
+  // Log do corpo da resposta para depuração
+  const responseText = await response.text();
+  console.log('Corpo da resposta (texto):', responseText);
 
   if (!response.ok) {
-    const errorText = await response.text();
-    console.error('Erro ao obter token:', errorText);
-    throw new Error(`Erro ao obter token: ${response.status} - ${errorText}`);
+    console.error('Erro ao obter token:', responseText);
+    throw new Error(`Erro ao obter token: ${response.status} - ${responseText}`);
   }
 
-  const data = await response.json();
-  console.log('Token obtido com sucesso');
+  let data;
+  try {
+    data = JSON.parse(responseText);
+  } catch (parseError: any) {
+    console.error('Erro ao parsear resposta JSON:', parseError);
+    throw new Error(`Erro ao parsear resposta JSON: ${parseError.message || parseError}`);
+  }
+
+  console.log('Token obtido com sucesso:', data);
   return data.access_token;
 }
 
@@ -55,28 +70,43 @@ async function createHorsePayOrder(accessToken: string, amount: number, descript
     callback_url: callbackUrl
   });
 
+  const requestBody = {
+    payer_name: payerName || 'Cliente',
+    amount: amount,
+    callback_url: callbackUrl,
+  };
+
+  console.log('Corpo da requisição de pedido:', JSON.stringify(requestBody));
+
   const response = await fetch('https://api.horsepay.io/transaction/neworder', {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      payer_name: payerName || 'Cliente',
-      amount: amount,
-      callback_url: callbackUrl,
-    }),
+    body: JSON.stringify(requestBody),
   });
 
   console.log('Resposta da API de criação de pedido:', response.status);
+  console.log('Headers da resposta:', [...response.headers.entries()]);
+
+  // Log do corpo da resposta para depuração
+  const responseText = await response.text();
+  console.log('Corpo da resposta (texto):', responseText);
 
   if (!response.ok) {
-    const errorText = await response.text();
-    console.error('Erro ao criar pedido:', errorText);
-    throw new Error(`Erro ao criar pedido: ${response.status} - ${errorText}`);
+    console.error('Erro ao criar pedido:', responseText);
+    throw new Error(`Erro ao criar pedido: ${response.status} - ${responseText}`);
   }
 
-  const data = await response.json();
+  let data;
+  try {
+    data = JSON.parse(responseText);
+  } catch (parseError: any) {
+    console.error('Erro ao parsear resposta JSON:', parseError);
+    throw new Error(`Erro ao parsear resposta JSON: ${parseError.message || parseError}`);
+  }
+
   console.log('Pedido criado com sucesso:', data);
   
   // Verificar se os dados do QR Code estão presentes

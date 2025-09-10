@@ -90,7 +90,7 @@ export default function RifasPage() {
       console.log('Dados recebidos da API de PIX:', data);
       
       if (!response.ok) {
-        throw new Error(data.error || 'Erro ao gerar PIX');
+        throw new Error(data.message || data.error || 'Erro ao gerar PIX');
       }
       
       // Verificar se os dados do QR Code estão presentes
@@ -112,7 +112,7 @@ export default function RifasPage() {
       }
     } catch (err) {
       console.error('Erro ao processar pagamento:', err);
-      setError(err instanceof Error ? err.message : 'Erro ao processar pagamento');
+      setError(err instanceof Error ? `${err.message}` : 'Erro ao processar pagamento');
       setIsProcessing(false);
     }
   };
